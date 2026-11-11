@@ -1,11 +1,11 @@
 [
 {
   "date": "2026-11-11",
-"calorie_samples": 2,
-  "calories": 568.731811523438,
-  "carbs": 79.0715065002441,
-  "protein": 14.841067314148,
-  "fat": 19.2226161956787
+"calorie_samples": 5,
+  "calories": 2387.10412597656,
+  "carbs": 271.640438079834,
+  "protein": 178.115260124207,
+  "fat": 59.4267120361328
 },{
   "date": "2026-11-10",
 "calorie_samples": 4,
@@ -43,6 +43,251 @@
   "fat": 116.614659786224
 },{
   "date": "2026-11-05",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-11-04",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-11-03",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-11-02",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-11-01",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-31",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-30",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-29",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-28",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-27",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-26",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-25",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-24",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-23",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-22",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-21",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-20",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-19",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-18",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-17",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-16",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-15",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-14",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-13",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-12",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-11",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-10",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-09",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-08",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-07",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-06",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-05",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-04",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-03",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-02",
+"calorie_samples": 0,
+  "calories": null,
+  "carbs": null,
+  "protein": null,
+  "fat": null
+},{
+  "date": "2026-10-01",
 "calorie_samples": 0,
   "calories": null,
   "carbs": null,
