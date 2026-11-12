@@ -1,0 +1,633 @@
+{
+  "days": [
+    {
+      "date": "2026-09-05",
+      "calories": 933.9,
+      "carbs": 122.3,
+      "protein": 56.6,
+      "fat": 26.2,
+      "calorie_samples": 2,
+      "meals": [
+        "Breakfast",
+        "Lunch"
+      ]
+    },
+    {
+      "date": "2026-09-07",
+      "calories": 2012.8,
+      "carbs": 230.6,
+      "protein": 141.8,
+      "fat": 63.6,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-08",
+      "calories": 2000.7,
+      "carbs": 199.1,
+      "protein": 175.0,
+      "fat": 58.8,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-09",
+      "calories": 2259.4,
+      "carbs": 261.2,
+      "protein": 178.0,
+      "fat": 59.2,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-10",
+      "calories": 2296.6,
+      "carbs": 289.8,
+      "protein": 178.8,
+      "fat": 57.3,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-11",
+      "calories": 1605.1,
+      "carbs": 190.7,
+      "protein": 86.0,
+      "fat": 60.9,
+      "calorie_samples": 2,
+      "meals": [
+        "Breakfast",
+        "Lunch"
+      ]
+    },
+    {
+      "date": "2026-09-12",
+      "calories": 464.8,
+      "carbs": 63.6,
+      "protein": 19.3,
+      "fat": 14.8,
+      "calorie_samples": 1,
+      "meals": [
+        "Lunch"
+      ]
+    },
+    {
+      "date": "2026-09-14",
+      "calories": 2036.4,
+      "carbs": 217.2,
+      "protein": 189.8,
+      "fat": 48.3,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-15",
+      "calories": 2534.8,
+      "carbs": 330.7,
+      "protein": 175.1,
+      "fat": 63.3,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-16",
+      "calories": 2373.5,
+      "carbs": 286.7,
+      "protein": 156.6,
+      "fat": 73.2,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-17",
+      "calories": 3076.7,
+      "carbs": 402.8,
+      "protein": 169.7,
+      "fat": 92.8,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-18",
+      "calories": 2253.2,
+      "carbs": 249.1,
+      "protein": 164.5,
+      "fat": 70.5,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-19",
+      "calories": 1861.2,
+      "carbs": 276.9,
+      "protein": 111.1,
+      "fat": 42.2,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-20",
+      "calories": 1569.1,
+      "carbs": 249.4,
+      "protein": 74.9,
+      "fat": 32.1,
+      "calorie_samples": 2,
+      "meals": [
+        "Dinner",
+        "During\u00a0Workout\u00a0"
+      ]
+    },
+    {
+      "date": "2026-09-21",
+      "calories": 2049.6,
+      "carbs": 214.0,
+      "protein": 191.2,
+      "fat": 60.9,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-22",
+      "calories": 2471.8,
+      "carbs": 323.6,
+      "protein": 165.5,
+      "fat": 65.8,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-23",
+      "calories": 597.1,
+      "carbs": 70.5,
+      "protein": 40.4,
+      "fat": 19.8,
+      "calorie_samples": 1,
+      "meals": [
+        "Breakfast"
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "calories": 2471.0,
+      "carbs": 292.8,
+      "protein": 182.1,
+      "fat": 65.1,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-25",
+      "calories": 2475.0,
+      "carbs": 233.5,
+      "protein": 193.8,
+      "fat": 91.2,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-26",
+      "calories": 2048.5,
+      "carbs": 280.5,
+      "protein": 91.1,
+      "fat": 70.0,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "calories": 3514.1,
+      "carbs": 473.7,
+      "protein": 171.8,
+      "fat": 106.7,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "calories": 2050.0,
+      "carbs": 191.2,
+      "protein": 173.7,
+      "fat": 70.2,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-29",
+      "calories": 2481.1,
+      "carbs": 313.2,
+      "protein": 154.7,
+      "fat": 77.8,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-09-30",
+      "calories": 2267.0,
+      "carbs": 250.5,
+      "protein": 168.5,
+      "fat": 69.9,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-01",
+      "calories": 2461.7,
+      "carbs": 326.4,
+      "protein": 167.4,
+      "fat": 62.2,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-02",
+      "calories": 1305.2,
+      "carbs": 159.4,
+      "protein": 78.5,
+      "fat": 41.3,
+      "calorie_samples": 2,
+      "meals": [
+        "Breakfast",
+        "Lunch"
+      ]
+    },
+    {
+      "date": "2026-10-03",
+      "calories": 190.0,
+      "carbs": 46.0,
+      "protein": 0.0,
+      "fat": 0.0,
+      "calorie_samples": 1,
+      "meals": [
+        "During\u00a0Workout\u00a0"
+      ]
+    },
+    {
+      "date": "2026-10-05",
+      "calories": 2714.3,
+      "carbs": 288.2,
+      "protein": 206.9,
+      "fat": 89.0,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-06",
+      "calories": 2351.6,
+      "carbs": 308.8,
+      "protein": 167.1,
+      "fat": 50.1,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-07",
+      "calories": 2445.9,
+      "carbs": 298.9,
+      "protein": 168.1,
+      "fat": 69.2,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-08",
+      "calories": 1998.7,
+      "carbs": 217.9,
+      "protein": 154.6,
+      "fat": 64.5,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-09",
+      "calories": 1986.1,
+      "carbs": 194.0,
+      "protein": 168.2,
+      "fat": 63.4,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-12",
+      "calories": 2235.1,
+      "carbs": 280.9,
+      "protein": 168.4,
+      "fat": 55.3,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-13",
+      "calories": 2315.1,
+      "carbs": 308.7,
+      "protein": 165.2,
+      "fat": 51.4,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-14",
+      "calories": 2192.9,
+      "carbs": 245.0,
+      "protein": 198.8,
+      "fat": 53.6,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-18",
+      "calories": 3309.2,
+      "carbs": 417.3,
+      "protein": 129.6,
+      "fat": 118.5,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "calories": 2034.3,
+      "carbs": 232.2,
+      "protein": 179.4,
+      "fat": 48.8,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-20",
+      "calories": 2589.1,
+      "carbs": 323.4,
+      "protein": 186.1,
+      "fat": 71.4,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-10-21",
+      "calories": 1185.7,
+      "carbs": 145.2,
+      "protein": 99.6,
+      "fat": 27.7,
+      "calorie_samples": 2,
+      "meals": [
+        "Breakfast",
+        "Lunch"
+      ]
+    },
+    {
+      "date": "2026-10-30",
+      "calories": 2025.4,
+      "carbs": 214.4,
+      "protein": 171.4,
+      "fat": 58.8,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-11-01",
+      "calories": 3385.7,
+      "carbs": 506.5,
+      "protein": 143.7,
+      "fat": 93.4,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-11-02",
+      "calories": 2360.3,
+      "carbs": 259.3,
+      "protein": 191.7,
+      "fat": 70.3,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-11-03",
+      "calories": 2612.2,
+      "carbs": 365.7,
+      "protein": 161.5,
+      "fat": 64.3,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-11-04",
+      "calories": 2313.7,
+      "carbs": 312.0,
+      "protein": 142.3,
+      "fat": 66.2,
+      "calorie_samples": 4,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "Lunch",
+        "Snacks"
+      ]
+    },
+    {
+      "date": "2026-11-05",
+      "calories": 2667.2,
+      "carbs": 323.1,
+      "protein": 156.7,
+      "fat": 87.7,
+      "calorie_samples": 5,
+      "meals": [
+        "Breakfast",
+        "Dinner",
+        "During\u00a0Workout\u00a0",
+        "Lunch",
+        "Snacks"
+      ]
+    }
+  ],
+  "source": "MyFitnessPal historical nutrition export",
+  "export_end": "2026-11-05"
+}
