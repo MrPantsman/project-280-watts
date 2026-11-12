@@ -1,11 +1,11 @@
 [
 {
   "date": "2026-11-12",
-"calorie_samples": 4,
-  "calories": 1908.08734130859,
-  "carbs": 146.270118713379,
-  "protein": 103.261192321777,
-  "fat": 46.8757972717285
+"calorie_samples": 5,
+  "calories": 2571.58734130859,
+  "carbs": 245.570121765137,
+  "protein": 113.661191940308,
+  "fat": 69.575798034668
 },{
   "date": "2026-11-11",
 "calorie_samples": 5,
@@ -50,11 +50,11 @@
   "fat": 116.614659786224
 },{
   "date": "2026-11-05",
-"calorie_samples": 0,
-  "calories": null,
-  "carbs": null,
-  "protein": null,
-  "fat": null
+"calorie_samples": 1,
+  "calories": 189.440002441406,
+  "carbs": 47.7618026733398,
+  "protein": 0.0797999948263168,
+  "fat": 0.0247999988496304
 },{
   "date": "2026-11-04",
 "calorie_samples": 0,
