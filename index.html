@@ -360,48 +360,64 @@ function renderReconciliation(){const root=el('v6Content'),status=el('reviewStat
 // V22 experimental comparison; no changes to V21 prescription engine.
 function experimentalIntensity(e){
  const doc=e.workout_doc||{};
- let zones=null;
- const candidates=[doc.zone_times,doc.power_zone_times,doc.zones,doc.zoneTimes];
- for(const c of candidates){
-  if(Array.isArray(c)&&c.length>=5&&c.every(v=>Number.isFinite(Number(v)))){zones=c.map(Number);break;}
-  if(c&&typeof c==='object'&&!Array.isArray(c)){
-   const a=[1,2,3,4,5,6,7].map(i=>Number(c['Z'+i]??c['z'+i]??c[i]??0));
-   if(a.some(x=>x>0)){zones=a;break;}
+ // Intervals.icu workout_doc.zoneTimes contains objects {zone:1..7,secs}.
+ // Zone 8 is overlapping Sweet Spot and MUST NOT be added to total time.
+ let zones=null,source='';
+ if(Array.isArray(doc.zoneTimes)&&doc.zoneTimes.some(z=>z&&typeof z==='object'&&Number(z.secs)>=0)){
+  const a=Array(7).fill(0);
+  for(const z of doc.zoneTimes){const i=Number(z.zone);if(i>=1&&i<=7&&Number.isFinite(Number(z.secs)))a[i-1]+=Number(z.secs);}
+  if(a.some(v=>v>0)){zones=a;source='Intervals zoneTimes';}
+ }
+ if(!zones){
+  const candidates=[doc.zone_times,doc.power_zone_times,doc.zones,doc.zoneTimes];
+  for(const c of candidates){
+   if(Array.isArray(c)&&c.length>=5&&c.every(v=>Number.isFinite(Number(v)))){zones=c.slice(0,7).map(Number);source='zone array';break;}
+   if(c&&typeof c==='object'&&!Array.isArray(c)){
+    const a=[1,2,3,4,5,6,7].map(i=>Number(c['Z'+i]??c['z'+i]??c[i]??0));
+    if(a.some(x=>x>0)){zones=a;source='zone map';break;}
+   }
   }
  }
  if(!zones){
-  // Some Intervals exports put zone times directly on the event.
   const a=[1,2,3,4,5,6,7].map(i=>Number(e['icu_zone'+i+'_time']??e['zone'+i+'_time']??0));
-  if(a.some(x=>x>0))zones=a;
+  if(a.some(x=>x>0)){zones=a;source='event zone times';}
  }
  if(zones){
-  const total=zones.reduce((a,b)=>a+b,0),hard=(zones[3]||0)+(zones[4]||0)+(zones[5]||0)+(zones[6]||0);
-  // Time units are the same within each source; only the ratio is used.
-  return {hardFraction:total?hard/total:0,hardMinutes:total>1000?hard/60:hard,source:'zone distribution',known:true};
+  const total=zones.reduce((a,b)=>a+b,0),hard=zones.slice(3).reduce((a,b)=>a+b,0);
+  const secondsUnits=total>1000;
+  return {hardFraction:total?hard/total:0,hardMinutes:secondsUnits?hard/60:hard,source,known:true,zoneMinutes:zones.map(v=>secondsUnits?v/60:v)};
  }
- // Do not pretend to have measured Z4 time if export does not contain zone distribution.
- return {hardFraction:null,hardMinutes:null,source:'workout name only',known:false};
+ return {hardFraction:null,hardMinutes:null,source:'workout name only',known:false,zoneMinutes:null};
 }
 function experimentalPlan(key,by){
  const old=nutritionFor(key,by),events=by[key]||[],rides=events.filter(isRide);
- const profiles=rides.map(experimentalIntensity),hasZones=profiles.some(p=>p.known),hard=rides.some(isHard);
+ const profiles=rides.map(experimentalIntensity),hasZones=profiles.some(p=>p.known);
  const totalMinutes=old.mins,highMinutes=profiles.filter(p=>p.known).reduce((a,p)=>a+(p.hardMinutes||0),0);
- const meaningfulHard=hasZones?profiles.some(p=>p.hardFraction>=.15||p.hardMinutes>=15):hard;
- let lo=old.minCarbs,hi=old.maxCarbs,target=old.targetCarb,bike=old.bikeTarget;
- let rationale='No change: current plan already reflects the available workload.';
+ const hard=rides.some(isHard),meaningfulHard=hasZones?highMinutes>=10||profiles.some(p=>p.hardFraction>=.15):hard;
+ const moderate=hasZones&&profiles.some(p=>(p.zoneMinutes?.[2]||0)>=15);
+ let target=old.targetCarb,bike=old.bikeTarget,hi=old.maxCarbs;
+ let rationale='No adjustment indicated by measured workout demand.';
  if(rides.length&&old.known){
-   // Distinguish a short intense ride from a long demanding one; respect original energy and fat floor.
-   const kg=weight();
-   let desired=old.targetCarb;
-   if(meaningfulHard&&totalMinutes>=60){desired=Math.max(desired,Math.round(kg*(totalMinutes>=150?5.5:5.0)));rationale='Sustained high-intensity work: protect glycogen availability.';}
-   else if(hasZones&&!meaningfulHard&&totalMinutes<120){desired=Math.min(desired,Math.round(kg*3.8));rationale='Zone distribution indicates limited high-intensity work.';}
-   if(totalMinutes>=180){desired=Math.max(desired,Math.round(kg*(totalMinutes>=240?6:5.5)));rationale='Long duration increases carbohydrate demand and fatigue-resistance priority.';}
-   if(old.recovery||old.prep)desired=Math.max(desired,old.targetCarb);
-   // Preserve at least existing lower carbohydrate guide; experimental target may exceed V21 upper bound.
-   target=round5(Math.max(old.minCarbs,desired));
-   hi=Math.max(old.maxCarbs,target);
-   if(meaningfulHard&&totalMinutes>=90)bike=Math.max(bike,totalMinutes>=150?75:60);
-   if(totalMinutes>=180)bike=Math.max(bike,75);
+  const kg=weight(),workKj=rides.reduce((a,e)=>a+planDetails(e).joules/1000,0);
+  let desired=old.targetCarb;
+  if(meaningfulHard&&totalMinutes>=60){
+   desired=Math.max(desired,Math.round(kg*(totalMinutes>=150?5.5:5.0)));
+   bike=Math.max(bike,totalMinutes>=90?60:45);
+   rationale='Sustained Z4+ work ('+Math.round(highMinutes)+' min): prioritise carbohydrate availability.';
+  }else if(moderate&&totalMinutes>=60){
+   desired=Math.max(desired,Math.round(kg*4.3));
+   bike=Math.max(bike,totalMinutes>=90?45:35);
+   rationale='Sustained Z3 tempo: moderate carbohydrate demand.';
+  }else if(hasZones&&totalMinutes>=60&&totalMinutes<120){
+   bike=Math.max(bike,totalMinutes>=90?35:20);
+   rationale='Mostly lower-zone work: modest on-bike carbohydrate recommended.';
+  }
+  if(totalMinutes>=150){bike=Math.max(bike,60);rationale+=' Extended duration supports steady fuelling.';}
+  if(totalMinutes>=180){desired=Math.max(desired,Math.round(kg*(totalMinutes>=240?6:5.5)));bike=Math.max(bike,75);rationale+=' Long-ride fuelling supports fatigue resistance.';}
+  if(workKj>=1400&&totalMinutes>=120)bike=Math.max(bike,65);
+  if(old.recovery||old.prep)desired=Math.max(desired,old.targetCarb);
+  target=round5(Math.max(old.minCarbs,desired));
+  hi=Math.max(old.maxCarbs,target);
  }
  const protein=old.protein,fatFloor=old.fatFloor,energy=old.energyMid;
  const fat=Math.max(fatFloor,(energy-4*(protein+target))/9);
@@ -414,10 +430,10 @@ function renderExperiment(){
  const by=groupEvents(PLANNED),today=new Date(),rows=[];
  for(let i=0;i<7;i++){
   const d=new Date(today.getFullYear(),today.getMonth(),today.getDate()+i),key=dateKey(d),x=experimentalPlan(key,by),old=x.old;
-  const profile=x.hasZones?'Zones available':'Name-based fallback';
-  rows.push(`<div class="metric" style="margin:12px 0;border:1px solid #425a70"><strong>${escapeHTML(d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'}))} · ${escapeHTML(old.label)}</strong><div class="grid" style="margin-top:12px"><div><small>V21 · carbohydrates</small><b>${old.targetCarb} g</b></div><div><small>V22 · carbohydrates</small><b>${x.target} g</b><small>${x.delta>0?'+':''}${x.delta} g vs V21</small></div><div><small>V21 · food energy</small><b>${number(old.macroEnergy)} kcal</b></div><div><small>V22 · food energy</small><b>${number(x.macroEnergy)} kcal</b><small>${x.macroEnergy-old.macroEnergy>=0?'+':''}${number(x.macroEnergy-old.macroEnergy)} kcal</small></div><div><small>V21 → V22 on-bike</small><b style="font-size:18px">${old.hours?old.bikeTarget+' → '+x.bike+' g/h':'No ride'}</b></div><div><small>Planned mechanical work</small><b style="font-size:18px">${Math.round((by[key]||[]).filter(isRide).reduce((a,e)=>a+planDetails(e).joules,0)/1000)} kJ</b><small>Same energy input in both versions</small></div></div><p class="note">${escapeHTML(x.rationale)} · ${profile}${x.hasZones?' · approx. '+Math.round(x.highMinutes)+' min Z4+':''}.${x.energyGap>1?' <span class="warn">Experimental macro target exceeds estimated energy by '+number(x.energyGap)+' kcal; review rather than automatically reducing carbohydrate.</span>':''}</p></div>`);
+  const profile=x.hasZones?'Intervals power zones':'Name-based fallback';
+  rows.push(`<div class="metric" style="margin:12px 0;border:1px solid #425a70"><strong>${escapeHTML(d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'}))} · ${escapeHTML(old.label)}</strong><div class="grid" style="margin-top:12px"><div><small>V21 · carbohydrates</small><b>${old.targetCarb} g</b></div><div><small>V22 · carbohydrates</small><b>${x.target} g</b><small>${x.delta>0?'+':''}${x.delta} g vs V21</small></div><div><small>V21 · food energy</small><b>${number(old.macroEnergy)} kcal</b></div><div><small>V22 · food energy</small><b>${number(x.macroEnergy)} kcal</b><small>${x.macroEnergy-old.macroEnergy>=0?'+':''}${number(x.macroEnergy-old.macroEnergy)} kcal</small></div><div><small>V21 → V22 on-bike</small><b style="font-size:18px">${old.hours?old.bikeTarget+' → '+x.bike+' g/h':'No ride'}</b></div><div><small>Planned mechanical work</small><b style="font-size:18px">${Math.round((by[key]||[]).filter(isRide).reduce((a,e)=>a+planDetails(e).joules,0)/1000)} kJ</b><small>Same energy input in both versions</small></div></div><p class="note">${escapeHTML(x.rationale)} · ${profile}${x.hasZones?' · '+Math.round(x.highMinutes)+' min Z4+':''}.${x.energyGap>1?' <span class="warn">Experimental macro target exceeds estimated energy by '+number(x.energyGap)+' kcal; review rather than automatically reducing carbohydrate.</span>':''}</p></div>`);
  }
- root.innerHTML='<p class="note"><strong>Experiment rule:</strong> V22 prioritises carbohydrate for sustained threshold/VO₂ work and longer rides. It does not double-count exercise calories. Changes are proposals, not confirmed optimal intake. If workout zone times are missing, it explicitly falls back to the session name.</p>'+rows.join('')+'<p class="note">Review after 3–7 days against session quality, hunger, recovery and complete food logs. Neither model proves energy balance from one day of intake.</p>';
+ root.innerHTML='<p class="note"><strong>Experiment rule:</strong> V22 prioritises carbohydrate for sustained threshold/VO₂ work and longer rides. It does not double-count exercise calories. Changes are proposals, not confirmed optimal intake. Uses Intervals workout_doc.zoneTimes (Z1–Z7, excluding overlapping Sweet Spot). Falls back to the session name only if zones are absent.</p>'+rows.join('')+'<p class="note">Review after 3–7 days against session quality, hunger, recovery and complete food logs. Neither model proves energy balance from one day of intake.</p>';
 }
 const v21RenderNutrition=renderNutrition;
 renderNutrition=function(){v21RenderNutrition();renderExperiment();};
