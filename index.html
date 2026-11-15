@@ -206,7 +206,7 @@ function adjustedCalendar(){
  const yesterday=dateKey(yesterdayDate);
  const allKeys=new Set([...Object.keys(planned),...Object.keys(actual)]);
  for(const key of allKeys){
-   if(key>=today){by[key]=(planned[key]||[]).slice();continue;}
+   if(key>today || (key===today && !(actual[key]||[]).some(a=>completedRide(a)||isStrength(a)))){by[key]=(planned[key]||[]).slice();continue;}
    const activities=actual[key]||[];
    const workouts=[];
    for(const a of activities){
@@ -479,7 +479,7 @@ function renderExperiment(){
  }
  root.innerHTML='<p class="note"><strong>Experiment:</strong> V21 and V22 planned recommendations are preserved. After a completed ride syncs, a separate revised result uses actual duration and power work. Daily energy expenditure is kept separate from the calorie total implied by macro minimums. The experimental carbohydrate correction is intentionally modest and provisional; completed ride summary data cannot reliably identify time in each intensity zone. The original on-bike target is retained for review.</p>'+rows.join('')+'<p class="note">Check the new targets against ride quality, recovery, hunger and complete food logs over several days. Live targets on the other pages now use the adaptive calculation.</p>';
 }
-// V23 LIVE: completed power-meter work replaces planned energy and carbohydrate targets.
+// V23b LIVE: same-day completed activities now replace planned activities; completed power-meter work replaces planned energy and carbohydrate targets.
 // Keep the original pre-ride plan available on the Experiment tab for audit.
 // Completed activity summaries do not include reliable time-in-zone information; actual
 // average mechanical power and training load are supporting intensity indicators only.
