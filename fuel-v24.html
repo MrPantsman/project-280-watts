@@ -60,7 +60,7 @@ let TODAY=dk(new Date());
 
 /* ============ settings ============ */
 const SKEY='p280v24_settings',EKEY='p280v24_excl',PKEY='p280v24_snap';
-const DEF={baseline:1850,offset:0,resting:1650,ge:23,strength:125,protein:2.0,fatMin:0.7,restCarb:2.0,recAdd:0.5,prepAdd:0.5,rate:0.15,eaFloor:25,bfDefault:24,capRest:350,capEasy:250,capMod:150,capKey:300,logRide:1};
+const DEF={baseline:1850,offset:0,resting:1650,ge:23,strength:125,protein:2.0,fatMin:0.7,fatPct:20,restCarb:2.0,recAdd:0.5,prepAdd:0.5,rate:0.15,eaFloor:25,bfDefault:24,capRest:350,capEasy:250,capMod:150,capKey:300,logRide:1};
 const CFG=[
  ['baseline','Non-exercise baseline (kcal/day)',1200,3500,25,'Everything except exercise: resting rate, daily movement, digestion. Your 14-day data suggested roughly 1,950; calibrate on the Trend tab.'],
  ['offset','Logged-kcal offset (kcal/day)',-500,800,5,'Added to modelled maintenance so targets are in the same units as your food log. Set it from the Trend tab once calibration is ready.'],
@@ -68,7 +68,8 @@ const CFG=[
  ['ge','Gross efficiency (%)',20,26,.5,'Converts power-meter kJ to calories (23% ≈ 1 kJ ≈ 1.04 kcal).'],
  ['strength','Strength session (net kcal per 30 min)',0,500,5,'Scaled by recorded duration.'],
  ['protein','Protein (g/kg/day)',1.2,2.6,.1,'1.6–2.0 is the usual athlete range; use the upper end while in a deficit.'],
- ['fatMin','Minimum fat (g/kg/day)',.4,1.5,.05,'A floor, not a target. Lower it only if you want carbohydrate room on rest days.'],
+ ['fatMin','Minimum fat (g/kg/day)',.4,1.5,.05,'A floor, not a target.'],
+ ['fatPct','Minimum fat (% of energy)',10,35,1,'Joint ACSM/dietitians position: 20–35% of energy; going below 20% is not shown to help performance. The higher of this and the g/kg floor applies.'],
  ['restCarb','Rest-day carbohydrate (g/kg)',1,4,.25,'Base before recovery/preparation additions.'],
  ['recAdd','Recovery addition (g/kg)',0,1,.25,'Added on easy/rest days after a long or long-hard session.'],
  ['prepAdd','Preparation addition (g/kg)',0,1,.25,'Added the day before a key or long session.'],
@@ -80,14 +81,19 @@ const CFG=[
  ['capMod','Max deficit: tempo day (kcal)',0,400,25,''],
  ['capKey','Max deficit: key or long day (kcal)',0,600,25,'Taken from fat only, never from the carbohydrate the session needs. Set 0 to protect hard days completely.']
 ];
-let SET=Object.assign({},DEF);
-try{const s=JSON.parse(localStorage.getItem(SKEY)||'{}');for(const k in DEF)if(typeof s[k]==='number'&&isFinite(s[k]))SET[k]=s[k]}catch(e){}
-function saveSet(){try{localStorage.setItem(SKEY,JSON.stringify(SET))}catch(e){}}
+const LKEY='p280v24_local';
+let SHARED={},LOCAL={},SET=Object.assign({},DEF),SHARED_STATE='not checked yet';
+const numOnly=o=>{const r={};if(o&&typeof o==='object')for(const k in DEF)if(typeof o[k]==='number'&&isFinite(o[k]))r[k]=o[k];return r};
+function applySettings(){SET=Object.assign({},DEF,SHARED,LOCAL)}
+function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify(LOCAL))}catch(e){}}
+try{const l=localStorage.getItem(LKEY);if(l!=null)LOCAL=numOnly(JSON.parse(l));else{const old=numOnly(JSON.parse(localStorage.getItem('p280v24_settings')||'{}'));for(const k in old)if(old[k]!==DEF[k])LOCAL[k]=old[k]}}catch(e){}
+applySettings();
+function setSetting(k,v){const base=Object.assign({},DEF,SHARED)[k];if(v===base)delete LOCAL[k];else LOCAL[k]=v;applySettings();saveLocal()}
 let EXCL={};try{EXCL=JSON.parse(localStorage.getItem(EKEY)||'{}')||{}}catch(e){}
 let SNAP={};try{SNAP=JSON.parse(localStorage.getItem(PKEY)||'{}')||{}}catch(e){}
 
 /* ============ data ============ */
-let RAW={planned:[],completed:[],wellness:[]},HIST={},HEALTH={},FOOD={},PB={},CB={},W={},BF={},TREND={},TKEYS=[],FTP=255;
+let RAW={planned:[],completed:[],wellness:[]},HIST={},HEALTH={},FOOD={},PB={},CB={},W={},WOUT={},BF={},TREND={},TKEYS=[],FTP=255;
 const CACHE=new Map();
 const group=list=>{const by={};for(const e of list){const k=String(e&&e.start_date_local||'').slice(0,10);if(DATE_RE.test(k))(by[k]=by[k]||[]).push(e)}return by};
 function ingestIntervals(raw){
@@ -122,7 +128,9 @@ function rebuild(){
  FOOD=Object.assign({},HIST,HEALTH);
  const withFtp=RAW.completed.filter(a=>Number(a.icu_ftp)>0).sort((a,b)=>String(a.start_date_local).localeCompare(String(b.start_date_local)));
  if(withFtp.length)FTP=Number(withFtp[withFtp.length-1].icu_ftp);
- TKEYS=Object.keys(W).sort();TREND={};let t=null,last=null;
+ const wk=Object.keys(W).sort();WOUT={};
+ for(const k of wk){const near=wk.filter(x=>x!==k&&Math.abs(diffDays(x,k))<=7).map(x=>W[x]).sort((a,b)=>a-b);if(near.length>=3){const m=near[Math.floor(near.length/2)];if(Math.abs(W[k]-m)>1.0)WOUT[k]=true}}
+ TKEYS=wk.filter(k=>!WOUT[k]);TREND={};let t=null,last=null;
  for(const k of TKEYS){if(t==null)t=W[k];else{const gap=Math.max(1,diffDays(k,last));const a=1-Math.pow(1-.12,gap);t=t+a*(W[k]-t)}TREND[k]=t;last=k}
  CACHE.clear();
 }
@@ -201,17 +209,17 @@ function baseDay(date){
  if(lowDay&&prevBig){adds+=SET.recAdd;why.push('recovery +'+SET.recAdd+' g/kg ('+(p.tier==='long'?'long ride':'hard session')+' yesterday)')}
  if(!(c.tier==='long'||c.tier==='key')&&nextBig){adds+=SET.prepAdd;why.push('preparation +'+SET.prepAdd+' g/kg ('+(n.tier==='long'?'long ride':'key session')+' tomorrow)')}
  adds=Math.min(adds,1);const carbKg=kg+adds;
- const P=w*SET.protein,Fl=w*SET.fatMin,C=r5(carbKg*w),required=4*P+4*C+9*Fl;
+ const P=w*SET.protein,Fl=w*SET.fatMin,C=r5(carbKg*w),Pc=4*P+4*C,required=Math.max(Pc+9*Fl,Pc/(1-clamp(SET.fatPct,0,40)/100));
  const M=SET.baseline+SET.offset+c.exercise;
  const eaRoom=Math.max(0,M-c.exercise-SET.eaFloor*ffm);
  const capacity=Math.max(0,Math.min(capFor(c.tier),M-required,eaRoom));
- return{date,c,w,ffm,P,Fl,C,carbKg,baseKg:kg,adds,why,required,M,capacity,eaRoom,macroRoom:Math.max(0,M-required)};
+ return{date,c,w,ffm,P,Fl,C,Pc,carbKg,baseKg:kg,adds,why,required,M,capacity,eaRoom,macroRoom:Math.max(0,M-required)};
 }
 function planRange(start,n){
  const rows=[];for(let i=0;i<n;i++)rows.push(baseDay(addDays(start,i)));
  const B=SET.rate*7700*(n/7),sumCap=rows.reduce((s,r)=>s+r.capacity,0),f=sumCap>0?Math.min(1,B/sumCap):0;
  return rows.map(r=>{
-  const d=Math.round(r.capacity*f/5)*5,intake=Math.max(r.required,r.M-d),fat=(intake-4*r.P-4*r.C)/9,c=r.c;
+  const d=Math.round(r.capacity*f/5)*5,intake=Math.max(r.required,r.M-d),fat=(intake-r.Pc)/9,c=r.c,Fle=Math.max(r.Fl,SET.fatPct/100*intake/9);
   const notes=r.why.slice();
   if(d>0)notes.push('deficit −'+d+' kcal taken here');
   const gap=intake-r.M;
@@ -220,7 +228,7 @@ function planRange(start,n){
   if(!c.known&&r.date>=TODAY)notes.push('no calendar event: rest not confirmed');
   const ea=(intake-c.exercise)/r.ffm;
   const hrs=c.hours;
-  return Object.assign({},r,{deficit:d,intake,fat,gap,ea,notes,bike:{gph:c.fuelGph,total:c.fuelG,hours:hrs},budgetFrac:f,sumCap,B});
+  return Object.assign({},r,{Fl:Fle,deficit:d,intake,fat,gap,ea,notes,bike:{gph:c.fuelGph,total:c.fuelG,hours:hrs},budgetFrac:f,sumCap,B});
  });
 }
 const planDay=date=>planRange(date,7)[0];
@@ -244,7 +252,7 @@ function effLogged(k){
 /* ============ calibration ============ */
 function calib(){
  const end=addDays(TODAY,-1),N=28,start=addDays(end,-(N-1)),ks=[];for(let i=0;i<N;i++)ks.push(addDays(start,i));
- const pts=[];ks.forEach((k,i)=>{if(W[k]!=null)pts.push([i,W[k]])});
+ const pts=[];ks.forEach((k,i)=>{if(W[k]!=null&&!WOUT[k])pts.push([i,W[k]])});
  const valid=ks.filter(k=>foodFlag(k)==='ok');
  let slope=null,se=null;
  if(pts.length>=8&&pts[pts.length-1][0]-pts[0][0]>=14){
@@ -359,15 +367,15 @@ function renderWeek(){
 /* ============ REVIEW ============ */
 function renderReview(){
  const days=[];for(let i=1;i<=14;i++)days.push(addDays(TODAY,-i));
- let rowsH='',nCmp=0,sK=0,sT=0,sC=0,sCT=0,protOk=0,protN=0,fuelN=0,fuelOk=0,gphs=[];
+ let rowsH='',nCmp=0,sK=0,sT=0,sC=0,sCT=0,protOk=0,protN=0,fuelN=0,fuelOk=0,fuelMiss=0,gphs=[];const TS={};
  const fuelList=[];
  for(const k of days){
   const d=planDay(k),f=effLogged(k),flag=foodFlag(k),c=d.c,usable=flag==='ok';
   const L=usable?f:null;
   const lk=light(L&&L.kcal,d.intake,'cal'),lc=light(L&&L.carb,d.C,'carb'),lp=light(L&&L.protein,d.P,'protein'),lf=light(L&&L.fat,d.Fl,'fat');
-  if(usable){nCmp++;sK+=f.kcal;sT+=d.intake;sC+=f.carb;sCT+=d.C;protN++;if(f.protein>=1.8*d.w)protOk++}
+  if(usable){nCmp++;sK+=f.kcal;sT+=d.intake;sC+=f.carb;sCT+=d.C;protN++;if(f.protein>=1.8*d.w)protOk++;const tk=c.tier==='light'?'easy':c.tier;(TS[tk]=TS[tk]||[]).push({kcal:f.kcal,M:d.M,carb:f.carb,w:d.w,tk:d.carbKg})}
   const sn=SNAP[k];
-  for(const r of c.rides){if(r.done&&r.fuel.g>=30&&r.mins>=45){const rate=r.carbsIn!=null?r.carbsIn/(r.mins/60):null;fuelN++;if(rate!=null&&rate>=r.fuel.g*.8)fuelOk++;if(rate!=null)gphs.push(rate);fuelList.push({k,r,rate})}}
+  for(const r of c.rides){if(r.done&&r.fuel.g>=30&&r.mins>=45){const rate=r.carbsIn!=null?r.carbsIn/(r.mins/60):null;if(rate!=null){fuelN++;if(rate>=r.fuel.g*.8)fuelOk++;gphs.push(rate)}else fuelMiss++;fuelList.push({k,r,rate})}}
   rowsH+='<tr><td>'+esc(dayLabel(k))+'<br><small>'+(c.missed?'planned ride not recorded':c.rides.length?c.rides.map(r=>N0(r.mins)+' min '+r.int).join(', '):c.strs.length?'strength':'no ride')+'</small></td>'
    +'<td>'+esc(c.label)+'</td>'
    +'<td>'+(L?'<span class="lt '+lk+'"></span>'+N0(L.kcal):'—')+'<br><small>target '+N0(d.intake)+'</small></td>'
@@ -379,9 +387,12 @@ function renderReview(){
  let h='<section class="panel"><h2>Last 14 days · actual vs target</h2><div class="grid">'
   +'<div class="m"><small>Days usable</small><b>'+nCmp+' / 14</b><small>others missing or flagged incomplete</small></div>'
   +(nCmp?'<div class="m"><small>Logged vs target intake</small><b>'+N0(sK/nCmp)+' / '+N0(sT/nCmp)+'</b><small>kcal/day average ('+SG((sK-sT)/nCmp)+')</small></div><div class="m"><small>Carbs logged vs target</small><b>'+N0(sC/nCmp)+' / '+N0(sCT/nCmp)+' g</b><small>per day</small></div><div class="m"><small>Protein ≥ 1.8 g/kg</small><b>'+protOk+' / '+protN+' days</b></div>':'')
-  +'<div class="m"><small>Key-ride fuelling</small><b>'+(fuelN?fuelOk+' / '+fuelN:'—')+'</b><small>rides with a ≥30 g/h plan that reached ≥80% of it'+(gphs.length?' · mean '+N0(mean(gphs))+' g/h':'')+'</small></div></div>';
+  +'<div class="m"><small>Ride fuelling</small><b>'+(fuelN?fuelOk+' / '+fuelN:'—')+'</b><small>rides with a ≥30 g/h plan that reached ≥80% of it'+(gphs.length?' · mean '+N0(mean(gphs))+' g/h':'')+(fuelMiss?' · '+fuelMiss+' with no CHO In recorded, not counted':'')+'</small></div></div>';
  h+='<p class="note">Targets are recalculated with what you actually did (completed ride kJ and zone time), using today\'s settings. A day only counts if its food log looks complete; incomplete or missing days are never read as under-eating. Colours: green on target, amber review, red well off.</p>';
- h+='<div class="scroll"><table><thead><tr><th>Day</th><th>Session</th><th>Calories</th><th>Carbs</th><th>Protein</th><th>Fat</th><th>Log</th></tr></thead><tbody>'+rowsH+'</tbody></table></div>';
+ const ORDER=[['rest','Rest'],['easy','Easy / light'],['moderate','Tempo'],['key','Key (threshold+)'],['long','Long (≥150 min)']];
+ const tr=ORDER.filter(o=>TS[o[0]]).map(([t,l])=>{const a=TS[t],kc=mean(a.map(x=>x.kcal)),M=mean(a.map(x=>x.M)),cb=mean(a.map(x=>x.carb)),w=mean(a.map(x=>x.w)),tk=mean(a.map(x=>x.tk));return'<tr><td>'+l+'</td><td>'+a.length+'</td><td>'+N0(kc)+'</td><td>'+N0(M)+'</td><td class="'+(kc-M>150?'warn':kc-M<-150?'warn':'')+'"><b>'+SG(kc-M)+'</b></td><td>'+N0(cb)+' g ('+N1(cb/w)+' g/kg)</td><td>'+N1(tk)+' g/kg</td></tr>'}).join('');
+ h+='<h3>Eating pattern by day type</h3><div class="scroll"><table><thead><tr><th>Day type</th><th>Days</th><th>Logged kcal</th><th>Modelled maintenance</th><th>Logged − model</th><th>Carbs logged</th><th>Carb target</th></tr></thead><tbody>'+tr+'</tbody></table></div><p class="note">If logged intake sits well above the model on rest days and below it on hard days, intake is flat across the week instead of following the work. Ride fuel that is not in your MFP log makes training days look lower than they were (Settings → ride fuel).</p>';
+ h+='<h3>Day by day</h3><div class="scroll"><table><thead><tr><th>Day</th><th>Session</th><th>Calories</th><th>Carbs</th><th>Protein</th><th>Fat</th><th>Log</th></tr></thead><tbody>'+rowsH+'</tbody></table></div>';
  if(fuelList.length){
   h+='<h3>Ride fuelling vs plan</h3><div class="scroll"><table><thead><tr><th>Ride</th><th>Plan</th><th>Actual CHO In</th><th>Result</th></tr></thead><tbody>'
   +fuelList.map(x=>{const rate=x.rate;const st=rate==null?'not recorded':rate>=x.r.fuel.g*.8?'on plan':rate>=x.r.fuel.g*.5?'below plan':'well below plan';return'<tr><td>'+esc(dayLabel(x.k))+' · '+esc(x.r.name)+'</td><td>'+x.r.fuel.g+' g/h</td><td>'+(x.r.carbsIn!=null?N0(x.r.carbsIn)+' g · '+N0(rate)+' g/h':'—')+'</td><td class="'+(st==='on plan'?'good':st==='not recorded'?'':'warn')+'">'+st+'</td></tr>'}).join('')+'</tbody></table></div>';
@@ -401,8 +412,8 @@ function weightChart(){
  for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4;s+='<line x1="'+L+'" x2="'+(w-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="#2a4054"/><text x="'+(L-6)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+v.toFixed(1)+'</text>'}
  for(let i=0;i<NDAYS;i+=14)s+='<text x="'+X(i)+'" y="'+(h-6)+'" text-anchor="middle">'+days[i].slice(5)+'</text>';
  s+='<polyline fill="none" stroke="#40b8a0" stroke-width="2.5" points="'+tr.map(p=>X(p[0])+','+Y(p[1])).join(' ')+'"/>';
- s+=pts.map(p=>'<circle cx="'+X(p[0])+'" cy="'+Y(p[1])+'" r="3" fill="#6fb3ff" opacity=".85"/>').join('');
- return s+'</svg><p class="note">Blue dots are daily weigh-ins; the teal line is a smoothed trend. Day-to-day swings of 0.5–1 kg are normal when carbohydrate intake moves between rest and long-ride days (glycogen binds water), so judge the line, not the dots.</p>';
+ s+=pts.map(p=>WOUT[days[p[0]]]?'<circle cx="'+X(p[0])+'" cy="'+Y(p[1])+'" r="3.5" fill="none" stroke="#8595a5" stroke-width="1.5"/>':'<circle cx="'+X(p[0])+'" cy="'+Y(p[1])+'" r="3" fill="#6fb3ff" opacity=".85"/>').join('');
+ return s+'</svg><p class="note">Blue dots are daily weigh-ins; the teal line is a smoothed trend. Day-to-day swings of 0.5–1 kg are normal when carbohydrate intake moves between rest and long-ride days (glycogen binds water), so judge the line, not the dots. A hollow grey ring is a reading more than 1 kg away from the median of the surrounding two weeks; the trend and slope ignore it.</p>';
 }
 function intakeChart(){
  const NDAYS=28,start=addDays(TODAY,-NDAYS),days=[];for(let i=0;i<NDAYS;i++)days.push(addDays(start,i));
@@ -436,26 +447,34 @@ function renderTrend(){
   +ks.map(k=>{const f=FOOD[k],fl=foodFlag(k);return'<tr><td>'+k+'</td><td>'+(W[k]!=null?N1(W[k])+' kg':'—')+'</td><td>'+(f?N0(f.kcal):'—')+'</td><td>'+(f?f.src:'—')+'</td><td>'+(fl==='ok'?'ok':esc(FLAGTXT[fl]||fl))+'</td><td><input type="checkbox" data-ex="'+k+'" '+(EXCL[k]?'checked':'')+' '+(f?'':'disabled')+' style="width:auto"></td></tr>'}).join('')
   +'</tbody></table></div></details></section>';
  $('p-trend').innerHTML=h;
- const b=$('applyOff');if(b)b.addEventListener('click',()=>{SET.offset=clamp(Math.round(cal.suggest/5)*5,-500,800);saveSet();renderAll()});
+ const b=$('applyOff');if(b)b.addEventListener('click',()=>{setSetting('offset',clamp(Math.round(cal.suggest/5)*5,-500,800));renderAll()});
  $('p-trend').querySelectorAll('[data-ex]').forEach(x=>x.addEventListener('change',()=>{if(x.checked)EXCL[x.dataset.ex]=true;else delete EXCL[x.dataset.ex];try{localStorage.setItem(EKEY,JSON.stringify(EXCL))}catch(e){}renderAll()}));
 }
 
 /* ============ SETTINGS ============ */
 function renderSettings(){
- let h='<section class="panel"><h2>Settings</h2><p class="note">Saved in this browser only. Defaults differ from your V23 page where noted (fat floor 0.7 g/kg, rest-day carbohydrate 2.0 g/kg plus additions). Changing a value recalculates everything immediately.</p><div class="grid">';
- for(const [k,label,min,max,step,help] of CFG)h+='<div><label for="s_'+k+'">'+esc(label)+'</label><input id="s_'+k+'" type="number" data-k="'+k+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+SET[k]+'">'+(help?'<small class="muted" style="font-size:11px">'+esc(help)+'</small>':'')+'</div>';
+ let h='<section class="panel"><h2>Settings</h2><p class="note">Changing a value recalculates everything immediately. Where these are saved is explained at the bottom of this page.</p><div class="grid">';
+ for(const [k,label,min,max,step,help] of CFG)h+='<div><label for="s_'+k+'">'+esc(label)+'</label><input id="s_'+k+'" type="number" data-k="'+k+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+SET[k]+'">'+(help?'<small class="muted" style="font-size:11px">'+esc(help)+'</small>':'')+(Object.prototype.hasOwnProperty.call(LOCAL,k)?'<small class="warn" style="font-size:11px;display:block">changed on this device</small>':'')+'</div>';
  h+='<div><label for="s_logRide">Is ride fuel in your MFP log?</label><select id="s_logRide" data-k="logRide"><option value="1"'+(SET.logRide?' selected':'')+'>Yes, I log gels/drink mix</option><option value="0"'+(SET.logRide?'':' selected')+'>No, add Intervals CHO In</option></select><small class="muted" style="font-size:11px">If No, carbohydrate recorded in Intervals (CHO In) is added to that day\'s logged food.</small></div>';
- h+='</div><div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn alt" id="resetSet" style="max-width:220px">Reset to defaults</button><button class="btn" id="refresh" style="max-width:220px">Refresh data</button></div></section>';
+ h+='</div><div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn alt" id="resetSet" style="max-width:220px">Discard changes on this device</button><button class="btn" id="refresh" style="max-width:220px">Refresh data</button></div></section>';
+ h+='<section class="panel"><h2>Saving and sharing settings</h2><p class="note">Changes save automatically in <b>this browser</b>. Phone and laptop each keep their own. To make them all use the same values, copy the JSON below into a file called <code>data/fuel-settings.json</code> in your repo (next to intervals.json). Every device then loads it on refresh; a change made on one device still overrides the shared file until you discard it.</p><p class="note" id="setNote"></p><textarea id="setJson" readonly rows="8" style="width:100%;background:#0d1b29;color:#cfe0ee;border:1px solid #567086;border-radius:9px;padding:9px;font:12px ui-monospace,Menlo,monospace"></textarea><div style="margin-top:10px"><button class="btn" id="copySet" style="max-width:260px">Copy settings JSON</button></div><p class="note" id="copyMsg"></p></section>';
  h+='<section class="panel"><h2>Manual load</h2><p class="note">For opening this file straight from disk, or testing. Pick the same three files your GitHub feed publishes.</p><label for="f_int">Intervals JSON</label><input id="f_int" type="file" accept=".json,.txt"><label for="f_nut">Apple Health nutrition JSON</label><input id="f_nut" type="file" accept=".json,.txt"><label for="f_his">MFP history JSON</label><input id="f_his" type="file" accept=".json,.txt"></section>';
  h+='<section class="panel"><h2>Method notes</h2><ul class="note"><li>Carbohydrate is matched to the session: g/kg by intensity (from zone time, not workout names) and duration. These bands are conventional practice ranges, not trial-derived doses.</li><li>Recovery and preparation additions are small, capped at +1 g/kg, and only on easy or rest days. With 24 h or more between sessions, total daily intake matters more than timing.</li><li>On-bike carbohydrate: 30–60 g/h for roughly 1–2.5 h, 60–90 g/h beyond ~2.5–3 h.</li><li>Deficit: protein, fat floor and session carbohydrate are met first; the deficit comes out of fat above its floor, within per-day caps and your energy-availability floor. Hard and long days have their own cap (default 300 kcal, fat only).</li><li>Exercise energy: power-meter kJ ÷ 4.184 ÷ efficiency, minus resting energy for the ride time. MFP exercise calories are ignored.</li></ul></section>';
  $('p-settings').innerHTML=h;
- $('p-settings').querySelectorAll('[data-k]').forEach(x=>x.addEventListener('change',()=>{const k=x.dataset.k;const v=Number(x.value);if(isFinite(v)){SET[k]=k==='logRide'?(v?1:0):v;saveSet();renderAll(true)}}));
- $('resetSet').addEventListener('click',()=>{SET=Object.assign({},DEF);saveSet();renderAll()});
+ $('p-settings').querySelectorAll('[data-k]').forEach(x=>x.addEventListener('change',()=>{const k=x.dataset.k;const v=Number(x.value);if(isFinite(v)){setSetting(k,k==='logRide'?(v?1:0):v);renderAll(true);renderSettingsNote()}}));
+ $('resetSet').addEventListener('click',()=>{LOCAL={};applySettings();saveLocal();renderAll()});
+ $('copySet').addEventListener('click',async()=>{const t=$('setJson');t.select();try{await navigator.clipboard.writeText(t.value);$('copyMsg').textContent='Copied. Paste it into data/fuel-settings.json in your repo.'}catch(e){document.execCommand&&document.execCommand('copy');$('copyMsg').textContent='Select the text and copy it (clipboard blocked).'}});
  $('refresh').addEventListener('click',refresh);
  const man=(id,fn)=>$(id).addEventListener('change',async()=>{const f=$(id).files[0];if(!f)return;try{fn(JSON.parse(await f.text()));rebuild();renderAll();$('status').textContent='Manual load OK: '+f.name}catch(e){$('err').textContent='Manual load failed: '+e.message}});
  man('f_int',ingestIntervals);man('f_nut',ingestHealth);man('f_his',ingestHistory);
 }
 
+function renderSettingsNote(){
+ const n=$('setNote'),j=$('setJson');if(!n||!j)return;
+ const ks=Object.keys(LOCAL);
+ n.textContent='Shared file: '+SHARED_STATE+'. Changed on this device: '+(ks.length?ks.map(k=>CFG.find(c=>c[0]===k)?CFG.find(c=>c[0]===k)[1]:k).join(', '):'nothing')+'.';
+ j.value=JSON.stringify(SET,null,2);
+}
 /* ============ boot ============ */
 function renderAll(keepSettings){
  CACHE.clear();$('err').textContent='';
@@ -465,18 +484,20 @@ async function getJSON(path){const u=new URL(path,location.href);u.searchParams.
 let busy=false;
 async function refresh(){
  if(busy)return;busy=true;$('status').textContent='Refreshing from GitHub files…';
- const res=await Promise.allSettled([getJSON('data/intervals.json'),getJSON('data/nutrition.json'),getJSON('data/mfp-history.json')]);
+ const res=await Promise.allSettled([getJSON('data/intervals.json'),getJSON('data/nutrition.json'),getJSON('data/mfp-history.json'),getJSON('data/fuel-settings.json')]);
  const errs=[];
  [['Intervals',ingestIntervals],['Nutrition',ingestHealth],['History',ingestHistory]].forEach(([n,fn],i)=>{
   if(res[i].status==='fulfilled'){try{fn(res[i].value)}catch(e){errs.push(n+': '+e.message)}}else errs.push(n+': '+res[i].reason.message)});
- rebuild();renderAll();
+ if(res[3].status==='fulfilled'){SHARED=numOnly(res[3].value);SHARED_STATE='loaded ('+Object.keys(SHARED).length+' values)'}else{SHARED={};SHARED_STATE='not found, using built-in defaults'}
+ applySettings();
+ rebuild();renderAll();renderSettingsNote();
  const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
  $('status').textContent=(errs.length?'Loaded with issue(s): '+errs.join(' · ')+' · ':'Refreshed '+t+' · ')+RAW.planned.length+' planned, '+RAW.completed.length+' completed, '+Object.keys(W).length+' weights, '+Object.keys(FOOD).length+' food days.';
  busy=false;
 }
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{const p=b.dataset.p;document.querySelectorAll('.page').forEach(x=>x.hidden=x.id!=='p-'+p);document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',String(x===b)));try{history.replaceState(null,'','#'+p)}catch(e){}window.scrollTo(0,0)}));
 {const h=location.hash.slice(1);const t=document.querySelector('.tab[data-p="'+h+'"]');if(t)t.click()}
-renderSettings();
+renderSettings();renderSettingsNote();
 if(location.protocol==='http:'||location.protocol==='https:')refresh();else{$('status').textContent='Opened from disk: use Settings → Manual load.';renderAll()}
 window.__V24={core,planRange,calib,FOODref:()=>FOOD,SETref:()=>SET,weightKg,ingestIntervals,ingestHealth,ingestHistory,rebuild,renderAll};
 </script></body></html>
