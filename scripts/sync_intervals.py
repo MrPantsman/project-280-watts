@@ -90,7 +90,12 @@ def trim_all(planned, completed, wellness):
 
 def get(path, params, auth):
     url = "%s/api/v1/athlete/%s/%s?%s" % (BASE, ATHLETE, path, urllib.parse.urlencode(params))
-    req = urllib.request.Request(url, headers={"Authorization": auth, "Accept": "application/json"})
+    req = urllib.request.Request(url, headers={
+        "Authorization": auth,
+        "Accept": "application/json",
+        # Python's default User-Agent is often rejected (403) by sites behind Cloudflare.
+        "User-Agent": "intervals-sync-dashboard/1.0 (personal fuel dashboard)",
+    })
     last = "unknown error"
     for attempt in range(4):
         try:
@@ -101,7 +106,12 @@ def get(path, params, auth):
                 last = "HTTP %d" % e.code
                 time.sleep(3 * (attempt + 1))
                 continue
-            sys.exit("Intervals %s request failed: HTTP %d (a 401 means the API key secret is wrong)" % (path, e.code))
+            try:
+                snippet = e.read(300).decode("utf-8", "replace").replace("\n", " ").strip()
+            except Exception:
+                snippet = ""
+            sys.exit("Intervals %s request failed: HTTP %d. 401 = API key secret wrong; "
+                     "403 = request blocked or key lacks access. Reply said: %s" % (path, e.code, snippet or "(empty)"))
         except (urllib.error.URLError, TimeoutError) as e:
             last = str(e)
             time.sleep(3 * (attempt + 1))
