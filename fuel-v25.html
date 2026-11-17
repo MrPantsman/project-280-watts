@@ -336,20 +336,27 @@ function planVsActualHtml(d){
   msg+='You did '+(dEx<0?'less':'more')+' than planned: modelled exercise energy is about '+N0(Math.abs(dEx))+' kcal '+(dEx<0?'lower':'higher')+'. Target intake moved '+sg(dT)+' kcal. ';
   if(Math.abs(dT)<Math.abs(dEx)*0.5)msg+='Carbohydrate follows the length and intensity of the session in bands, and protein and fat are fixed floors, so most of that energy difference shows up as how far the target sits '+(d.gap>=0?'above':'below')+' modelled maintenance ('+sg(d.gap)+' kcal) rather than as a different target.';
  }else msg+='The session was close to plan, so the targets are essentially unchanged.';
- return'<section class="panel"><h2>Plan vs what you did</h2><table style="min-width:0"><thead><tr><th></th><th>Planned</th><th>Done (change)</th></tr></thead><tbody>'+R.join('')+'</tbody></table><p class="note">'+esc(msg)+'</p></section>';
+ return'<section class="panel"><details><summary style="cursor:pointer;font-weight:600;font-size:16px">Plan vs what you did · details</summary><table style="min-width:0;margin-top:8px"><thead><tr><th></th><th>Planned</th><th>Done (change)</th></tr></thead><tbody>'+R.join('')+'</tbody></table><p class="note">'+esc(msg)+'</p></details></section>';
+}
+
+function todayPanel(x,title,ref){
+ const c=x.c,dv=(a,b,u)=>{if(!ref)return'';const df=a-b;return Math.abs(df)<0.5?'<small>same as plan</small>':'<small>'+(df>0?'+':'−')+N0(Math.abs(df))+u+' vs plan</small>'};
+ let h='<section class="panel"><h2>'+title+' '+tag(c.tier)+'</h2><p><b>'+esc(c.label)+'</b></p>';
+ h+='<div class="grid"><div class="m"><small>Target intake</small><b>'+N0(x.intake)+' kcal</b><small>Modelled maintenance '+N0(x.M)+' · '+(x.deficit>0?'deficit −'+x.deficit:x.gap>25?'+'+N0(x.gap)+' above':'at maintenance')+'</small>'+dv(x.intake,ref&&ref.intake,' kcal')+'</div>'
+  +'<div class="m"><small>Carbohydrate</small><b>'+N0(x.C)+' g</b><small>'+N2(x.carbKg)+' g/kg'+(c.fuelG>0?' · includes ~'+N0(c.fuelG)+' g on bike':'')+'</small>'+dv(x.C,ref&&ref.C,' g')+'</div>'
+  +'<div class="m"><small>Protein</small><b>'+N0(x.P)+' g</b><small>'+N1(SET.protein)+' g/kg</small>'+dv(x.P,ref&&ref.P,' g')+'</div>'
+  +'<div class="m"><small>Fat</small><b>'+N0(x.fat)+' g</b><small>floor '+N0(x.Fl)+' g</small>'+dv(x.fat,ref&&ref.fat,' g')+'</div></div>';
+ if(x.notes.length)h+='<p class="note">'+x.notes.map(esc).join(' · ')+'</p>';
+ return h+'</section>';
 }
 function renderToday(){
  const root=$('p-today'),pl=planRange(TODAY,7),d=pl[0],t=pl[1],c=d.c;
  const f=effLogged(TODAY),raw=FOOD[TODAY];
  if(MEALS==null)MEALS=defaultMeals();
  const pendFuel=c.rides.filter(r=>!r.done).reduce((s,r)=>s+r.fuel.g*r.mins/60,0);
- let h='<section class="panel"><h2>Today · '+esc(dayLabel(TODAY))+' '+tag(c.tier)+'</h2><p><b>'+esc(c.label)+'</b></p>';
- h+='<div class="grid"><div class="m"><small>Target intake</small><b>'+N0(d.intake)+' kcal</b><small>Modelled maintenance '+N0(d.M)+' · '+(d.deficit>0?'deficit −'+d.deficit:d.gap>25?'+'+N0(d.gap)+' above':'at maintenance')+'</small></div>'
-  +'<div class="m"><small>Carbohydrate</small><b>'+N0(d.C)+' g</b><small>'+N2(d.carbKg)+' g/kg'+(c.fuelG>0?' · includes ~'+N0(c.fuelG)+' g on bike':'')+'</small></div>'
-  +'<div class="m"><small>Protein</small><b>'+N0(d.P)+' g</b><small>'+N1(SET.protein)+' g/kg</small></div>'
-  +'<div class="m"><small>Fat</small><b>'+N0(d.fat)+' g</b><small>floor '+N0(d.Fl)+' g</small></div></div>';
- if(d.notes.length)h+='<p class="note">'+d.notes.map(esc).join(' · ')+'</p>';
- h+='</section>';
+ const pvaOn=c.rides.some(x=>x.done)&&plannedCore(TODAY).rides.length>0,pr0=pvaOn?planRange(TODAY,7,true)[0]:null,A=pvaOn?pr0:d;
+ let h=todayPanel(A,pvaOn?'Today · '+esc(dayLabel(TODAY))+' · as planned':'Today · '+esc(dayLabel(TODAY)),null);
+ if(pvaOn)h+=todayPanel(d,'Today · updated for what you did',pr0);
  h+=planVsActualHtml(d);
  h+='<section class="panel"><h2>What\'s left today</h2>';
  if(!raw){
@@ -411,7 +418,7 @@ function renderReview(){
   const d=planDay(k),f=effLogged(k),flag=foodFlag(k),c=d.c,usable=flag==='ok';
   const L=usable?f:null;
   const lk=light(L&&L.kcal,d.intake,'cal'),lc=light(L&&L.carb,d.C,'carb'),lp=light(L&&L.protein,d.P,'protein'),lf=light(L&&L.fat,d.Fl,'fat');
-  if(usable){nCmp++;sK+=f.kcal;sT+=d.intake;sC+=f.carb;sCT+=d.C;protN++;if(f.protein>=1.8*d.w)protOk++;const tk=c.tier==='light'?'easy':c.tier;(TS[tk]=TS[tk]||[]).push({kcal:f.kcal,M:d.M,carb:f.carb,w:d.w,tk:d.carbKg})}
+  if(usable){nCmp++;sK+=f.kcal;sT+=d.intake;sC+=f.carb;sCT+=d.C;protN++;if(f.protein>=1.8*d.w)protOk++;const tk=c.tier==='light'?'easy':c.tier;(TS[tk]=TS[tk]||[]).push({kcal:f.kcal,M:d.M,carb:f.carb,w:d.w,tk:d.carbKg,tgt:d.intake,pr:f.protein})}
   const sn=SNAP[k];
   for(const r of c.rides){if(r.done&&r.fuel.g>=30&&r.mins>=45){const rate=r.carbsIn!=null?r.carbsIn/(r.mins/60):null;if(rate!=null){fuelN++;if(rate>=r.fuel.g*.8)fuelOk++;gphs.push(rate)}else fuelMiss++;fuelList.push({k,r,rate})}}
   rowsH+='<tr><td>'+esc(dayLabel(k))+'<br><small>'+(c.missed?'planned ride not recorded':c.rides.length?c.rides.map(r=>N0(r.mins)+' min '+r.int).join(', '):c.strs.length?'strength':'no ride')+(()=>{const pcR=plannedCore(k),pm=Math.round(pcR.hours*60),am=Math.round(c.hours*60);return pcR.rides.length&&c.rides.some(r=>r.done)&&Math.abs(pm-am)>=Math.max(10,.1*pm)?'<br>planned '+pm+' min':''})()+'</small></td>'
@@ -428,8 +435,13 @@ function renderReview(){
   +'<div class="m"><small>Ride fuelling</small><b>'+(fuelN?fuelOk+' / '+fuelN:'—')+'</b><small>rides with a ≥30 g/h plan that reached ≥80% of it'+(gphs.length?' · mean '+N0(mean(gphs))+' g/h':'')+(fuelMiss?' · '+fuelMiss+' with no CHO In recorded, not counted':'')+'</small></div></div>';
  h+='<p class="note">Targets are recalculated with what you actually did (completed ride kJ and zone time), using today\'s settings. A day only counts if its food log looks complete; incomplete or missing days are never read as under-eating. Colours: green on target, amber review, red well off.</p>';
  const ORDER=[['rest','Rest'],['easy','Easy / light'],['moderate','Tempo'],['key','Key (threshold+)'],['long','Long (≥150 min)']];
- const tr=ORDER.filter(o=>TS[o[0]]).map(([t,l])=>{const a=TS[t],kc=mean(a.map(x=>x.kcal)),M=mean(a.map(x=>x.M)),cb=mean(a.map(x=>x.carb)),w=mean(a.map(x=>x.w)),tk=mean(a.map(x=>x.tk));return'<tr><td>'+l+'</td><td>'+a.length+'</td><td>'+N0(kc)+'</td><td>'+N0(M)+'</td><td class="'+(kc-M>150?'warn':kc-M<-150?'warn':'')+'"><b>'+SG(kc-M)+'</b></td><td>'+N0(cb)+' g ('+N1(cb/w)+' g/kg)</td><td>'+N1(tk)+' g/kg</td></tr>'}).join('');
- h+='<h3>Eating pattern by day type</h3><div class="scroll"><table><thead><tr><th>Day type</th><th>Days</th><th>Logged kcal</th><th>Modelled maintenance</th><th>Logged − model</th><th>Carbs logged</th><th>Carb target</th></tr></thead><tbody>'+tr+'</tbody></table></div><p class="note">If logged intake sits well above the model on rest days and below it on hard days, intake is flat across the week instead of following the work. Ride fuel that is not in your MFP log makes training days look lower than they were (Settings → ride fuel).</p>';
+ const tr=ORDER.filter(o=>TS[o[0]]).map(([t,l])=>{const a=TS[t],n=a.length,kc=mean(a.map(x=>x.kcal)),tg=mean(a.map(x=>x.tgt)),ck=mean(a.map(x=>x.carb/x.w)),tk=mean(a.map(x=>x.tk)),pk=mean(a.map(x=>x.pr/x.w)),gk=kc-tg,gc=ck-tk;
+  return'<tr><td>'+l+(n<3?'<br><small class="muted">only '+n+' day'+(n>1?'s':'')+'</small>':'')+'</td><td>'+n+'</td><td>'+N0(kc)+'<br><small>target '+N0(tg)+'</small></td><td class="'+(Math.abs(gk)>150?'warn':'')+'"><b>'+SG(gk)+'</b></td><td>'+N1(ck)+' g/kg<br><small>target '+N1(tk)+'</small></td><td class="'+(gc<-0.5?'warn':'')+'"><b>'+(gc>=0?'+':'−')+N1(Math.abs(gc))+'</b></td><td class="'+(pk<1.8?'warn':'')+'">'+N1(pk)+'</td></tr>'}).join('');
+ const msgs=[],hardT=['key','long','moderate'].filter(t=>TS[t]);
+ if(hardT.length){const g=mean(hardT.flatMap(t=>TS[t].map(x=>x.carb/x.w-x.tk)));msgs.push(g<-0.5?'Harder days: carbohydrate averages '+N1(-g)+' g/kg below target. This is the first thing to fix.':'Harder days: carbohydrate is within '+N1(Math.abs(g))+' g/kg of target.')}
+ if(TS.rest){const g=mean(TS.rest.map(x=>x.kcal-x.tgt));if(g>150)msgs.push('Rest days: intake averages '+N0(g)+' kcal above target. Move that energy onto the harder days before cutting anything.')}
+ const allP=Object.values(TS).flat();if(allP.length&&mean(allP.map(x=>x.pr/x.w))<1.8)msgs.push('Protein averages '+N1(mean(allP.map(x=>x.pr/x.w)))+' g/kg, below the 1.8 g/kg line.');
+ h+='<h3>Scorecard by day type</h3><div class="scroll"><table style="min-width:0"><thead><tr><th>Day type</th><th>Days</th><th>Logged kcal</th><th>vs target</th><th>Carbs g/kg</th><th>vs target</th><th>Protein g/kg</th></tr></thead><tbody>'+tr+'</tbody></table></div>'+(msgs.length?'<p class="note"><b>Read-out:</b> '+msgs.map(esc).join(' ')+'</p>':'')+'<p class="note">Targets are recalculated with what you actually did. With only a few days per type this is a pattern to watch, not a result. Ride fuel that is not in your MFP log makes training days look lower than they were (Settings → ride fuel). Under-reporting in food logs averages about 19%, so compare day types with each other.</p>';
  h+='<h3>Day by day</h3><div class="scroll"><table><thead><tr><th>Day</th><th>Session</th><th>Calories</th><th>Carbs</th><th>Protein</th><th>Fat</th><th>Log</th></tr></thead><tbody>'+rowsH+'</tbody></table></div>';
  if(fuelList.length){
   h+='<h3>Ride fuelling vs plan</h3><div class="scroll"><table><thead><tr><th>Ride</th><th>Plan</th><th>Actual CHO In</th><th>Result</th></tr></thead><tbody>'
