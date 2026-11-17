@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: "7,37 * * * *"   # twice an hour; GitHub may run it a little late
   workflow_dispatch:          # lets you run it by hand from the Actions tab
+  push:                       # runs right after your food upload commits nutrition.json
+    branches: [main]
+    paths:
+      - data/nutrition.json
 
 concurrency:
   group: sync-intervals
