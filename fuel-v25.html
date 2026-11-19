@@ -90,6 +90,8 @@ try{const l=localStorage.getItem(LKEY);if(l!=null)LOCAL=numOnly(JSON.parse(l));e
 applySettings();
 function setSetting(k,v){const base=Object.assign({},DEF,SHARED)[k];if(v===base)delete LOCAL[k];else LOCAL[k]=v;applySettings();saveLocal()}
 let EXCL={};try{EXCL=JSON.parse(localStorage.getItem(EKEY)||'{}')||{}}catch(e){}
+let TRUST={};try{TRUST=JSON.parse(localStorage.getItem('p280v24_trust')||'{}')||{}}catch(e){}
+let SH_EX={},SH_TR={};
 let SNAP={};try{SNAP=JSON.parse(localStorage.getItem(PKEY)||'{}')||{}}catch(e){}
 
 /* ============ data ============ */
@@ -246,8 +248,8 @@ const planDay=date=>planRange(date,7)[0];
 
 /* ============ food ============ */
 function foodFlag(k){
- const f=FOOD[k];if(!f)return 'missing';if(EXCL[k])return 'excluded';
- if(f.kcal<1200)return 'low';if(f.kcal>6500)return 'high';
+ const f=FOOD[k];if(!f)return 'missing';if(EXCL[k]||SH_EX[k])return 'excluded';
+ if(f.kcal<1200)return 'low';if(f.kcal>6500)return 'high';if(TRUST[k]||SH_TR[k])return 'ok';
  if((f.src==='health'||f.src==='intervals')&&f.samples!=null&&f.samples<2)return 'thin';
  if(f.src==='history'&&!(f.meals.some(m=>m.includes('lunch'))&&f.meals.some(m=>m.includes('dinner'))))return 'meals';
  return 'ok';
@@ -427,7 +429,7 @@ function renderReview(){
    +'<td>'+(L?'<span class="lt '+lc+'"></span>'+N0(L.carb)+' g':'—')+'<br><small>target '+N0(d.C)+'</small></td>'
    +'<td>'+(L?'<span class="lt '+lp+'"></span>'+N0(L.protein)+' g':'—')+'<br><small>target '+N0(d.P)+'</small></td>'
    +'<td>'+(L?'<span class="lt '+lf+'"></span>'+N0(L.fat)+' g':'—')+'<br><small>floor '+N0(d.Fl)+'</small></td>'
-   +'<td>'+(usable?'<small>ok</small>':'<small class="'+(flag==='missing'?'':'warn')+'">'+esc(FLAGTXT[flag]||flag)+'</small>')+(sn&&sn.at!==k?'<br><small>saved plan: '+N0(sn.kcal)+' kcal / '+N0(sn.carb)+' g</small>':'')+'</td></tr>';
+   +'<td>'+(usable?'<small>ok</small>':'<small class="'+(flag==='missing'?'':'warn')+'">'+esc(FLAGTXT[flag]||flag)+'</small>')+(flag==='thin'?'<br><button class="btn" data-trust="'+k+'" style="padding:4px 8px;font-size:12px;width:auto">Mark day complete</button>':'')+(sn&&sn.at!==k?'<br><small>saved plan: '+N0(sn.kcal)+' kcal / '+N0(sn.carb)+' g</small>':'')+'</td></tr>';
  }
  let h='<section class="panel"><h2>Last 14 days · actual vs target</h2><div class="grid">'
   +'<div class="m"><small>Days usable</small><b>'+nCmp+' / 14</b><small>others missing or flagged incomplete</small></div>'
@@ -449,6 +451,7 @@ function renderReview(){
  }
  h+='</section>';
  $('p-review').innerHTML=h;
+ $('p-review').querySelectorAll('[data-trust]').forEach(b=>b.addEventListener('click',()=>{TRUST[b.dataset.trust]=true;try{localStorage.setItem('p280v24_trust',JSON.stringify(TRUST))}catch(e){}renderAll()}));
 }
 
 /* ============ TREND ============ */
@@ -524,7 +527,7 @@ function renderSettingsNote(){
  const n=$('setNote'),j=$('setJson');if(!n||!j)return;
  const ks=Object.keys(LOCAL);
  n.textContent='Shared file: '+SHARED_STATE+'. Changed on this device: '+(ks.length?ks.map(k=>CFG.find(c=>c[0]===k)?CFG.find(c=>c[0]===k)[1]:k).join(', '):'nothing')+'.';
- j.value=JSON.stringify(SET,null,2);
+ j.value=JSON.stringify(Object.assign({},SET,{excluded:Object.assign({},SH_EX,EXCL),complete:Object.assign({},SH_TR,TRUST)}),null,2);
 }
 /* ============ boot ============ */
 function renderAll(keepSettings){
@@ -540,6 +543,7 @@ async function refresh(){
  [['Intervals',ingestIntervals],['Nutrition',ingestHealth],['History',ingestHistory]].forEach(([n,fn],i)=>{
   if(res[i].status==='fulfilled'){try{fn(res[i].value)}catch(e){errs.push(n+': '+e.message)}}else errs.push(n+': '+res[i].reason.message)});
  if(res[3].status==='fulfilled'){SHARED=numOnly(res[3].value);SHARED_STATE='loaded ('+Object.keys(SHARED).length+' values)'}else{SHARED={};SHARED_STATE='not found, using built-in defaults'}
+ {const v=(res[3].status==='fulfilled'&&res[3].value)||{};const ob=o=>o&&typeof o==='object'&&!Array.isArray(o)?o:{};SH_EX=ob(v.excluded);SH_TR=ob(v.complete)}
  applySettings();
  rebuild();renderAll();renderSettingsNote();
  const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
