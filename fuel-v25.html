@@ -532,7 +532,7 @@ function renderSettingsNote(){
 /* ============ boot ============ */
 function renderAll(keepSettings){
  CACHE.clear();$('err').textContent='';
- try{renderToday();renderWeek();renderReview();renderTrend();if(!keepSettings)renderSettings()}catch(e){console.error(e);$('err').textContent='Render error: '+e.message}
+ try{renderToday();renderWeek();renderReview();renderTrend();if(!keepSettings)renderSettings();renderSettingsNote()}catch(e){console.error(e);$('err').textContent='Render error: '+e.message}
 }
 async function getJSON(path){const u=new URL(path,location.href);u.searchParams.set('_r',Date.now());const r=await fetch(u.toString(),{cache:'no-store'});if(!r.ok)throw Error(path+': HTTP '+r.status);return r.json()}
 let busy=false;
