@@ -1,0 +1,26 @@
+{
+  "baseline": 1850,
+  "offset": 0,
+  "resting": 1650,
+  "ge": 23,
+  "strength": 125,
+  "protein": 2,
+  "fatMin": 0.7,
+  "fatPct": 20,
+  "restCarb": 2,
+  "recAdd": 0.5,
+  "prepAdd": 0.5,
+  "rate": 0.15,
+  "eaFloor": 25,
+  "bfDefault": 24,
+  "capRest": 350,
+  "capEasy": 250,
+  "capMod": 150,
+  "capKey": 300,
+  "logRide": 1,
+  "smooth": 1,
+  "excluded": {},
+  "complete": {
+    "2026-11-18": true
+  }
+}
