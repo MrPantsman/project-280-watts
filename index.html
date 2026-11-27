@@ -1,514 +1,559 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="#0b1420" name="theme-color"/><title>Project 280 Watts · Fuelling V22 · experiment</title><style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#0b1420;color:#e9f2fc;font:16px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}main{max-width:900px;margin:auto;padding:24px 15px 70px}h1{font-size:30px;margin:8px 0}h2{font-size:20px;margin:0 0 14px}p{line-height:1.55}.muted,small{color:#a9bed0}.panel{background:#162638;border:1px solid #34495d;border-radius:17px;padding:19px;margin-top:16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.metric{background:#21364b;padding:14px;border-radius:12px}.metric b{font-size:23px;display:block;margin:7px 0}.metric small{font-size:12px}label{display:block;font-size:13px;color:#c2d4e4;margin:12px 0 5px}select,input,button{background:#0d1b29;border:1px solid #567086;border-radius:9px;padding:11px;color:#fff;font:inherit;max-width:100%;width:100%}button{background:#237b78;border-color:#237b78;font-weight:600;cursor:pointer}.note{font-size:13px;color:#b1c4d3}.warn{color:#ffd69a}.good{color:#a6e5c2}.bar{height:11px;border-radius:10px;background:#34495d;overflow:hidden}.fill{height:100%;background:#40b8a0}table{min-width:740px;width:100%;border-collapse:collapse;font-size:13px}td,th{padding:10px 6px;border-bottom:1px solid #34495d;text-align:left}th{color:#a9bed0}.scroll{overflow-x:auto} .hidden{display:none}.view-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:16px;position:sticky;top:0;z-index:10;background:#0b1420;padding:10px 0}.view-tab{padding:12px 8px;background:#17283a;border:1px solid #415b71;color:#c4d7e5;min-width:0;font-size:14px;border-radius:11px;line-height:1.35}.view-tab[aria-selected="true"]{background:#237b78;border-color:#69cabb;color:white}.tab-page[hidden]{display:none!important}.page-heading{margin:0 0 10px;font-size:21px}.view-count{font-size:11px;display:block;font-weight:400;color:inherit;opacity:.85}@media(max-width:460px){.view-tab{font-size:11px;padding:11px 3px}main{padding-left:11px;padding-right:11px}.panel{padding:14px}}  .traffic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}.traffic{border:1px solid #506478;border-radius:11px;padding:11px;background:#1a3043}.traffic strong{display:block;font-size:14px}.traffic .actual{font-size:21px;font-weight:700;margin:5px 0}.traffic small{display:block}.traffic.green{border-left:5px solid #4bc69a}.traffic.yellow{border-left:5px solid #f3c36d}.traffic.red{border-left:5px solid #f27b7b}.traffic.grey{border-left:5px solid #8595a5}.bike-input{max-width:130px;width:100%;margin:4px 0 6px}.traffic-legend{font-size:12px;color:#b1c4d3}@media(min-width:620px){.traffic-grid{grid-template-columns:repeat(4,minmax(0,1fr))}} .cal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.cal-grid .metric{border:1px solid #506478;min-width:0}.cal-grid .metric b{font-size:22px}.cal-grid .metric small{display:block}.cal-ok{color:#a6e5c2}.cal-caution{color:#ffd69a}.cal-bad{color:#ff9999}.cal-table{min-width:620px}.cal-table select{padding:5px;font-size:12px} .daily-primary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}.daily-secondary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0 14px}.daily-primary .metric,.daily-secondary .metric{min-width:0;overflow-wrap:anywhere}.daily-primary .metric b{font-size:22px}.daily-secondary .metric b{font-size:19px}@media(max-width:650px){.daily-primary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.daily-secondary{gap:8px}.daily-primary .metric b,.daily-secondary .metric b{font-size:18px}} .top-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}.four-metrics,.detail-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.top-metrics .metric,.four-metrics .metric,.detail-metrics .metric{min-width:0;overflow-wrap:anywhere}.top-metrics .metric b{font-size:19px}.detail-metrics .metric b{font-size:17px}.detail-metrics>.metric{background:#1b3247;border:1px solid #506478;border-radius:11px;padding:12px;min-width:0;align-self:stretch}.detail-metrics>.metric small{display:block;line-height:1.4;margin-top:5px}.detail-metrics>.metric b{display:block;margin:8px 0 6px;line-height:1.2}@media(max-width:650px){.top-metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.top-metrics .metric{padding:9px}.top-metrics .metric b{font-size:15px}.top-metrics .metric small{font-size:10px}.four-metrics,.detail-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}} </style></head><body><main><div class="muted">PROJECT 280 WATTS · CYCLING NUTRITION</div><h1>Fuelling dashboard <span style="font-size:13px;color:#a9bed0;font-weight:400">V23 LIVE ADAPTIVE</span></h1><p class="muted">Plan the next ride. Review fuelling after training. Loads your latest Intervals and nutrition exports from your GitHub repository. Manual import remains available.</p><p class="note" id="syncStatus" aria-live="polite">Checking GitHub data…</p><nav class="view-nav" aria-label="Dashboard views"><button class="view-tab" type="button" data-view="experiment" aria-selected="true">Experiment<span class="view-count">V21 vs V22</span></button><button class="view-tab" type="button" data-view="today" aria-selected="false">Today &amp;<span class="view-count">Tomorrow</span></button><button class="view-tab" type="button" data-view="week" aria-selected="false">Weekly<span class="view-count">plan</span></button><button class="view-tab" type="button" data-view="review" aria-selected="false">Progress<span class="view-count">vs targets</span></button><button class="view-tab" type="button" data-view="calibration" aria-selected="false">Energy<span class="view-count">calibration</span></button></nav><div class="tab-page" id="tab-experiment"><section class="panel"><h2>Adaptive fuelling · plan versus actual</h2><p class="note">Side-by-side planned recommendations plus a separate completed-ride recalculation. V21 comparison is retained. V22 uses planned workout zones where available, then actual ride duration and power work after sync. Live targets on Today, Weekly and Progress now use adaptive calculations; the original plan remains visible here.</p><div id="experimentContent"><p class="note">Waiting for the latest planned workouts…</p></div></section></div><div class="tab-page" id="tab-today" hidden><section class="panel" id="nutritionPlanner"><h2>Today &amp; Tomorrow nutrition plans</h2><p class="note">Calculated from your imported Intervals.icu calendar. Recommended food intake is calculated from the prescribed macros; estimated expenditure is shown separately. Both remain provisional. No planned workout does not necessarily mean a rest day.</p><div id="todayNutrition"><p class="warn">Load planned workouts to calculate today’s nutrition.</p></div><div id="tomorrowNutrition"><p class="warn">Load planned workouts to calculate tomorrow’s nutrition.</p></div></section></div><div class="tab-page" id="tab-week" hidden><section class="panel" id="weeklyPlanner"><h2>Seven-day nutrition outlook</h2><div class="scroll" id="nutritionWeek"><p class="note">Waiting for planned calendar.</p></div><details class="metric" style="margin-top:18px"><summary>Planner settings (weight, baseline, protein, fat, energy mode)</summary><div class="grid"><div><label for="baseline">Non-exercise baseline (kcal/day)</label><input id="baseline" max="3500" min="1200" step="50" type="number" value="1850"/></div><div><label for="strengthKcal">Strength kcal/session</label><input id="strengthKcal" max="500" min="0" step="5" type="number" value="125"/></div><div><label for="goalweight">Initial goal weight (kg)</label><input id="goalweight" max="180" min="40" step="0.1" type="number" value="79"/></div><div><label for="proteinKg">Protein (g/kg/day)</label><input id="proteinKg" max="2.5" min="1" step="0.1" type="number" value="2.0"/></div><div><label for="efficiency">Gross efficiency (%)</label><input id="efficiency" max="24" min="22" step="0.5" type="number" value="23"/></div><div><label for="rhrKcal">Resting energy (kcal/day)</label><input id="rhrKcal" max="2500" min="1000" step="25" type="number" value="1650"/></div><div><label for="weightMode">Weight management</label><select id="weightMode"><option value="maintain">Maintain</option><option value="lean">Slow Lean-Up</option></select></div><div><label for="fatKg">Minimum fat (g/kg/day)</label><input id="fatKg" max="1.5" min="0.5" step="0.1" type="number" value="0.8"/></div></div><p class="note">Baseline is provisional and assumes ordinary daily activity but excludes cycling and strength workouts. Net cycling energy subtracts resting expenditure during the ride; strength allowance is treated as additional energy. We will calibrate it using logged food and multiweek weight trends. Energy calculations are approximate.</p></details><p class="note">On-bike carbohydrates are included in daily carbohydrates, not added again. Completed activities and MyFitnessPal logs are reviewed below; future planning remains based on scheduled workouts. GitHub-hosted exports are accessible to anyone who can access this public repository; avoid including sensitive details.</p></section></div><div class="tab-page" id="tab-review" hidden><section class="panel" id="v6Review"><h2>Actual vs planned · training and nutrition</h2><p id="reviewStatus" class="note">Load Intervals and Apple Health data to start the review.</p><div id="v6Content"><p class="note">Awaiting exports.</p></div><div class="note" style="margin-top:20px;padding-top:14px;border-top:1px solid #34495d"><p>Traffic lights compare daily calories, carbohydrates, protein and fat with revised targets. Grey means missing or potentially incomplete data. On-bike CHO In comes from Intervals.icu and is not added to Apple Health food totals.</p><p>Original calendar prescriptions, live adaptive estimates from completed training, and logged food are compared. Cycling energy uses power-meter work; MyFitnessPal exercise calories are ignored. These are estimates, not measured energy balance.</p></div><details class="metric" style="margin-top:14px"><summary>About reconciliation and limitations</summary><p class="note">Past planned workouts are not counted as actual work: a shorter recorded ride replaces the plan, and an unrecorded ride contributes zero recorded work (subject to sync checks). Unpaired rides are included. Completed strength activities are conservatively estimated using your configured strength allowance, not Garmin/MFP calorie figures. Previous targets are calculated from the exported calendar as it stands now; this is not a permanent historical snapshot. Apple Health totals have no meal labels, so food completeness and on-bike intake cannot be inferred. On-bike carbohydrate amounts come from Intervals.icu CHO In and are displayed separately; Apple Health food totals are not adjusted because the export does not identify whether ride fuel was logged in MyFitnessPal. Weight attached to an activity may be carried forward rather than newly measured. GitHub exports are loaded into this browser; they are also stored in your GitHub repository.</p></details></section></div><div class="tab-page" id="tab-calibration" hidden><section class="panel"><h2>Energy calibration · experimental</h2><p class="note">Uses dated Intervals.icu Wellness weights, historical MyFitnessPal and recent Apple Health dietary intake, and completed training. Estimates are for evaluation only; they do not change your 1,850 kcal baseline.</p><div id="calibrationContent"><p class="note">Waiting for Wellness and nutrition exports.</p></div></section></div><div class="tab-page" id="tab-tools" hidden></div><div class="tab-page-week-tools"><section class="panel"><h2>Optional manual session planner</h2><div class="grid"><div><label for="weight">Body mass (kg)</label><input id="weight" max="180" min="40" step="0.1" type="number" value="81.6"/></div><div><label for="session">Session</label><select id="session"><option value="rest">Rest / recovery</option><option value="easy">Easy endurance</option><option value="tempo">Tempo / sweet spot</option><option selected="" value="threshold">Threshold / Seiler intervals</option><option value="long">Long endurance / sportive</option></select></div><div><label for="duration">Duration (minutes)</label><input id="duration" max="600" min="0" step="5" type="number" value="90"/></div><div><label for="next">Next hard ride</label><select id="next"><option value="normal">More than 24 hours away</option><option value="soon">Within 24 hours</option></select></div></div><div aria-live="polite" id="plan"></div></section><section class="panel"><h2>How the guidance works</h2><p class="note">Carbohydrate guides vary with duration and intensity and include on-bike fuel. Protein guide: approximately 1.6–2.0 g/kg/day. These are starting ranges, not a diagnosis of low energy availability. A missing or incomplete food diary is never treated as zero intake. Exercise energy estimates are not added to food intake. Completed cycling work and MFP food are compared in the retrospective review. The baseline energy model remains provisional.</p></section></div><section class="panel"><h2>Dashboard data</h2><p class="note">Automatically loads the latest GitHub exports when this page opens. Use Refresh Data below to reload your exports.</p><details><summary>Manual import / backup</summary><h3>Import Intervals.icu calendar</h3><p class="note">Manual backup: import the calendar export created by Getintervals V3. Choose your Intervals export (V2 planned-only or V3 planned + completed). Everything is processed locally in this browser.</p><label for="plannedFile">Choose Intervals export (JSON or TXT)</label><input accept=".json,.txt,application/json,text/plain" id="plannedFile" type="file"/><p class="note" id="plannedStatus">No planned calendar imported.</p><label for="mfpFile">Choose older MyFitnessPal export (ZIP, optional)</label><input id="mfpFile" type="file" accept=".zip,application/zip,application/x-zip-compressed"/><p class="note" id="mfpStatus">Waiting for Apple Health nutrition data.</p><p class="note">File selectors accept exports, not photos. Safari may still offer Apple’s standard source menu.</p></details><details style="margin-top:10px"><summary>View imported workout details</summary><div class="hidden" id="plannedView"><div class="grid"><div class="metric"><small>Calendar events</small><b id="plannedCount">—</b></div><div class="metric"><small>Tomorrow</small><b id="tomorrowLabel" style="font-size:17px">—</b></div></div><h2 style="margin-top:20px">Next seven days</h2><div id="plannedDays"></div><p class="note">Energy is estimated from mechanical work at 22–24% gross efficiency, not added to your food intake. These are training expenditure estimates, not whole-day calorie targets. Carbohydrate ranges include on-bike fuel. A missing workout is not proof of a rest day. Planned events are not completed activities.</p></div></details></section><section class="panel" style="margin-top:22px"><h2>Data refresh</h2><p class="note">Reload the latest Intervals.icu and nutrition files after your upload Shortcuts have run.</p><button type="button" id="refreshData" style="max-width:230px">Refresh Data</button></section></main><script>
-(function(){
- const nav=document.querySelector('.view-nav');
- const tabs=[...nav.querySelectorAll('[data-view]')];
- const tools=document.querySelector('.tab-page-week-tools');
- const week=document.getElementById('tab-week');
- if(tools&&week){week.append(...[...tools.children]);tools.remove();}
- document.getElementById('tab-tools')?.remove();
- function activate(name){
-  for(const name2 of ['experiment','today','week','review','calibration']) document.getElementById('tab-'+name2).hidden=name2!==name;
-  for(const tab of tabs)tab.setAttribute('aria-selected',String(tab.dataset.view===name));
-  try{history.replaceState(null,'','#'+name)}catch(e){}
-  nav.scrollIntoView({behavior:'instant',block:'start'});
- }
- for(const tab of tabs)tab.addEventListener('click',()=>activate(tab.dataset.view));
- const initial=location.hash.slice(1);activate(['experiment','today','week','review','calibration'].includes(initial)?initial:'experiment');
-})();
-
-'use strict';const el=id=>document.getElementById(id);let DATA=null;let COMPLETED=[],MFP=null,WELLNESS=[];const number=x=>Math.round(Number(x)||0).toLocaleString();const weight=()=>Math.max(40,Math.min(180,Number(el('weight').value)||81.6));function category(a){const rides=a.filter(x=>/ride|cycling/i.test(x.type||''));const minutes=rides.reduce((s,x)=>s+(Number(x.mins)||0),0);const load=a.reduce((s,x)=>s+(Number(x.load)||0),0);if(!a.length)return [2.5,3.5,'Rest / no recorded activity'];if(minutes>=180)return [5,7,'Long ride'];if(load>=90||minutes>=95)return [4,6,'Demanding training'];if(minutes>=40)return [3,5,'Moderate training'];return [3,4,'Light training'];}function plan(){const s=el('session').value,m=Math.max(0,Number(el('duration').value)||0),w=weight(),soon=el('next').value==='soon';let f={rest:[2.5,3.5],easy:[3,5],tempo:[4,6],threshold:[4,6],long:[5,7]}[s];if(s==='long'&&m>=240)f=[6,8];if(s==='easy'&&m>150)f=[4,6];const during=s==='rest'||m<60?'Usually optional':s==='easy'?'30–60 g/hour':s==='long'?'60–90 g/hour if practised':'30–60 g/hour; more may help for long demanding rides';const pre=s==='rest'?'Eat regular balanced meals':m>=120?'Aim for 1–3 g/kg carbohydrate in the 1–4 hours before, according to tolerance':'Eat a carbohydrate-containing meal or snack 1–3 hours before';const after=soon?'Prioritise rapid refuelling when necessary: about 1–1.2 g/kg/hour of carbohydrate for the first few hours, plus protein.':'Have a carbohydrate-rich meal with about 25–40 g protein.';el('plan').innerHTML=`<div class="grid" style="margin-top:18px"><div class="metric"><small>Whole-day carbohydrate guide</small><b>${number(f[0]*w)}–${number(f[1]*w)} g</b><small>Includes fuel during the ride</small></div><div class="metric"><small>Daily protein guide</small><b>${number(1.6*w)}–${number(2*w)} g</b><small>Spread across meals</small></div><div class="metric"><small>During session</small><b style="font-size:18px">${during}</b><small>Adjust for tolerance and intensity</small></div></div><p><strong>Before:</strong> ${pre}.</p><p><strong>After:</strong> ${after}</p><p class="note">Adjust your day's intake for the preceding and following sessions. Don't restrict food aggressively on recovery days.</p>`;if(DATA)renderDay();}
-function assessment(d,a){if(!d)return 'Food not logged';if((Number(d.entries)||0)<3)return 'Possibly incomplete diary';const low=category(a)[0]*weight();return Number(d.carb)<low?'Below carb guide*':'Meets lower carb guide*';}function renderDay(){if(!DATA)return;const day=el('date').value,d=DATA.nutrition[day],a=DATA.activities[day]||[],c=category(a),lo=c[0]*weight(),hi=c[1]*weight();const training=a.map(x=>`${escapeHTML(String(x.name||'Activity'))} (${number(Number(x.mins)||0)} min)`).join(' · ')||'No recorded training';el('result').innerHTML=`<p><strong>${escapeHTML(c[2])}</strong> · ${training}</p><div class="grid"><div class="metric"><small>Carbohydrate consumed</small><b>${d?number(Number(d.carb)||0)+' g':'Not logged'}</b><small>Guide ${number(lo)}–${number(hi)} g</small></div><div class="metric"><small>Protein consumed</small><b>${d?number(Number(d.protein)||0)+' g':'Not logged'}</b><small>Guide ${number(weight()*1.6)}–${number(weight()*2)} g</small></div><div class="metric"><small>Food energy</small><b>${d?number(Number(d.kcal)||0)+' kcal':'Not logged'}</b><small>Workout estimate: ${number(a.reduce((s,x)=>s+(Number(x.kcal)||0),0))} kcal</small></div></div><p class="${!d?'warn':Number(d.carb)<lo?'warn':'good'}">${assessment(d,a)}${d?' · Workout carbohydrates logged: '+number(Number(d.onbike)||0)+' g':''}</p><p class="note">*Guide is provisional. Logging completeness, previous training and tomorrow's workout affect interpretation.</p>`;el('records').innerHTML=Object.keys({...DATA.nutrition,...DATA.activities}).sort().reverse().map(date=>{const n=DATA.nutrition[date],acts=DATA.activities[date]||[];return `<tr><td>${escapeHTML(date)}</td><td>${acts.length} activities</td><td>${n?number(Number(n.kcal)||0):'—'}</td><td>${n?number(Number(n.carb)||0)+' g':'—'}</td><td>${assessment(n,acts)}</td></tr>`}).join('');}function escapeHTML(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-
-// Planned Intervals.icu calendar: separate, private importer; existing historical import untouched.
-let PLANNED=[];
-const pad=n=>String(n).padStart(2,'0');
-const dateKey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-const tomorrowKey=()=>{const d=new Date();d.setDate(d.getDate()+1);return dateKey(d)};
-function planDetails(e){const doc=e.workout_doc||{},seconds=Number(doc.duration||e.moving_time||e.time_target||0),watts=Number(doc.average_watts||0),joules=Number(e.joules||0)||(seconds>0&&watts>0?seconds*watts:0);const kcal=joules>0?[joules/4184/.24,joules/4184/.22]:null;return {seconds,watts,joules,kcal};}
-function plannedFuel(events){const rides=events.filter(e=>e.type==='Ride'||e.type==='VirtualRide'),minutes=rides.reduce((n,e)=>n+planDetails(e).seconds/60,0);const hard=rides.some(e=>/threshold|ftp|vo2|seiler|sweet.?spot|interval/i.test(e.name||''));if(minutes>=180)return {daily:'5–7 g/kg',bike:'60–90 g/h (if practised)',range:[5,7]};if(hard)return {daily:'4–6 g/kg',bike:minutes>60?'30–60 g/h':'Optional for shorter sessions',range:[4,6]};if(minutes>=90)return {daily:'3–5 g/kg',bike:'30–60 g/h',range:[3,5]};if(minutes>0)return {daily:'3–4 g/kg',bike:'Optional for short easy rides',range:[3,4]};return {daily:'2–3 g/kg, adjusted for recovery',bike:'None',range:[2,3]};}
-function renderPlanned(){const by={};for(const e of PLANNED){const d=String(e.start_date_local||'').slice(0,10);if(/^\d{4}-\d{2}-\d{2}$/.test(d))(by[d]??=[]).push(e)}const today=new Date(),tom=tomorrowKey();el('plannedCount').textContent=PLANNED.length;el('tomorrowLabel').textContent=(by[tom]||[]).map(e=>e.name).join(' + ')||'No event in export';let out='';for(let i=0;i<7;i++){const d=new Date(today.getFullYear(),today.getMonth(),today.getDate()+i),key=dateKey(d),events=by[key]||[],fuel=plannedFuel(events),rides=events.filter(e=>e.type==='Ride'||e.type==='VirtualRide'),totalKcal=rides.map(planDetails).filter(x=>x.kcal).reduce((a,x)=>[a[0]+x.kcal[0],a[1]+x.kcal[1]],[0,0]),hasEstimate=rides.some(e=>planDetails(e).kcal);out+=`<div class="metric" style="margin:10px 0"><strong>${escapeHTML(d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'}))}${key===tom?' · Tomorrow':''}</strong><p style="margin:7px 0">${events.length?events.map(e=>escapeHTML(e.name||e.type||'Untitled event')).join(' · '):'<span class="muted">No planned event in export</span>'}</p>${rides.map(e=>{const x=planDetails(e);return `<small>${escapeHTML(e.name||'Ride')}: ${x.seconds?Math.round(x.seconds/60)+' min':'duration unknown'}${x.watts?' · '+Math.round(x.watts)+' W avg':''}${x.kcal?' · '+number(x.kcal[0])+'–'+number(x.kcal[1])+' kcal estimated':' · energy unknown'}</small>`}).join('<br>')}<p class="note" style="margin:7px 0">Carbs: ${number(fuel.range[0]*weight())}–${number(fuel.range[1]*weight())} g/day · On bike: ${fuel.bike}${hasEstimate?' · Cycling energy: '+number(totalKcal[0])+'–'+number(totalKcal[1])+' kcal':''}</p>${!events.length?'<small>Check calendar coverage; absence does not confirm rest.</small>':''}</div>`;}el('plannedDays').innerHTML=out;}
- function ingestIntervals(raw,source){
-  const calendar=Array.isArray(raw)?raw:raw&&Array.isArray(raw.planned)?raw.planned:null;
-  const completed=raw&&Array.isArray(raw.completed)?raw.completed:[];
-  if(!calendar)throw Error('Expected planned calendar array or V3 planned/completed object.');
-  if(!calendar.every(e=>e&&typeof e==='object'&&typeof e.start_date_local==='string'))throw Error('Calendar events have an unexpected format.');
-  PLANNED=calendar;COMPLETED=completed.filter(a=>a&&typeof a==='object');WELLNESS=(Array.isArray(raw?.wellness)?raw.wellness:Array.isArray(raw?.Wellness)?raw.Wellness:[]).filter(x=>x&&typeof x==='object');updateIntervalsWeight();
-  el('plannedView').classList.remove('hidden');
-  el('plannedStatus').textContent=`${source}: ${calendar.length} planned events and ${COMPLETED.length} completed activities.`;
-  renderPlanned();renderNutrition();renderReconciliation();renderCalibration();
- }
- el('plannedFile').addEventListener('change',async()=>{const f=el('plannedFile').files[0];if(!f)return;try{if(f.size>12000000)throw Error('File exceeds 12 MB.');ingestIntervals(JSON.parse(await f.text()),'Manual import')}catch(e){console.error('Intervals import failed:',e);el('plannedStatus').textContent='Could not import: '+e.message}});
-el('weight').addEventListener('input',()=>{if(PLANNED.length)renderPlanned()});
-
-// Phase 1 nutrition engine. Planned workouts only; never add historical activity or MFP exercise calories here.
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1420"><title>Project 270 · Fuel V25</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1420;--panel:#162638;--panel2:#1d3248;--line:#34495d;--text:#e9f2fc;--muted:#a9bed0;--teal:#40b8a0;--amber:#f3c36d;--red:#f27b7b;--green:#4bc69a;--blue:#6fb3ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}
+main{max-width:920px;margin:auto;padding:20px 14px 70px}h1{font-size:26px;margin:6px 0}h2{font-size:19px;margin:0 0 10px}h3{font-size:15px;margin:18px 0 8px;color:#cfe0ee}p{line-height:1.5;margin:8px 0}
+.muted,small{color:var(--muted)}.note{font-size:13px;color:#b1c4d3}.warn{color:var(--amber)}.good{color:#a6e5c2}.bad{color:var(--red)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:14px}
+.nav{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;position:sticky;top:0;z-index:10;background:var(--bg);padding:10px 0}
+.tab{background:#17283a;border:1px solid #415b71;color:#c4d7e5;border-radius:11px;padding:11px 4px;font:inherit;font-size:14px;cursor:pointer}
+.tab[aria-selected=true]{background:#237b78;border-color:#69cabb;color:#fff}
+.page[hidden]{display:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.m{background:var(--panel2);border:1px solid #3d566c;border-radius:12px;padding:12px;min-width:0}.m b{display:block;font-size:21px;margin:5px 0}.m small{display:block;font-size:12px;line-height:1.35}
+.row{display:grid;grid-template-columns:92px 1fr 118px;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #2a4054}
+.row:last-child{border-bottom:0}.row .lab{font-weight:600}.row .num{text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:12px;border-radius:8px;background:#2c4155;overflow:hidden;position:relative}.fill{height:100%;background:var(--teal)}.fill.over{background:var(--amber)}.fill.low{background:#5b7b93}
+.big{font-size:22px;font-weight:700}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.chip{border:1px solid #4b647a;background:#13222f;color:var(--text);border-radius:20px;padding:6px 13px;font:inherit;font-size:13px;cursor:pointer}.chip[aria-pressed=true]{background:#237b78;border-color:#69cabb}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:680px}td,th{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--muted);font-weight:600}.scroll{overflow-x:auto}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;background:#2c4155;color:#cfe0ee;margin-left:6px;vertical-align:middle}
+.tag.key,.tag.long{background:#7a3b3b}.tag.moderate{background:#7a6a2f}.tag.easy,.tag.light{background:#2f6a5a}.tag.rest{background:#3b4f66}
+.lt{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;background:#8595a5}.lt.green{background:var(--green)}.lt.amber{background:var(--amber)}.lt.red{background:var(--red)}
+label{display:block;font-size:13px;color:#c2d4e4;margin:10px 0 4px}input,select,button.btn{background:#0d1b29;border:1px solid #567086;border-radius:9px;padding:9px;color:#fff;font:inherit;width:100%;max-width:100%}
+button.btn{background:#237b78;border-color:#237b78;font-weight:600;cursor:pointer}button.btn.alt{background:#17283a;border-color:#567086}
+details{background:var(--panel2);border:1px solid #3d566c;border-radius:12px;padding:10px 12px;margin-top:10px}summary{cursor:pointer}
+svg{width:100%;height:auto;display:block}svg text{fill:#a9bed0;font-size:11px}
+ul{margin:6px 0 6px 18px;padding:0}li{margin:3px 0;line-height:1.45}
+@media(max-width:560px){.row{grid-template-columns:70px 1fr 96px}.tab{font-size:12px}.big{font-size:19px}}
+</style></head><body><main>
+<div class="muted" style="font-size:12px;letter-spacing:.05em">PROJECT 270 · CYCLING NUTRITION</div>
+<h1>Fuel <span style="font-size:13px;color:var(--muted);font-weight:400">V26 · plan vs actual, food from Intervals</span></h1>
+<p class="note" id="status">Loading data…</p>
+<nav class="nav" id="nav">
+<button class="tab" data-p="today" aria-selected="true">Today</button><button class="tab" data-p="week" aria-selected="false">Week</button><button class="tab" data-p="review" aria-selected="false">Review</button><button class="tab" data-p="trend" aria-selected="false">Trend</button><button class="tab" data-p="settings" aria-selected="false">Settings</button></nav>
+<div class="page" id="p-today"></div><div class="page" id="p-week" hidden></div><div class="page" id="p-review" hidden></div><div class="page" id="p-trend" hidden></div><div class="page" id="p-settings" hidden></div>
+<p class="note" id="err" style="color:var(--red)"></p>
+</main>
+<script>
+'use strict';
+/* ============ helpers ============ */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ok=x=>x!=null&&isFinite(x);
+const N0=x=>ok(x)?Math.round(x).toLocaleString():'—';
+const N1=x=>ok(x)?x.toFixed(1):'—';
+const N2=x=>ok(x)?x.toFixed(2):'—';
+const SG=(x,d=0)=>ok(x)?(x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(d):'—';
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
-const kcalFmt=x=>number(Math.round(x/25)*25);
-function isRide(e){return /^(Ride|VirtualRide)$/i.test(e.type||'')}
-function isStrength(e){return !isRide(e)&&/strength|weight|gym|resistance/i.test((e.name||'')+' '+(e.type||''))}
-function isHard(e){return /threshold|ftp|vo2|seiler|sweet.?spot|interval/i.test(e.name||'')}
-function isRest(e){return /rest day|recovery day/i.test(e.name||'')}
-function round5(n){return Math.round(n/5)*5}
-function previousRecoveryAdjustment(events){const rides=events.filter(isRide),minutes=rides.reduce((n,e)=>n+planDetails(e).seconds/60,0),load=rides.reduce((n,e)=>n+(Number(e.icu_training_load)||0),0),hard=rides.some(isHard),kj=rides.reduce((n,e)=>n+planDetails(e).joules/1000,0);if(!rides.length||minutes<60)return {value:0,load,kj,minutes};let value=minutes<=120?.15:minutes<=180?.35:.5;if(load>=150&&minutes>=150)value=Math.max(value,.5);if((hard&&minutes>=90)||(load>=200&&minutes>=120)||(kj>=2600&&minutes>=150))value=.75;return {value,load,kj,minutes}}
-function nextPreparationAdjustment(events){const rides=events.filter(isRide),minutes=rides.reduce((n,e)=>n+planDetails(e).seconds/60,0);if(rides.some(e=>/race|event|sportive/i.test(e.name||''))&&minutes>=180)return .6;if(rides.some(isHard))return .4;if(minutes>=180)return .4;if(minutes>=90)return .2;if(minutes>=60)return .1;return 0}
-function dayEvents(by,key,offset){const d=new Date(key+'T12:00:00');d.setDate(d.getDate()+offset);return by[dateKey(d)]||[]}
-function demandingDay(events){const rides=events.filter(isRide);return rides.some(isHard)||rides.reduce((n,e)=>n+planDetails(e).seconds/60,0)>=150||events.filter(isStrength).length>0&&rides.length>0}
-function nutritionFor(key,by){
- const w=weight(),baseline=clamp(Number(el('baseline').value)||1850,1200,3500),protein=w*clamp(Number(el('proteinKg').value)||2,1,2.5),fatFloor=w*clamp(Number(el('fatKg').value)||.8,.5,1.5),strengthUnit=clamp(Number(el('strengthKcal').value)||125,0,500);
- const efficiency=clamp((Number(el('efficiency').value)||23)/100,.22,.24),restingDay=clamp(Number(el('rhrKcal').value)||1650,1000,2500);
- const events=by[key]||[],rides=events.filter(isRide),weights=events.filter(isStrength),rest=events.some(isRest),known=events.length>0;
- const details=rides.map(planDetails),mins=details.reduce((n,x)=>n+x.seconds/60,0),hours=mins/60,hard=rides.some(isHard);
- const previous=dayEvents(by,key,-1),twoDaysAgo=dayEvents(by,key,-2),following=dayEvents(by,key,1),next2=dayEvents(by,key,2);
- const prevLong=previous.filter(isRide).reduce((n,e)=>n+planDetails(e).seconds/60,0)>=150;
- const prevHard=demandingDay(previous),olderHard=demandingDay(twoDaysAgo),nextDemand=demandingDay(following),next2Demand=demandingDay(next2);
- const recovery=prevLong||prevHard||olderHard,prep=nextDemand||next2Demand&&nextDemand;
- const demanding=hard||mins>=150||weights.length>0&&rides.length>0;
- const missingEnergy=details.some(x=>!x.joules||!x.seconds);
- const gross=details.reduce((n,x)=>n+(x.joules>0?x.joules/4184/efficiency:0),0);
- const restingOffset=restingDay*hours/24;
- const cyclingMid=Math.max(0,gross-restingOffset),cyclingLow=Math.max(0,details.reduce((n,x)=>n+(x.joules>0?x.joules/4184/.24:0),0)-restingOffset),cyclingHigh=Math.max(0,details.reduce((n,x)=>n+(x.joules>0?x.joules/4184/.22:0),0)-restingOffset);
- const cycling=[cyclingLow,cyclingHigh],strength=weights.length*strengthUnit,trainingLow=cyclingLow+strength,trainingHigh=cyclingHigh+strength,trainingMid=cyclingMid+strength;
- let carbLo,carbHi;
- if(mins>=240)[carbLo,carbHi]=[6,8];else if(mins>=180||(mins>=170&&rides.some(e=>e.actual&&Number(e.icu_training_load)>=150)))[carbLo,carbHi]=[5,7];else if(hard)[carbLo,carbHi]=[4,6];else if(mins>=90)[carbLo,carbHi]=[4,5.5];else if(mins>=40)[carbLo,carbHi]=[3,4.5];else if(weights.length)[carbLo,carbHi]=[3,4];else [carbLo,carbHi]=[2,3];
- if(!rides.length&&!weights.length&&(recovery||prep))[carbLo,carbHi]=recovery&&prep?[4,5]:[3,4];
- else if(recovery||prep){carbLo=Math.max(carbLo,3);carbHi=Math.max(carbHi,4)}
- let restBreakdown=null;
- if(!rides.length&&!weights.length&&known){
-  const prior=previousRecoveryAdjustment(previous),preparation=nextPreparationAdjustment(following);
-  const combined=Math.min(1,prior.value+preparation);
-  const kg=2.5+combined;
-  const target=round5(w*kg);
-  restBreakdown={base:2.5,recovery:prior.value,preparation,combined,kg,target,load:prior.load,kj:prior.kj,minutes:prior.minutes,priorKnown:previous.length>0,nextKnown:following.length>0};
-  carbLo=kg;carbHi=kg;
+const mean=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:null;
+const r5=x=>Math.round(x/5)*5;
+const pad=n=>String(n).padStart(2,'0');
+const dk=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=k=>{const [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d,12)};
+const addDays=(k,n)=>{const d=parse(k);d.setDate(d.getDate()+n);return dk(d)};
+const diffDays=(a,b)=>Math.round((parse(a)-parse(b))/864e5);
+const dayLabel=k=>parse(k).toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});
+const DATE_RE=/^\d{4}-\d{2}-\d{2}$/;
+let TODAY=dk(new Date());
+
+/* ============ settings ============ */
+const SKEY='p280v24_settings',EKEY='p280v24_excl',PKEY='p280v24_snap';
+const DEF={baseline:1850,offset:0,resting:1650,ge:23,strength:125,protein:2.0,fatMin:0.7,fatPct:20,restCarb:2.0,recAdd:0.5,prepAdd:0.5,rate:0.15,eaFloor:25,bfDefault:24,capRest:350,capEasy:250,capMod:150,capKey:300,logRide:1,smooth:1};
+const CFG=[
+ ['baseline','Non-exercise baseline (kcal/day)',1200,3500,25,'Everything except exercise: resting rate, daily movement, digestion. Your 14-day data suggested roughly 1,950; calibrate on the Trend tab.'],
+ ['offset','Logged-kcal offset (kcal/day)',-500,800,5,'Added to modelled maintenance so targets are in the same units as your food log. Set it from the Trend tab once calibration is ready.'],
+ ['resting','Resting energy (kcal/day)',1000,2500,25,'Subtracted during rides so exercise energy is net, not double-counted.'],
+ ['ge','Gross efficiency (%)',20,26,.5,'Converts power-meter kJ to calories (23% ≈ 1 kJ ≈ 1.04 kcal).'],
+ ['strength','Strength session (net kcal per 30 min)',0,500,5,'Scaled by recorded duration.'],
+ ['protein','Protein (g/kg/day)',1.2,2.6,.1,'1.6–2.0 is the usual athlete range; use the upper end while in a deficit.'],
+ ['fatMin','Minimum fat (g/kg/day)',.4,1.5,.05,'A floor, not a target.'],
+ ['fatPct','Minimum fat (% of energy)',10,35,1,'Joint ACSM/dietitians position: 20–35% of energy; going below 20% is not shown to help performance. The higher of this and the g/kg floor applies.'],
+ ['restCarb','Rest-day carbohydrate (g/kg)',1,4,.25,'Base before recovery/preparation additions.'],
+ ['recAdd','Recovery addition (g/kg)',0,1,.25,'Added on easy/rest days after a long or long-hard session.'],
+ ['prepAdd','Preparation addition (g/kg)',0,1,.25,'Added the day before a key or long session.'],
+ ['rate','Target weight loss (kg/week)',0,.5,.05,'0 = maintain. 0.1–0.25 kg/week keeps well inside slow-loss territory.'],
+ ['eaFloor','Energy availability floor (kcal/kg FFM)',15,40,1,'Watch-line only. 30 comes from studies in women; male thresholds are not established.'],
+ ['bfDefault','Body fat fallback (%)',8,40,.5,'Used if no recent smart-scale body-fat values.'],
+ ['capRest','Max deficit: rest day (kcal)',0,800,25,''],
+ ['capEasy','Max deficit: easy/light day (kcal)',0,600,25,''],
+ ['capMod','Max deficit: tempo day (kcal)',0,400,25,''],
+ ['capKey','Max deficit: key or long day (kcal)',0,600,25,'Taken from fat only, never from the carbohydrate the session needs. Set 0 to protect hard days completely.']
+];
+const LKEY='p280v24_local';
+let SHARED={},LOCAL={},SET=Object.assign({},DEF),SHARED_STATE='not checked yet';
+const numOnly=o=>{const r={};if(o&&typeof o==='object')for(const k in DEF)if(typeof o[k]==='number'&&isFinite(o[k]))r[k]=o[k];return r};
+function applySettings(){SET=Object.assign({},DEF,SHARED,LOCAL)}
+function saveLocal(){try{localStorage.setItem(LKEY,JSON.stringify(LOCAL))}catch(e){}}
+try{const l=localStorage.getItem(LKEY);if(l!=null)LOCAL=numOnly(JSON.parse(l));else{const old=numOnly(JSON.parse(localStorage.getItem('p280v24_settings')||'{}'));for(const k in old)if(old[k]!==DEF[k])LOCAL[k]=old[k]}}catch(e){}
+applySettings();
+function setSetting(k,v){const base=Object.assign({},DEF,SHARED)[k];if(v===base)delete LOCAL[k];else LOCAL[k]=v;applySettings();saveLocal()}
+let EXCL={};try{EXCL=JSON.parse(localStorage.getItem(EKEY)||'{}')||{}}catch(e){}
+let TRUST={};try{TRUST=JSON.parse(localStorage.getItem('p280v24_trust')||'{}')||{}}catch(e){}
+let SH_EX={},SH_TR={};
+let SNAP={};try{SNAP=JSON.parse(localStorage.getItem(PKEY)||'{}')||{}}catch(e){}
+
+/* ============ data ============ */
+let RAW={planned:[],completed:[],wellness:[]},HIST={},HEALTH={},IFOOD={},FOOD={},PB={},CB={},W={},WOUT={},BF={},TREND={},TKEYS=[],FTP=255;
+const CACHE=new Map();
+const group=list=>{const by={};for(const e of list){const k=String(e&&e.start_date_local||'').slice(0,10);if(DATE_RE.test(k))(by[k]=by[k]||[]).push(e)}return by};
+function ingestIntervals(raw){
+ const planned=Array.isArray(raw)?raw:raw&&Array.isArray(raw.planned)?raw.planned:null;
+ if(!planned)throw Error('Intervals file: expected a planned array or {planned, completed, Wellness}.');
+ RAW.planned=planned.filter(e=>e&&typeof e==='object');
+ RAW.completed=(raw&&Array.isArray(raw.completed)?raw.completed:[]).filter(a=>a&&typeof a==='object');
+ const w=raw&&(Array.isArray(raw.Wellness)?raw.Wellness:Array.isArray(raw.wellness)?raw.wellness:[]);
+ RAW.wellness=(w||[]).filter(x=>x&&typeof x==='object');
+}
+function ingestHistory(raw){
+ const days=Array.isArray(raw)?raw:raw&&Array.isArray(raw.days)?raw.days:null;
+ if(!days)throw Error('History file: expected a days array.');
+ const by={};
+ for(const r of days){const k=String(r&&r.date||'');if(!DATE_RE.test(k))continue;const kcal=Number(r.calories);if(!(kcal>0))continue;
+  by[k]={kcal,carb:Number(r.carbs)||0,protein:Number(r.protein)||0,fat:Number(r.fat)||0,samples:Number(r.calorie_samples)||0,meals:(Array.isArray(r.meals)?r.meals:[]).map(s=>String(s).toLowerCase()),src:'history'}}
+ HIST=by;
+}
+function ingestHealth(raw){
+ const rec=Array.isArray(raw)?raw:raw&&Array.isArray(raw.days)?raw.days:raw&&Array.isArray(raw.nutrition)?raw.nutrition:null;
+ if(!rec)throw Error('Nutrition file: expected an array of daily records.');
+ const by={};
+ for(const r of rec){if(!r||!DATE_RE.test(String(r.date||'')))continue;if(r.calories==null||Number(r.calorie_samples)===0)continue;const kcal=Number(r.calories);if(!isFinite(kcal))continue;
+  by[r.date]={kcal,carb:Number(r.carbs)||0,protein:Number(r.protein)||0,fat:Number(r.fat)||0,samples:Number(r.calorie_samples)||0,meals:[],src:'health'}}
+ HEALTH=by;
+}
+function rebuild(){
+ TODAY=dk(new Date());
+ PB=group(RAW.planned);CB=group(RAW.completed);
+ W={};BF={};
+ for(const w of RAW.wellness){const k=String(w.id||w.date||'').slice(0,10);if(!DATE_RE.test(k))continue;const v=Number(w.weight);if(v>40&&v<180)W[k]=v;const b=Number(w.bodyFat);if(b>5&&b<45)BF[k]=b}
+ IFOOD={};for(const w of RAW.wellness){const k=String(w.id||w.date||'').slice(0,10);const kcal=Number(w.kcalConsumed);
+  if(DATE_RE.test(k)&&kcal>0)IFOOD[k]={kcal,carb:Number(w.carbohydrates)||0,protein:Number(w.protein)||0,fat:Number(w.fatTotal)||0,samples:HEALTH[k]?HEALTH[k].samples:null,meals:[],src:'intervals'}}
+ FOOD=Object.assign({},HIST,HEALTH,IFOOD);
+ const withFtp=RAW.completed.filter(a=>Number(a.icu_ftp)>0).sort((a,b)=>String(a.start_date_local).localeCompare(String(b.start_date_local)));
+ if(withFtp.length)FTP=Number(withFtp[withFtp.length-1].icu_ftp);
+ const wk=Object.keys(W).sort();WOUT={};
+ for(const k of wk){const near=wk.filter(x=>x!==k&&Math.abs(diffDays(x,k))<=7).map(x=>W[x]).sort((a,b)=>a-b);if(near.length>=3){const m=near[Math.floor(near.length/2)];if(Math.abs(W[k]-m)>1.0)WOUT[k]=true}}
+ TKEYS=wk.filter(k=>!WOUT[k]);TREND={};let t=null,last=null;
+ for(const k of TKEYS){if(t==null)t=W[k];else{const gap=Math.max(1,diffDays(k,last));const a=1-Math.pow(1-.12,gap);t=t+a*(W[k]-t)}TREND[k]=t;last=k}
+ CACHE.clear();
+}
+function trendAt(k){let v=null;for(const x of TKEYS){if(x<=k)v=TREND[x];else break}return v}
+function weightKg(){
+ const v=TKEYS.length?TREND[TKEYS[TKEYS.length-1]]:null;if(v)return v;
+ const a=RAW.completed.filter(x=>Number(x.icu_weight)>40).sort((p,q)=>String(q.start_date_local).localeCompare(String(p.start_date_local)))[0];
+ return a?Number(a.icu_weight):82;
+}
+function bodyFat(){const ks=Object.keys(BF).filter(k=>diffDays(TODAY,k)<=21&&diffDays(TODAY,k)>=0);return ks.length>=3?mean(ks.map(k=>BF[k])):SET.bfDefault}
+const ffmKg=()=>weightKg()*(1-bodyFat()/100);
+
+/* ============ sessions ============ */
+const RIDE_RE=/^(Ride|VirtualRide|GravelRide|MountainBikeRide|EBikeRide)$/i;
+const isRideT=t=>RIDE_RE.test(t||'');
+const isStrengthEv=e=>!isRideT(e.type)&&(e.type==='WeightTraining'||/strength|gym|resistance/i.test(e.name||''));
+function zonesP(e){const zt=e.workout_doc&&e.workout_doc.zoneTimes;if(!Array.isArray(zt))return null;const a=Array(7).fill(0);let any=false;for(const z of zt){const i=Number(z.zone);if(i>=1&&i<=7){a[i-1]+=Number(z.secs)||0;any=true}}return any?a:null}
+function zonesA(e){const zt=e.icu_zone_times;if(!Array.isArray(zt))return null;const a=Array(7).fill(0);let any=false;for(const z of zt){const m=/^Z([1-7])$/.exec(z.id||'');if(m){a[+m[1]-1]+=Number(z.secs)||0;any=true}}return any?a:null}
+function rideFrom(e,done){
+ if(done){const ing=e.carbs_ingested;return{kind:'ride',done:true,name:e.name||'Ride',mins:(+e.moving_time||0)/60,kj:(+e.icu_joules||0)/1000,zones:zonesA(e),load:+e.icu_training_load||0,IF:(+e.icu_intensity||0)/100,carbsIn:ing!=null&&ing!==''&&isFinite(+ing)?+ing:null,carbsUsed:isFinite(+e.carbs_used)?+e.carbs_used:null,start:e.start_date_local}}
+ const doc=e.workout_doc||{},secs=+(doc.duration||e.moving_time||e.time_target)||0,watts=+doc.average_watts||0,j=+e.joules||(secs&&watts?secs*watts:0);
+ return{kind:'ride',done:false,name:e.name||'Ride',mins:secs/60,kj:j/1000,zones:zonesP(e),load:+e.icu_training_load||0,IF:(+e.icu_intensity||0)/100,carbsIn:null,carbsUsed:null,start:e.start_date_local}
+}
+function strFrom(e,done){return{kind:'strength',done,name:e.name||'Strength',mins:((+e.moving_time)||1800)/60}}
+function sessionsFor(date){
+ const done=CB[date]||[],plan=PB[date]||[],out=[];
+ const dR=done.filter(a=>isRideT(a.type)),dS=done.filter(isStrengthEv);
+ dR.forEach(a=>out.push(rideFrom(a,true)));dS.forEach(a=>out.push(strFrom(a,true)));
+ const pR=plan.filter(e=>isRideT(e.type)),pS=plan.filter(isStrengthEv);
+ let missed=false;
+ if(date>=TODAY){if(!dR.length)pR.forEach(e=>out.push(rideFrom(e,false)));if(!dS.length)pS.forEach(e=>out.push(strFrom(e,false)))}
+ else if(pR.length&&!dR.length)missed=true;
+ return{sessions:out,missed,rest:plan.some(e=>/rest day/i.test(e.name||'')),known:plan.length>0||done.length>0};
+}
+function intensityOf(s){
+ const z=s.zones;
+ if(z){const hi=(z[3]+z[4]+z[5]+z[6])/60,z3=z[2]/60;return hi>=10?'key':(z3>=20||(hi>=3&&z3>=10))?'moderate':'easy'}
+ if(s.IF>0)return s.IF>=.85?'key':s.IF>=.72?'moderate':'easy';
+ const n=s.name||'';return /threshold|ftp|vo2|interval|seiler/i.test(n)?'key':/tempo|sweet/i.test(n)?'moderate':'easy';
+}
+const TAB={easy:[[0,3.0],[45,3.5],[150,5.5],[180,6.0],[240,6.5]],moderate:[[0,4.0],[60,4.5],[150,5.5],[180,6.0],[240,6.5]],key:[[0,4.5],[60,5.0],[150,6.0],[240,6.5]]};
+const lookup=(t,m)=>{if(!SET.smooth){let v=t[0][1];for(const [a,x] of t)if(m>=a)v=x;return v}if(m<=t[0][0])return t[0][1];for(let i=1;i<t.length;i++){if(m<=t[i][0]){const [a,x]=t[i-1],[b,y]=t[i];return x+(y-x)*(m-a)/(b-a)}}return t[t.length-1][1]};
+function fuelFor(r){const m=Math.round(r.mins),i=r.int;if(m>=150)return{g:(m>=180||i==='key')?75:60,lo:60,hi:90};if(m>=60)return i==='easy'?{g:20,lo:0,hi:40}:{g:45,lo:30,hi:60};if(m>=45&&i==='key')return{g:30,lo:20,hi:45};return{g:0,lo:0,hi:0}}
+const RANK={rest:0,light:1,easy:2,moderate:3,key:4,long:5};
+function core(date){return coreFrom(date,false)}
+function plannedCore(date){return coreFrom(date,true)}
+function plannedSessions(date){
+ const plan=PB[date]||[],out=[];
+ plan.filter(e=>isRideT(e.type)).forEach(e=>out.push(rideFrom(e,false)));
+ plan.filter(isStrengthEv).forEach(e=>out.push(strFrom(e,false)));
+ return{sessions:out,missed:false,rest:plan.some(e=>/rest day/i.test(e.name||'')),known:plan.length>0};
+}
+function coreFrom(date,planOnly){
+ const ck=planOnly?'P'+date:date;
+ if(CACHE.has(ck))return CACHE.get(ck);
+ const sf=planOnly?plannedSessions(date):sessionsFor(date),rides=sf.sessions.filter(s=>s.kind==='ride'),strs=sf.sessions.filter(s=>s.kind==='strength');
+ const ge=clamp(SET.ge,20,26)/100;let gross=0,hours=0,kj=0,noPower=false,carbKg=null,tier='rest',fuelG=0,maxMins=0;
+ for(const r of rides){
+  r.int=intensityOf(r);hours+=r.mins/60;kj+=r.kj;maxMins=Math.max(maxMins,Math.round(r.mins));
+  if(r.kj>0)gross+=r.kj/4.184/ge;else noPower=true;
+  const tabKg=lookup(TAB[r.int],Math.round(r.mins));carbKg=carbKg==null?tabKg:Math.max(carbKg,tabKg);
+  r.fuel=fuelFor(r);fuelG+=r.done&&r.carbsIn!=null?r.carbsIn:r.fuel.g*r.mins/60;
+  const rt=Math.round(r.mins)>=150?'long':r.int==='key'?'key':r.int==='moderate'?'moderate':r.mins>=20?'easy':'light';
+  if(RANK[rt]>RANK[tier])tier=rt;
  }
- const minCarbs=restBreakdown?restBreakdown.target:Math.round(w*carbLo),maxCarbs=restBreakdown?restBreakdown.target:Math.round(w*carbHi);
- const lean=el('weightMode').value==='lean',safe=known&&!missingEnergy&&!demanding&&!recovery&&!prep&&!hard&&mins<75;
- const deficit=lean&&safe?(mins>0||weights.length?100:200):0;
- const rawEnergy=baseline+trainingMid-deficit;
- const energyMid=rawEnergy,energyLow=baseline+trainingLow-deficit-100,energyHigh=baseline+trainingHigh-deficit+100;
- const desiredCarb=restBreakdown?restBreakdown.target:Math.round(w*(carbLo+carbHi)/2),minimumEnergy=4*(minCarbs+protein)+9*fatFloor;
- const affordable=Math.floor((energyMid-4*protein-9*fatFloor)/4);
- const targetCarb=restBreakdown?desiredCarb:clamp(Math.min(desiredCarb,affordable),minCarbs,maxCarbs);
- const remainingFat=(energyMid-4*(protein+targetCarb))/9;
- // Nutrition floors must never be displayed as lower than their configured minimums.
- // Keep the independently estimated energy budget visible; expose any mismatch.
- const fat=Math.max(fatFloor,remainingFat);
- const macroEnergy=4*(protein+targetCarb)+9*fat;
- const macroGap=macroEnergy-energyMid;
- const conflict=macroGap>250;
- const highFat=fat>Math.max(110,energyMid*.38/9);
- let bikeLo=0,bikeHi=0,bikeTarget=0;
- if(hours>0){if(hours<=1.5&&!hard)[bikeLo,bikeHi,bikeTarget]=[0,30,Math.round(hours>=1.25?15:0)];else if(hours<2.5)[bikeLo,bikeHi,bikeTarget]=[30,60,45];else if(!hard)[bikeLo,bikeHi,bikeTarget]=[50,70,60];else [bikeLo,bikeHi,bikeTarget]=[60,90,75]}
- const label=events.map(e=>e.name||e.type||'Workout').join(' + ')||(known?'Unspecified event':'No event in export');
- const dayType=rides.length||weights.length?'Training day':!known?'Unconfirmed calendar':recovery&&prep?'Recovery + preparation':recovery?'Recovery day':prep?'Preparation day':'Normal rest day';
- const notes=[];
- if(recovery)notes.push('Recovery carbohydrates prioritised after demanding training');
- if(restBreakdown){notes.push('Rest-day carbs: 2.50 g/kg baseline + '+restBreakdown.recovery.toFixed(2)+' recovery + '+restBreakdown.preparation.toFixed(2)+' preparation = '+restBreakdown.kg.toFixed(2)+' g/kg (rounded to nearest 5 g)');if(!restBreakdown.priorKnown||!restBreakdown.nextKnown)notes.push('Adjacent calendar day missing: recovery/preparation estimate may be incomplete');if(restBreakdown.load>=200)notes.push('Previous-day training load '+Math.round(restBreakdown.load)+' indicates high recovery demand');}
- if(prep)notes.push('Carbohydrates prioritised ahead of demanding training');
- if(demanding)notes.push('No intentional deficit on demanding training days');
- if(rest)notes.push('Rest day recorded in Intervals.icu');
- if(!known)notes.push('No calendar event: rest status unconfirmed');
- if(missingEnergy)notes.push('Incomplete power or duration: energy and calorie estimates may be too low');
- if(macroGap>250)notes.push('Energy and macro targets differ by '+Math.round(macroGap)+' kcal; review whether recovery or preparation fuelling explains the difference');else if(macroGap>100)notes.push('Informational: carbohydrate/protein minimums put food intake '+Math.round(macroGap)+' kcal above estimated expenditure; recovery and preparation may justify this');
- if(highFat)notes.push('High calculated fat allocation: review energy estimate and carbohydrate needs');
- if(lean&&!deficit)notes.push('Slow Lean-Up: deficit withheld to protect training, recovery or because calendar is incomplete');
- if(deficit)notes.push(`Provisional ${deficit} kcal deficit on a low-demand day`);
- const mismatch=rides.filter(e=>{const m=(e.name||'').match(/(?:^|\s)(\d+):(\d{2})(?:\s|$)/);return m&&Math.abs((+m[1]*60+ +m[2])-planDetails(e).seconds/60)>10});
- if(mismatch.length)notes.push('Workout name duration differs from structured duration; structured duration used');
- return {key,label,known,rest,mins,weights:weights.length,hard,recovery,prep,dayType,energyMid,energyLow,energyHigh,protein,fat,fatFloor,minCarbs,maxCarbs,targetCarb,macroEnergy,macroGap,conflict,bikeLo,bikeHi,bikeTarget,hours,notes,trainingLow,trainingHigh,cycling,strength,missingEnergy,baseline,deficit,restingOffset,efficiency,gross,highFat,restBreakdown};
+ if(strs.length){if(carbKg==null)carbKg=3.0;if(RANK.light>RANK[tier])tier='light'}
+ const cyc=Math.max(0,gross-SET.resting*hours/24);
+ const str=strs.reduce((s,x)=>s+SET.strength*clamp(x.mins/30,.3,1.5),0);
+ const names=sf.sessions.map(s=>s.name);
+ const label=names.length?names.join(' + '):sf.rest?'Rest day':sf.known?'No session':'No calendar event';
+ const c={date,sessions:sf.sessions,rides,strs,missed:sf.missed,known:sf.known,label,hours,kj,noPower,cyc,str,exercise:cyc+str,carbKg,tier,fuelG,maxMins,
+  fuelGph:hours>0?fuelG/hours:0,pending:sf.sessions.some(s=>!s.done)};
+ CACHE.set(ck,c);return c;
+}
+const capFor=t=>t==='rest'?SET.capRest:(t==='light'||t==='easy')?SET.capEasy:t==='moderate'?SET.capMod:SET.capKey;
+
+/* ============ planning engine ============ */
+function baseDay(date,planOnly){
+ const c=planOnly?plannedCore(date):core(date),p=core(addDays(date,-1)),n=core(addDays(date,1)),w=weightKg(),ffm=ffmKg();
+ let kg=c.carbKg,adds=0;const why=[];
+ const lowDay=c.tier==='rest'||c.tier==='light'||c.tier==='easy';
+ const prevBig=p.tier==='long'||(p.tier==='key'&&p.maxMins>=90);
+ const nextBig=n.tier==='long'||n.tier==='key';
+ if(kg==null||c.tier==='rest'){kg=SET.restCarb}
+ if(lowDay&&prevBig){adds+=SET.recAdd;why.push('recovery +'+SET.recAdd+' g/kg ('+(p.tier==='long'?'long ride':'hard session')+' yesterday)')}
+ if(!(c.tier==='long'||c.tier==='key')&&nextBig){adds+=SET.prepAdd;why.push('preparation +'+SET.prepAdd+' g/kg ('+(n.tier==='long'?'long ride':'key session')+' tomorrow)')}
+ adds=Math.min(adds,1);const carbKg=kg+adds;
+ const P=w*SET.protein,Fl=w*SET.fatMin,C=r5(carbKg*w),Pc=4*P+4*C,required=Math.max(Pc+9*Fl,Pc/(1-clamp(SET.fatPct,0,40)/100));
+ const M=SET.baseline+SET.offset+c.exercise;
+ const eaRoom=Math.max(0,M-c.exercise-SET.eaFloor*ffm);
+ const capacity=Math.max(0,Math.min(capFor(c.tier),M-required,eaRoom));
+ return{date,c,w,ffm,P,Fl,C,Pc,carbKg,baseKg:kg,adds,why,required,M,capacity,eaRoom,macroRoom:Math.max(0,M-required)};
+}
+function planRange(start,n,planOnlyFirst){
+ const rows=[];for(let i=0;i<n;i++)rows.push(baseDay(addDays(start,i),!!planOnlyFirst&&i===0));
+ const B=SET.rate*7700*(n/7),sumCap=rows.reduce((s,r)=>s+r.capacity,0),f=sumCap>0?Math.min(1,B/sumCap):0;
+ return rows.map(r=>{
+  const d=Math.round(r.capacity*f/5)*5,intake=Math.max(r.required,r.M-d),fat=(intake-r.Pc)/9,c=r.c,Fle=Math.max(r.Fl,SET.fatPct/100*intake/9);
+  const notes=r.why.slice();
+  if(d>0)notes.push('deficit −'+d+' kcal taken here');
+  const gap=intake-r.M;
+  if(gap>100)notes.push('carbohydrate/protein/fat floors put intake '+Math.round(gap)+' kcal above modelled maintenance'+(r.adds>0?' (recovery/preparation carbs)':''));
+  if(c.noPower)notes.push('ride power missing: exercise energy understated');
+  if(!c.known&&r.date>=TODAY)notes.push('no calendar event: rest not confirmed');
+  const ea=(intake-c.exercise)/r.ffm;
+  const hrs=c.hours;
+  return Object.assign({},r,{Fl:Fle,deficit:d,intake,fat,gap,ea,notes,bike:{gph:c.fuelGph,total:c.fuelG,hours:hrs},budgetFrac:f,sumCap,B});
+ });
+}
+const planDay=date=>planRange(date,7)[0];
+
+/* ============ food ============ */
+function foodFlag(k){
+ const f=FOOD[k];if(!f)return 'missing';if(EXCL[k]||SH_EX[k])return 'excluded';
+ if(f.kcal<1200)return 'low';if(f.kcal>6500)return 'high';if(TRUST[k]||SH_TR[k])return 'ok';
+ if((f.src==='health'||f.src==='intervals')&&f.samples!=null&&f.samples<2)return 'thin';
+ if(f.src==='history'&&!(f.meals.some(m=>m.includes('lunch'))&&f.meals.some(m=>m.includes('dinner'))))return 'meals';
+ return 'ok';
+}
+const FLAGTXT={missing:'not logged',excluded:'excluded by you',low:'under 1,200 kcal: likely incomplete',high:'over 6,500 kcal: check entry',thin:'very few entries: likely incomplete',meals:'no lunch/dinner in log'};
+function effLogged(k){
+ const f=FOOD[k];if(!f)return null;
+ let o={kcal:f.kcal,carb:f.carb,protein:f.protein,fat:f.fat};
+ if(!SET.logRide){const cin=core(k).rides.filter(r=>r.done&&r.carbsIn!=null).reduce((s,r)=>s+r.carbsIn,0);o.carb+=cin;o.kcal+=4*cin}
+ return o;
 }
 
-function wForDisplay(){return weight()}
-function renderNutrition(){
- const by={};for(const e of PLANNED){const d=String(e.start_date_local||'').slice(0,10);if(/^\d{4}-\d{2}-\d{2}$/.test(d))(by[d]??=[]).push(e)}
- if(!PLANNED.length){el('todayNutrition').innerHTML='<p class="warn">Load planned workouts to calculate today’s nutrition.</p>';el('tomorrowNutrition').innerHTML='<p class="warn">Load planned workouts to calculate tomorrow’s nutrition.</p>';el('nutritionWeek').innerHTML='<p class="note">Waiting for planned calendar.</p>';return}
- function dayCard(key,heading){
-  const t=nutritionFor(key,by);
-  const bike=t.hours?`${t.bikeTarget} g/hour · ${Math.round(t.bikeTarget*t.hours)} g total (range ${t.bikeLo}–${t.bikeHi} g/hour)`:'No on-bike fuel planned';
-  const bikeGrams=t.hours?Math.round(t.bikeTarget*t.hours):0;
-  const mealCarbs=Math.max(0,t.targetCarb-bikeGrams);
-  const guidance=t.hard||t.hours>=2;
-  return `<div style="margin-top:22px;padding-top:14px;border-top:1px solid #34495d"><h2>${heading}</h2><p><strong>${escapeHTML(t.key)} · ${escapeHTML(t.label)}</strong> · ${escapeHTML(t.dayType)}</p><div class="daily-primary"><div class="metric"><small>Daily calorie target · provisional</small><b>${number(t.macroEnergy)} kcal</b><small>Estimated budget ${number(t.energyMid)} kcal · range ${number(t.energyLow)}–${number(t.energyHigh)}</small></div><div class="metric"><small>Carbohydrates</small><b>${t.targetCarb} g</b><small>Range ${t.minCarbs}–${t.maxCarbs} g · includes ${bikeGrams} g on bike</small></div><div class="metric"><small>Protein</small><b>${Math.round(t.protein)} g</b><small>${el('proteinKg').value} g/kg</small></div><div class="metric"><small>Fat</small><b>${Math.round(t.fat)} g</b><small>Minimum ${Math.round(t.fatFloor)} g</small></div></div><div class="daily-secondary"><div class="metric"><small>During cycling · carbohydrate</small><b>${t.hours?`${t.bikeTarget} g/h · ${bikeGrams} g total`:'No ride planned'}</b><small>${t.hours?`Range ${t.bikeLo}–${t.bikeHi} g/h · already included in daily carbohydrates`:'No on-bike carbohydrates required'}</small></div><div class="metric"><small>Estimated exercise energy</small><b>${kcalFmt(t.trainingLow)}–${kcalFmt(t.trainingHigh)} kcal</b><small>Cycling ${kcalFmt(t.cycling[0])}–${kcalFmt(t.cycling[1])} kcal · strength ${number(t.strength)} kcal</small></div></div>${t.restBreakdown?`<div class="metric" style="margin-bottom:12px"><strong>Rest-day carbohydrate calculation</strong><p class="note">Baseline ${Math.round(wForDisplay()*2.5)} g + recovery ${Math.round(wForDisplay()*t.restBreakdown.recovery)} g + preparation ${Math.round(wForDisplay()*t.restBreakdown.preparation)} g = <strong>${t.targetCarb} g</strong> (rounded to nearest 5 g)</p><small>Previous day: ${Math.round(t.restBreakdown.minutes)} min · ${Math.round(t.restBreakdown.kj)} kJ · training load ${Math.round(t.restBreakdown.load)}</small></div>`:''}${t.macroGap>250?`<p class="warn">Review: prescribed macros exceed estimated energy expenditure by ${number(t.macroGap)} kcal. This may reflect recovery/preparation fuelling, not missing data.</p>`:t.macroGap>100?`<p class="note">For context: prescribed macros exceed estimated expenditure by ${number(t.macroGap)} kcal; check recovery/preparation needs.</p>`:''}<p class="${t.conflict?'warn':'note'}">${t.notes.map(escapeHTML).join(' · ')}</p><p class="note"><strong>Before:</strong> ${guidance?'Eat a carbohydrate-rich meal 1–4 hours before the session, sized for tolerance.':'Normal balanced meals; add a carbohydrate snack if needed.'} <strong>After:</strong> ${guidance?'Have a carbohydrate-rich meal with 25–40 g protein; replenish more promptly if another hard ride follows.':'Include protein and carbohydrate in your next meal.'}</p></div>`;
+/* ============ calibration ============ */
+function calib(){
+ const end=addDays(TODAY,-1),N=28,start=addDays(end,-(N-1)),ks=[];for(let i=0;i<N;i++)ks.push(addDays(start,i));
+ const pts=[];ks.forEach((k,i)=>{if(W[k]!=null&&!WOUT[k])pts.push([i,W[k]])});
+ const valid=ks.filter(k=>foodFlag(k)==='ok');
+ let slope=null,se=null;
+ if(pts.length>=8&&pts[pts.length-1][0]-pts[0][0]>=14){
+  const mx=mean(pts.map(p=>p[0])),my=mean(pts.map(p=>p[1]));const sxx=pts.reduce((s,p)=>s+(p[0]-mx)**2,0);
+  slope=pts.reduce((s,p)=>s+(p[0]-mx)*(p[1]-my),0)/sxx;
+  const rss=pts.reduce((s,p)=>s+(p[1]-(my+slope*(p[0]-mx)))**2,0);se=Math.sqrt(rss/Math.max(1,pts.length-2)/sxx);
  }
- el('todayNutrition').innerHTML=dayCard(dateKey(new Date()),'Today');
- el('tomorrowNutrition').innerHTML=dayCard(tomorrowKey(),'Tomorrow');
- const today=new Date();let rows='';for(let i=0;i<7;i++){const d=new Date(today.getFullYear(),today.getMonth(),today.getDate()+i),n=nutritionFor(dateKey(d),by);rows+=`<tr><td>${escapeHTML(d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'}))}</td><td>${escapeHTML(n.label)}${!n.known?' ⚠':''}</td><td><strong>${number(n.macroEnergy)}</strong>${n.macroGap>250?' ⚠':''}</td><td>${number(n.energyMid)}<small> (${number(n.energyLow)}–${number(n.energyHigh)})</small></td><td><strong>${n.targetCarb} g</strong><small> (${n.minCarbs}–${n.maxCarbs})</small></td><td>${n.hours?`${n.bikeTarget} g/h · ${Math.round(n.bikeTarget*n.hours)} g`:'—'}</td><td>${Math.round(n.protein)} g</td><td>${Math.round(n.fat)} g${n.conflict?' ⚠':''}</td></tr>`}
- el('nutritionWeek').innerHTML=`<table><thead><tr><th>Day</th><th>Training</th><th>Food intake kcal</th><th>Estimated energy kcal (range)</th><th>Carbs target (range)</th><th>On bike</th><th>Protein</th><th>Fat target</th></tr></thead><tbody>${rows}</tbody></table><p class="note">Food intake is the energy supplied by prescribed macros; estimated expenditure is a separate provisional calculation. Fat never falls below its configured minimum; a calorie mismatch is displayed rather than hidden. ⚠ flags missing calendar data or a macro-energy difference over 250 kcal. Differences of 101–250 kcal are informational; 100 kcal or less is treated as normal estimation variation. Recovery and preparation fuelling can intentionally exceed same-day expenditure. All estimates remain provisional.</p>`;
+ const avgIn=valid.length?mean(valid.map(k=>FOOD[k].kcal)):null;
+ const modelAvgAll=mean(ks.map(k=>SET.baseline+core(k).exercise));
+ const modelAvg=mean((valid.length?valid:ks).map(k=>SET.baseline+core(k).exercise));
+ const ready=slope!=null&&valid.length>=10;
+ const maint=ready?avgIn-slope*7700:null,seK=se!=null?se*7700:null;
+ return{ks,pts:pts.length,valid:valid.length,slope,se,avgIn,modelAvg,modelAvgAll,ready,maint,seK,suggest:ready?maint-modelAvg:null,
+  conf:!ready?'not ready':seK*2<=150?'good':seK*2<=300?'fair':'low'};
 }
-['baseline','goalweight','proteinKg','fatKg','strengthKcal','weight','efficiency','rhrKcal','weightMode'].forEach(id=>el(id).addEventListener('input',renderNutrition));
-// The importer already calls renderNutrition after JSON parsing; avoid a competing async render.
 
+/* ============ rendering helpers ============ */
+const tag=t=>'<span class="tag '+t+'">'+t+'</span>';
+function light(a,t,kind){
+ if(a==null||!(t>0))return'grey';const r=a/t;
+ if(kind==='cal')return r>=.9&&r<=1.1?'green':r>=.8&&r<=1.2?'amber':'red';
+ if(kind==='fat')return r>=.85?'green':r>=.65?'amber':'red';
+ return r>=.9?'green':r>=.75?'amber':'red';
+}
+function barRow(label,logged,target,unit,opts={}){
+ const rem=target-logged,pct=target>0?clamp(logged/target*100,0,100):0,over=rem<0;
+ const remTxt=over?'<span class="warn">'+N0(-rem)+unit+' over</span>':'<b>'+N0(rem)+unit+'</b> left';
+ return'<div class="row"><div class="lab">'+label+'</div><div><div class="bar"><div class="fill'+(over?' over':'')+'" style="width:'+pct+'%"></div></div><small>'+N0(logged)+' of '+N0(target)+unit+(opts.note?' · '+opts.note:'')+'</small></div><div class="num">'+remTxt+'</div></div>';
+}
 
-['weight','session','duration','next'].forEach(id=>el(id).addEventListener('input',plan));plan();
+/* ============ TODAY ============ */
+let MEALS=null;
+function defaultMeals(){const h=new Date().getHours();return h<10?4:h<14?3:h<18?2:1}
+function fuelPlanHtml(d){
+ const c=d.c,pend=c.rides.filter(r=>!r.done),done=c.rides.filter(r=>r.done);let h='';
+ for(const r of pend){
+  const hrs=r.mins/60,g=r.fuel.g,w=d.w;
+  h+='<div class="m" style="margin-top:10px"><strong>'+esc(r.name)+'</strong> '+tag(r.int)+'<small>'+N0(r.mins)+' min · '+N0(r.kj)+' kJ planned'+(r.zones?' · '+N0((r.zones[3]+r.zones[4]+r.zones[5]+r.zones[6])/60)+' min Z4+':'')+'</small><ul>'
+  +'<li><b>Before:</b> '+(r.mins>=120?'about 1–3 g/kg ('+N0(w)+'–'+N0(3*w)+' g) of carbohydrate in the 1–4 h before, sized to tolerance.':'a carbohydrate-containing meal or snack 1–3 h before.')+'</li>'
+  +'<li><b>During:</b> '+(g>0?'<b>'+g+' g/h</b> ('+r.fuel.lo+'–'+r.fuel.hi+') = about <b>'+N0(g*hrs)+' g</b> total.':'optional; water and a small snack if you want one.')+'</li>'
+  +'<li><b>After:</b> '+(r.mins>=150||r.int==='key'?'rapid refuelling (about 1.0–1.2 g/kg/h for roughly 4 h) only matters if you ride again within ~8 h; otherwise just hit the daily total, with 25–40 g protein in the next meal.':'normal meal with protein and carbohydrate.')+'</li></ul></div>';
+ }
+ for(const r of done){
+  const hrs=r.mins/60,rate=r.carbsIn!=null&&hrs>0?r.carbsIn/hrs:null,plan=r.fuel.g;
+  const st=rate==null?'no CHO In recorded in Intervals':plan===0?'on-bike fuel was optional':rate>=plan*.8?'on plan':rate>=plan*.5?'below plan':'well below plan';
+  h+='<div class="m" style="margin-top:10px"><strong>'+esc(r.name)+'</strong> '+tag(r.int)+' <span class="tag">done</span><small>'+N0(r.mins)+' min · '+N0(r.kj)+' kJ · load '+N0(r.load)+'</small><small>On-bike carbs: '+(r.carbsIn!=null?N0(r.carbsIn)+' g'+(rate!=null?' ('+N0(rate)+' g/h vs plan '+plan+' g/h)':''):'—')+' · '+st+'</small>'
+  +(r.carbsUsed!=null&&r.carbsIn!=null?'<small>Intervals model: ~'+N0(r.carbsUsed)+' g carbohydrate used, about '+N0(Math.max(0,r.carbsUsed-r.carbsIn))+' g drawn from stores (model estimate, treat as relative).</small>':'')+'</div>';
+ }
+ return h;
+}
 
-// V6 retrospective review: local-only two-file ingestion.
-function updateIntervalsWeight(){
- const values=COMPLETED.filter(a=>Number(a.icu_weight)>40&&Number(a.icu_weight)<180).sort((a,b)=>String(b.start_date_local||'').localeCompare(String(a.start_date_local||'')));
- if(values.length){const w=Number(values[0].icu_weight);el('weight').value=w.toFixed(2);el('weight').title='Latest recorded Intervals activity weight; it may have been carried forward';}
+function planVsActualHtml(d){
+ const a=d.c;if(!a.rides.some(x=>x.done))return'';
+ const pc=plannedCore(TODAY);if(!pc.rides.length)return'';
+ const pr=planRange(TODAY,7,true)[0];
+ const sum=(c,f)=>c.rides.reduce((t,r)=>t+f(r),0);
+ const z4=r=>r.zones?(r.zones[3]+r.zones[4]+r.zones[5]+r.zones[6])/60:0;
+ const hasZ=pc.rides.some(r=>r.zones)&&a.rides.some(r=>r.zones);
+ const R=[];
+ const add=(label,p,x,fmt,unit)=>{const df=x-p,tiny=Math.abs(df)<(fmt===N2?0.005:0.5);R.push('<tr><td>'+label+'</td><td>'+fmt(p)+unit+'</td><td>'+fmt(x)+unit+(tiny?'':'<br><small>'+(df>0?'+':'−')+fmt(Math.abs(df))+unit+'</small>')+'</td></tr>')};
+ add('Ride time',pc.hours*60,a.hours*60,N0,' min');add('Work',pc.kj,a.kj,N0,' kJ');add('Training load',sum(pc,r=>r.load),sum(a,r=>r.load),N0,'');if(hasZ)add('Time at Z4+',sum(pc,z4),sum(a,z4),N0,' min');
+ add('Exercise energy',pc.exercise,a.exercise,N0,' kcal');
+ add('Maintenance',pr.M,d.M,N0,' kcal');
+ add('Carbs',pr.C,d.C,N0,' g');
+ add('Carbs per kg',pr.carbKg,d.carbKg,N2,' g/kg');
+ add('Target intake',pr.intake,d.intake,N0,' kcal');
+ const dEx=a.exercise-pc.exercise,dT=d.intake-pr.intake,sg=v=>(v>0?'+':v<0?'−':'')+N0(Math.abs(v));
+ let msg='';
+ if(a.tier!==pc.tier)msg+='Day type changed from '+pc.tier+' (planned) to '+a.tier+' (done). ';
+ if(Math.abs(dEx)>=75){
+  msg+='You did '+(dEx<0?'less':'more')+' than planned: modelled exercise energy is about '+N0(Math.abs(dEx))+' kcal '+(dEx<0?'lower':'higher')+'. Target intake moved '+sg(dT)+' kcal. ';
+  if(Math.abs(dT)<Math.abs(dEx)*0.5)msg+='Carbohydrate follows the length and intensity of the session in bands, and protein and fat are fixed floors, so most of that energy difference shows up as how far the target sits '+(d.gap>=0?'above':'below')+' modelled maintenance ('+sg(d.gap)+' kcal) rather than as a different target.';
+ }else msg+='The session was close to plan, so the targets are essentially unchanged.';
+ return'<section class="panel"><details><summary style="cursor:pointer;font-weight:600;font-size:16px">Plan vs what you did · details</summary><table style="min-width:0;margin-top:8px"><thead><tr><th></th><th>Planned</th><th>Done (change)</th></tr></thead><tbody>'+R.join('')+'</tbody></table><p class="note">'+esc(msg)+'</p></details></section>';
 }
-function csvRows(src){const out=[];let row=[],cell='',quoted=false;src=src.replace(/^\uFEFF/,'');for(let i=0;i<src.length;i++){const c=src[i];if(c==='"'){if(quoted&&src[i+1]==='"'){cell+='"';i++}else quoted=!quoted;}else if(c===','&&!quoted){row.push(cell);cell='';}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&src[i+1]==='\n')i++;row.push(cell);cell='';if(row.some(v=>v.trim()))out.push(row);row=[];}else cell+=c;}row.push(cell);if(row.some(v=>v.trim()))out.push(row);return out;}
-function parseNutritionCsv(text){const rows=csvRows(text);if(rows.length<2)throw Error('Nutrition CSV is empty');const cols=rows.shift().map(x=>x.trim());const col=n=>cols.indexOf(n),need=['Date','Meal','Calories','Carbohydrates (g)','Protein (g)','Fat (g)'];if(need.some(x=>col(x)<0))throw Error('MFP nutrition columns not recognised');const by={};for(const row of rows){const date=row[col('Date')];if(!/^\d{4}-\d{2}-\d{2}$/.test(date||''))continue;const meal=(row[col('Meal')]||'').replace(/[\u00a0\s]+/g,' ').trim();const x=by[date]||(by[date]={kcal:0,carb:0,protein:0,fat:0,onbike:0,pre:0,meals:[],rows:0});const kcal=Number(row[col('Calories')])||0,carb=Number(row[col('Carbohydrates (g)')])||0,protein=Number(row[col('Protein (g)')])||0,fat=Number(row[col('Fat (g)')])||0;x.kcal+=kcal;x.carb+=carb;x.protein+=protein;x.fat+=fat;x.rows++;x.meals.push(meal);if(/during\s*(workout|training|ride)|on.?bike/i.test(meal))x.onbike+=carb;if(/before\s*(workout|training|ride)|pre.?workout|pre.?training/i.test(meal))x.pre+=carb;}return by;}
-async function zipEntries(file){const b=new DataView(await file.arrayBuffer()),length=b.byteLength,decoder=new TextDecoder('utf-8');let eocd=-1;for(let i=length-22;i>=Math.max(0,length-65557);i--){if(b.getUint32(i,true)===0x06054b50){eocd=i;break}}if(eocd<0)throw Error('ZIP central directory not found');const total=b.getUint16(eocd+10,true),start=b.getUint32(eocd+16,true),out={};let pos=start;
- for(let i=0;i<total;i++){if(b.getUint32(pos,true)!==0x02014b50)throw Error('Invalid ZIP directory entry');const method=b.getUint16(pos+10,true),compressed=b.getUint32(pos+20,true),nameLen=b.getUint16(pos+28,true),extraLen=b.getUint16(pos+30,true),commentLen=b.getUint16(pos+32,true),offset=b.getUint32(pos+42,true),name=decoder.decode(new Uint8Array(b.buffer,pos+46,nameLen));pos+=46+nameLen+extraLen+commentLen;if(!/\.csv$/i.test(name))continue;if(b.getUint32(offset,true)!==0x04034b50)throw Error('ZIP entry missing local header');const dataStart=offset+30+b.getUint16(offset+26,true)+b.getUint16(offset+28,true);const bytes=new Uint8Array(b.buffer.slice(dataStart,dataStart+compressed));let unzipped;if(method===0)unzipped=bytes;else if(method===8){if(typeof DecompressionStream==='undefined')throw Error('ZIP extraction unsupported in this browser; please use up-to-date Safari');try{unzipped=new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer())}catch(e){throw Error('Could not decompress ZIP in Safari; try exporting the nutrition CSV directly. '+e.message)}}else throw Error('Unsupported ZIP compression type '+method);out[name.split('/').pop()]=decoder.decode(unzipped)}return out;}
-let MFP_FILE_NAME='';
-el('mfpFile').addEventListener('change',async()=>{const file=el('mfpFile').files[0];if(!file)return;try{if(file.size>15000000)throw Error('ZIP exceeds 15 MB');const entries=await zipEntries(file),filename=Object.keys(entries).find(n=>/^Nutrition-Summary.*\.csv$/i.test(n));if(!filename)throw Error('No Nutrition-Summary CSV found in ZIP');const data=parseNutritionCsv(entries[filename]);if(!Object.keys(data).length)throw Error('No dated nutrition records found');MFP=data;MFP_FILE_NAME=file.name;el('mfpStatus').textContent=`Loaded ${Object.keys(data).length} nutrition dates from ${file.name}. Exercise calories ignored; nothing uploaded.`;renderReconciliation();renderCalibration()}catch(e){MFP=null;el('mfpStatus').textContent='Import failed: '+e.message;renderReconciliation()}});
 
- // GitHub Pages: fetch three published JSON files; never expose a GitHub token.
- const AUTO_FILES={intervals:'data/intervals.json',nutrition:'data/nutrition.json',history:'data/mfp-history.json'};
- let HISTORICAL_FOOD={},CURRENT_FOOD={};
- function combineFood(){MFP={...HISTORICAL_FOOD,...CURRENT_FOOD};renderReconciliation();renderCalibration();}
- function historicalNutrition(raw){const days=Array.isArray(raw)?raw:Array.isArray(raw?.days)?raw.days:null;if(!days)throw Error('Expected a days array in historical MFP file.');const by={};for(const r of days){const k=String(r?.date||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(k))continue;const kcal=Number(r.calories);if(!Number.isFinite(kcal)||kcal<=0)continue;const meals=Array.isArray(r.meals)?r.meals.map(x=>String(x).replace(/\s+/g,' ').trim()):[];by[k]={kcal,carb:Number(r.carbs)||0,protein:Number(r.protein)||0,fat:Number(r.fat)||0,onbike:0,pre:0,meals,rows:Number(r.calorie_samples)||0,source:'history'};}return by;}
- function healthNutrition(raw){
-  const records=Array.isArray(raw)?raw:Array.isArray(raw?.days)?raw.days:Array.isArray(raw?.nutrition)?raw.nutrition:null;
-  if(!records)throw Error('Expected an array of daily Apple Health nutrition records.');
-  const by={};
-  for(const r of records){
-   if(!r||typeof r!=='object'||!/^\d{4}-\d{2}-\d{2}$/.test(String(r.date||'')))continue;
-   const kcal=Number(r.calories),carb=Number(r.carbs),protein=Number(r.protein),fat=Number(r.fat);
-   if(r.calories===null||r.calories===undefined||!Number.isFinite(kcal)||Number(r.calorie_samples)===0)continue;
-   by[r.date]={kcal,carb:Number.isFinite(carb)?carb:0,protein:Number.isFinite(protein)?protein:0,fat:Number.isFinite(fat)?fat:0,onbike:0,pre:0,meals:[],rows:Number(r.calorie_samples)||0,source:'health'};
-  }
-  return by;
- }
- async function fetchDashboardFile(path){
-  const url=new URL(path,location.href);url.searchParams.set('_refresh',String(Date.now()));
-  const res=await fetch(url.toString(),{cache:'no-store'});
-  if(!res.ok)throw Error(`${path}: HTTP ${res.status}`);
-  return res.json();
- }
- let syncing=false;
- async function refreshDashboard(){
-  if(syncing)return;syncing=true;el('refreshData').disabled=true;
-  el('syncStatus').textContent='Refreshing GitHub exports…';
-  const results=await Promise.allSettled([fetchDashboardFile(AUTO_FILES.intervals),fetchDashboardFile(AUTO_FILES.nutrition),fetchDashboardFile(AUTO_FILES.history)]);
-  const errors=[];
-  if(results[0].status==='fulfilled'){try{ingestIntervals(results[0].value,'GitHub auto-sync')}catch(e){errors.push('Intervals: '+e.message)}}else errors.push('Intervals: '+results[0].reason.message);
-  if(results[2].status==='fulfilled'){try{HISTORICAL_FOOD=historicalNutrition(results[2].value)}catch(e){errors.push('MFP history: '+e.message)}}else errors.push('MFP history: '+results[2].reason.message);
-  if(results[1].status==='fulfilled'){try{CURRENT_FOOD=healthNutrition(results[1].value)}catch(e){errors.push('Nutrition: '+e.message)}}else errors.push('Nutrition: '+results[1].reason.message);
-  combineFood();
-  MFP_FILE_NAME='GitHub / MFP history + Apple Health';
-  el('mfpStatus').textContent=`Combined ${Object.keys(MFP).length} unique nutrition dates: ${Object.keys(HISTORICAL_FOOD).length} historical MFP and ${Object.keys(CURRENT_FOOD).length} Apple Health. Apple Health takes priority on overlapping dates. Completeness not guaranteed.`;
-  el('syncStatus').textContent=errors.length?'Sync finished with issue(s): '+errors.join(' · '):`All three exports refreshed at ${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}. ${Object.keys(MFP).length} unique food dates loaded.`;
-  syncing=false;el('refreshData').disabled=false;
- }
- el('refreshData').addEventListener('click',refreshDashboard);
- if(location.protocol==='http:'||location.protocol==='https:')refreshDashboard();
- else el('syncStatus').textContent='Auto-sync runs on the hosted website. Open the GitHub Pages version, or use manual imports below.';
-function completedRide(a){return /^(Ride|VirtualRide|GravelRide|MountainBikeRide|EBikeRide)$/i.test(a.type||'')}
-function activityPseudo(a){return {type:'Ride',name:a.name||'Completed ride',start_date_local:a.start_date_local,moving_time:Number(a.moving_time)||0,icu_training_load:Number(a.icu_training_load)||0,joules:Number(a.icu_joules)||0,workout_doc:{duration:Number(a.moving_time)||0,average_watts:Number(a.icu_average_watts)||0},actual:true};}
-function groupEvents(events){const by={};for(const e of events){const key=String(e.start_date_local||'').slice(0,10);if(/^\d{4}-\d{2}-\d{2}$/.test(key))(by[key]??=[]).push(e)}return by}
-function adjustedCalendar(){
- // Retrospective: do not keep a scheduled ride, gym session or activation
- // after its date has passed. Only genuinely recorded sessions supply actual work.
- const planned=groupEvents(PLANNED),actual=groupEvents(COMPLETED),by={};
- const today=dateKey(new Date());
- const yesterdayDate=new Date();yesterdayDate.setDate(yesterdayDate.getDate()-1);
- const yesterday=dateKey(yesterdayDate);
- const allKeys=new Set([...Object.keys(planned),...Object.keys(actual)]);
- for(const key of allKeys){
-   if(key>today || (key===today && !(actual[key]||[]).some(a=>completedRide(a)||isStrength(a)))){by[key]=(planned[key]||[]).slice();continue;}
-   const activities=actual[key]||[];
-   const workouts=[];
-   for(const a of activities){
-     if(completedRide(a))workouts.push(activityPseudo(a));
-     else if(isStrength(a))workouts.push({type:'WeightTraining',name:a.name||'Completed strength',start_date_local:key,moving_time:Number(a.moving_time)||0,actual:true});
-     // Recorded mobility is informative, but does not earn an exercise calorie allowance.
-     else if(/Yoga|Stretch/i.test(a.type||''))workouts.push({type:'Yoga',name:a.name||'Completed mobility',start_date_local:key,actual:true});
-   }
-   // An explicit rest marker preserves known/rest-day context. A missed planned
-   // session is NOT carried into retrospective energy expenditure.
-   if(!workouts.length)workouts.push({type:null,name:'No completed training recorded',category:'NOTE',start_date_local:key,actual:true,notRecorded:true});
-   by[key]=workouts;
- }
- return by;
+function todayPanel(x,title,ref){
+ const c=x.c,dv=(a,b,u)=>{if(!ref)return'';const df=a-b;return Math.abs(df)<0.5?'<small>same as plan</small>':'<small>'+(df>0?'+':'−')+N0(Math.abs(df))+u+' vs plan</small>'};
+ let h='<section class="panel"><h2>'+title+' '+tag(c.tier)+'</h2><p><b>'+esc(c.label)+'</b></p>';
+ h+='<div class="grid"><div class="m"><small>Target intake</small><b>'+N0(x.intake)+' kcal</b><small>Modelled maintenance '+N0(x.M)+' · '+(x.deficit>0?'deficit −'+x.deficit:x.gap>25?'+'+N0(x.gap)+' above':'at maintenance')+'</small>'+dv(x.intake,ref&&ref.intake,' kcal')+'</div>'
+  +'<div class="m"><small>Carbohydrate</small><b>'+N0(x.C)+' g</b><small>'+N2(x.carbKg)+' g/kg'+(c.fuelG>0?' · includes ~'+N0(c.fuelG)+' g on bike':'')+'</small>'+dv(x.C,ref&&ref.C,' g')+'</div>'
+  +'<div class="m"><small>Protein</small><b>'+N0(x.P)+' g</b><small>'+N1(SET.protein)+' g/kg</small>'+dv(x.P,ref&&ref.P,' g')+'</div>'
+  +'<div class="m"><small>Fat</small><b>'+N0(x.fat)+' g</b><small>floor '+N0(x.Fl)+' g</small>'+dv(x.fat,ref&&ref.fat,' g')+'</div></div>';
+ if(x.notes.length)h+='<p class="note">'+x.notes.map(esc).join(' · ')+'</p>';
+ return h+'</section>';
 }
-function reviewTrainingState(key,plannedEvents,actualEvents,latestActivity){
- const plannedWork=plannedEvents.filter(e=>isRide(e)||isStrength(e));
- const done=actualEvents.filter(a=>completedRide(a)||isStrength(a));
- if(!plannedWork.length)return done.length?'Unplanned training':'No session planned';
- if(!done.length){
-   // An export does not prove a ride was skipped. When recent activities are
-   // present, treat this as a provisional missed-session result.
-   const fresh=latestActivity&&Math.abs((new Date(key+'T12:00:00')-new Date(latestActivity+'T12:00:00'))/86400000)<=3;
-   return fresh?'Not completed / no recording':'No recording — refresh export';
+function renderToday(){
+ const root=$('p-today'),pl=planRange(TODAY,7),d=pl[0],t=pl[1],c=d.c;
+ const f=effLogged(TODAY),raw=FOOD[TODAY];
+ if(MEALS==null)MEALS=defaultMeals();
+ const pendFuel=c.rides.filter(r=>!r.done).reduce((s,r)=>s+r.fuel.g*r.mins/60,0);
+ const pvaOn=c.rides.some(x=>x.done)&&plannedCore(TODAY).rides.length>0,pr0=pvaOn?planRange(TODAY,7,true)[0]:null,A=pvaOn?pr0:d;
+ let h=todayPanel(A,pvaOn?'Today · '+esc(dayLabel(TODAY))+' · as planned':'Today · '+esc(dayLabel(TODAY)),null);
+ if(pvaOn)h+=todayPanel(d,'Today · updated for what you did',pr0);
+ h+=planVsActualHtml(d);
+ h+='<section class="panel"><h2>What\'s left today</h2>';
+ if(!raw){
+  const last=Object.keys(FOOD).sort().pop();
+  h+='<p class="warn">Nothing logged for today in the feed yet.</p><p class="note">Latest food date in your data: '+esc(last||'none')+'. Log in MyFitnessPal, then run your Shortcut and press Refresh. A missing log is never treated as zero eaten, but the figures below show your full target as "left".</p>';
  }
- const plannedRide=plannedEvents.filter(isRide).reduce((n,e)=>n+planDetails(e).seconds,0);
- const actualRide=done.filter(completedRide).reduce((n,a)=>n+(Number(a.moving_time)||0),0);
- if(plannedRide&&actualRide&&actualRide<plannedRide*.85)return 'Shorter than planned';
- if(plannedRide&&!actualRide)return 'Planned ride not recorded';
- return 'Completed / modified';
+ const L=f||{kcal:0,carb:0,protein:0,fat:0};
+ const tgtKcal=d.intake,tgtC=d.C,tgtP=d.P,tgtF=d.fat;
+ h+=barRow('Calories',L.kcal,tgtKcal,' kcal')+barRow('Carbs',L.carb,tgtC,' g',{note:!SET.logRide&&f?'incl. ride CHO In':''})+barRow('Protein',L.protein,tgtP,' g')+barRow('Fat',L.fat,tgtF,' g');
+ if(raw&&raw.kcal<1200)h+='<p class="note">Logging in progress: only '+N0(raw.kcal)+' kcal so far, so these are early numbers.</p>';
+ if(IFOOD[TODAY]&&HEALTH[TODAY]&&Math.abs(IFOOD[TODAY].kcal-HEALTH[TODAY].kcal)>0.05*Math.max(IFOOD[TODAY].kcal,HEALTH[TODAY].kcal))h+='<p class="note warn">Intervals shows '+N0(IFOOD[TODAY].kcal)+' kcal for today but the nutrition file shows '+N0(HEALTH[TODAY].kcal)+'. The page uses Intervals; run your Shortcut again if that looks stale.</p>';
+ const remC=Math.max(0,tgtC-L.carb),remP=Math.max(0,tgtP-L.protein),remK=Math.max(0,tgtKcal-L.kcal),remF=Math.max(0,tgtF-L.fat);
+ const mealC=SET.logRide?remC:Math.max(0,remC-pendFuel);
+ h+='<h3>Split across the meals you have left</h3><div class="chips" id="mealChips">'+[1,2,3,4,5].map(n=>'<button class="chip" data-n="'+n+'" aria-pressed="'+(MEALS===n)+'">'+n+' meal'+(n>1?'s':'')+'</button>').join('')+'</div>';
+ const n=MEALS;
+ if(c.pending&&pendFuel>0)h+='<p class="note">'+(SET.logRide?'Your remaining carbohydrate includes about '+N0(pendFuel)+' g of ride fuel; log it in MFP so it counts.':'About '+N0(pendFuel)+' g of ride fuel is taken off the carbohydrate left for meals, because you told the planner ride fuel is not in your food log.')+'</p>';
+ h+='<div class="grid"><div class="m"><small>Per meal · energy</small><b>'+N0(remK/n)+' kcal</b></div><div class="m"><small>Per meal · carbs</small><b>'+N0(mealC/n)+' g</b></div><div class="m"><small>Per meal · protein</small><b>'+N0(remP/n)+' g</b><small>'+(remP/n>45?'large for one meal: add a protein snack':remP/n<20&&remP>0?'small: fine, or fold into fewer meals':'good size (25–40 g is the usual range)')+'</small></div><div class="m"><small>Per meal · fat</small><b>'+N0(remF/n)+' g</b></div></div>';
+ h+='<p class="note">Remaining is the target minus what the feed shows so far (last synced by your Shortcut). Calories left cannot go below zero here; if you are over, the bar turns amber.</p></section>';
+ const fp=fuelPlanHtml(d);
+ if(fp)h+='<section class="panel"><h2>Session fuelling</h2>'+fp+'</section>';
+ h+='<section class="panel"><h2>Tomorrow · '+esc(dayLabel(addDays(TODAY,1)))+' '+tag(t.c.tier)+'</h2><p><b>'+esc(t.c.label)+'</b></p><div class="grid"><div class="m"><small>Target intake</small><b>'+N0(t.intake)+' kcal</b><small>maintenance '+N0(t.M)+(t.deficit>0?' · −'+t.deficit:'')+'</small></div><div class="m"><small>Carbohydrate</small><b>'+N0(t.C)+' g</b><small>'+N2(t.carbKg)+' g/kg'+(t.c.fuelG>0?' · ~'+N0(t.c.fuelG)+' g on bike':'')+'</small></div><div class="m"><small>Protein</small><b>'+N0(t.P)+' g</b></div><div class="m"><small>Fat</small><b>'+N0(t.fat)+' g</b></div></div>'
+  +(t.c.rides.length?'<p class="note">On the bike: '+t.c.rides.map(r=>esc(r.name)+' '+N0(r.mins)+' min, '+(r.fuel.g?r.fuel.g+' g/h':'fuel optional')).join(' · ')+'. Tonight: carbohydrate-containing dinner, and the breakfast 1–4 h before is the one that counts.</p>':'')
+  +(t.notes.length?'<p class="note">'+t.notes.map(esc).join(' · ')+'</p>':'')+'</section>';
+ root.innerHTML=h;
+ root.querySelectorAll('#mealChips .chip').forEach(b=>b.addEventListener('click',()=>{MEALS=+b.dataset.n;renderToday()}));
 }
-function formatDelta(v,unit){return (v>0?'+':'')+Math.round(v).toLocaleString()+unit}
-// Manual on-bike carbs are a subset of Apple Health daily carbohydrate totals, not extra intake.
-const BIKE_STORAGE_KEY='p280_onbike_v10';
-let bikeOverrides={};
-try{bikeOverrides=JSON.parse(localStorage.getItem(BIKE_STORAGE_KEY)||'{}')||{}}catch(e){bikeOverrides={}}
-function onBikeFor(key,rides){
- const value=Number(bikeOverrides[key]);
- if(Object.prototype.hasOwnProperty.call(bikeOverrides,key)&&Number.isFinite(value))return {grams:Math.max(0,value),source:'Manual override'};
- const available=rides.filter(a=>a.carbs_ingested!=null&&a.carbs_ingested!==''&&Number.isFinite(Number(a.carbs_ingested)));
- return available.length?{grams:available.reduce((sum,a)=>sum+Math.max(0,Number(a.carbs_ingested)),0),source:available.length===rides.length?'Intervals.icu CHO In':'Intervals.icu CHO In (some rides missing)'}:{grams:null,source:'No CHO In recorded'};
-}
-const BIKE_LOGGED_KEY='p280_bike_logged_in_food_v12';
-let bikeLogged={};
-try{bikeLogged=JSON.parse(localStorage.getItem(BIKE_LOGGED_KEY)||'{}')||{}}catch(e){bikeLogged={}}
-function trafficState(actual,target,kind,incomplete){
- if(incomplete||!Number.isFinite(actual)||!Number.isFinite(target)||target<=0)return ['grey','Incomplete'];
- const ratio=actual/target;
- if(kind==='fat')return ratio>=.8?['green','Minimum met']:ratio>=.6?['yellow','Below minimum']:['red','Well below minimum'];
- if(kind==='protein')return ratio>=.9?['green','Target met']:ratio>=.75?['yellow','Slightly low']:['red','Low'];
- if(kind==='carb')return ratio>=.9?['green','Fuelled']:ratio>=.7?['yellow','Below target']:['red','Low for training'];
- return ratio>=.9&&ratio<=1.1?['green','Near target']:ratio>=.75&&ratio<=1.25?['yellow',ratio<1?'Below target':'Above target']:['red',ratio<1?'Well below':'Well above'];
-}
-function trafficTile(name,actual,target,kind,incomplete){
- const [tone,label]=trafficState(actual,target,kind,incomplete);
- return `<div class="traffic ${tone}"><strong>${escapeHTML(name)}</strong><div class="actual">${actual==null?'—':number(actual)} ${kind==='cal'?'kcal':'g'}</div><small>Target ${number(target)} ${kind==='cal'?'kcal':'g'}</small><small>${tone==='green'?'● Green':tone==='yellow'?'● Amber':tone==='red'?'● Red':'● Grey'} · ${label}</small></div>`;
-}
-function renderReconciliation(){const root=el('v6Content'),status=el('reviewStatus');if(!PLANNED.length){status.textContent='Load your Intervals V3 export first.';root.innerHTML='';return;}if(!COMPLETED.length){status.textContent='Planned calendar loaded. V3 completed activities are required for actual-vs-plan review.';root.innerHTML='';return;}const planBy=groupEvents(PLANNED),realBy=adjustedCalendar();const completedBy=groupEvents(COMPLETED);const food=MFP||{};const keys=[...new Set([...Object.keys(planBy),...Object.keys(completedBy),...Object.keys(food)])].filter(k=>k<=dateKey(new Date())&&k>=dateKey(new Date(Date.now()-20*86400000))).sort().reverse();status.textContent=`${COMPLETED.length} completed activities${MFP?' · '+Object.keys(MFP).length+' food-log dates':''} · Cycling based on Intervals power-meter kJ. Weight from latest Intervals activity: ${weight().toFixed(1)} kg (may be carried forward).`;
- const latestActivity=Object.keys(completedBy).sort().pop()||null;let rows='',cards='',cardCount=0;let considered=0,sumCarb=0,sumTarget=0,sumKcal=0,sumRevised=0;for(const key of keys){const planned=nutritionFor(key,planBy),revised=nutritionFor(key,realBy),acts=completedBy[key]||[],rides=acts.filter(completedRide),actualKj=rides.reduce((s,a)=>s+(Number(a.icu_joules)||0),0)/1000,plannedKj=(planBy[key]||[]).filter(isRide).reduce((s,a)=>s+planDetails(a).joules,0)/1000,actualMins=rides.reduce((s,a)=>s+(Number(a.moving_time)||0),0)/60,plannedMins=(planBy[key]||[]).filter(isRide).reduce((s,a)=>s+planDetails(a).seconds,0)/60,foodDay=food[key],hasActivity=acts.length>0,hasPlan=(planBy[key]||[]).length>0;const isCurrent=key===dateKey(new Date()),meals=foodDay?new Set((foodDay.meals||[]).map(x=>x.toLowerCase())):new Set(),healthLog=!!foodDay&&foodDay.source==='health',partial=!!foodDay&&(isCurrent||(!healthLog&&!meals.has('dinner')&&!meals.has('lunch'))),state=!foodDay?'No food log':isCurrent?(Number(foodDay.kcal)>=1800?'Live · provisional':'Logging in progress'):partial?'Partial':healthLog?'Logged':'Logged';let advice='';if(!foodDay)advice='No MFP entries; do not interpret as zero intake.';else if(isCurrent&&Number(foodDay.kcal)<1800)advice='Today: colours activate after 1,800 kcal has been logged.';else if(isCurrent)advice='Today: live nutrition comparison; colours will update after your next data refresh.';else if(partial)advice='Partial-day food log: do not flag carbohydrate/calorie shortfall yet.';else if(foodDay.carb<revised.targetCarb-30)advice='Carbohydrate below revised target; check recovery, next-day workload and hunger.';else if(foodDay.carb>revised.targetCarb+35)advice='Carbohydrate above revised target; evaluate alongside training and weight trend.';else advice='Daily carbohydrate intake close to revised target.';
- const trainingState=reviewTrainingState(key,planBy[key]||[],acts,latestActivity);const safeKey=escapeHTML(key);const plannedKcal=planned.macroEnergy,updatedKcal=revised.macroEnergy;rows+=`<tr><td>${safeKey}<br><small>${escapeHTML(trainingState)}</small></td><td>${Math.round(plannedMins)} / ${Math.round(actualMins)} min<br><small>${Math.round(plannedKj)} / ${Math.round(actualKj)} kJ</small></td><td>${number(plannedKcal)} / ${number(updatedKcal)}</td><td>${planned.targetCarb} / ${revised.targetCarb} g</td><td>${foodDay?number(foodDay.kcal)+' kcal<br>'+Math.round(foodDay.carb)+' g carbs':'—'}</td><td>${escapeHTML(state)}</td></tr>`;
- if(foodDay&&!partial){considered++;sumCarb+=foodDay.carb;sumTarget+=revised.targetCarb;sumKcal+=foodDay.kcal;sumRevised+=revised.macroEnergy;}
- const bikeInfo=onBikeFor(key,rides);const bikeAmount=bikeInfo.grams;const bikeRate=bikeAmount!==null&&actualMins>0?Math.round(bikeAmount*60/actualMins):null;
 
- const incompleteForLights=!foodDay||(isCurrent?Number(foodDay.kcal)<1800:(foodDay.source!=='health'&&partial));
- const lights=`<div class="traffic-grid">${trafficTile('Calories',foodDay?.kcal,revised.macroEnergy,'cal',incompleteForLights)}${trafficTile('Carbohydrates',foodDay?.carb,revised.targetCarb,'carb',incompleteForLights)}${trafficTile('Protein',foodDay?.protein,revised.protein,'protein',incompleteForLights)}${trafficTile('Fat',foodDay?.fat,revised.fatFloor,'fat',incompleteForLights)}</div><p class="traffic-legend">Green = broadly on target; amber = review; red = significant difference; grey = incomplete or missing. Today’s colours activate at 1,800 kcal logged and remain provisional until your diary is finished. Apple Health cannot confirm a finished food diary. Calorie target is provisional.</p>`;
- const bikeEntry=`<div class="metric"><small>On-bike carbohydrates · Intervals.icu</small><b>${bikeAmount===null?'—':number(bikeAmount)+' g'}</b><small>${bikeRate===null?'Intake rate unavailable':bikeRate+' g/hour'} · ${escapeHTML(bikeInfo.source)}</small><small>CHO In · Not added to daily food totals</small></div>`;
- if(cardCount++<7)cards+=`<details class="metric" style="margin-top:10px" ${key===dateKey(new Date())?'open':''}><summary><strong>${safeKey}</strong> · ${escapeHTML(trainingState)} · ${rides.length} ride(s)</summary>${lights}<div class="detail-metrics" style="margin-top:12px">${bikeEntry}<div class="metric"><small>Plan → actual cycling</small><b style="font-size:18px">${Math.round(plannedKj)} → ${Math.round(actualKj)} kJ</b><small>${Math.round(plannedMins)} → ${Math.round(actualMins)} min · load ${rides.reduce((s,a)=>s+(Number(a.icu_training_load)||0),0)}</small></div><div class="metric"><small>Prescribed → revised carbohydrates</small><b style="font-size:18px">${planned.targetCarb} → ${revised.targetCarb} g</b><small>Revised from actual training and recovery</small></div><div class="metric"><small>Food: prescription → recalculated → logged</small><b style="font-size:18px">${number(plannedKcal)} / ${number(updatedKcal)} / ${foodDay?number(foodDay.kcal):'—'} kcal</b></div></div><p class="${partial?'warn':(!foodDay?'note':'good')}">${escapeHTML(advice)}</p>${foodDay?`<p class="note">Compared with revised: ${formatDelta(foodDay.carb-revised.targetCarb,' g carbs')} and ${formatDelta(foodDay.kcal-updatedKcal,' kcal food')}. This is not a calculated energy surplus/deficit.</p>`:''}<p class="note">${hasPlan?'Calendar prescription available.':'No planned workout recorded.'} ${hasActivity?'Completed activities available.':'No completed activity recorded; the actual-work estimate uses zero, but check the Intervals export is current.'}</p></details>`;
+/* ============ WEEK ============ */
+function renderWeek(){
+ const rows=planRange(TODAY,7);
+ for(const r of rows)if(r.date>=TODAY){SNAP[r.date]={kcal:r.intake,carb:r.C,protein:r.P,fat:r.fat,tier:r.c.tier,at:TODAY}}
+ try{const keys=Object.keys(SNAP).sort();while(keys.length>90)delete SNAP[keys.shift()];localStorage.setItem(PKEY,JSON.stringify(SNAP))}catch(e){}
+ const sumIn=rows.reduce((s,r)=>s+r.intake,0),sumM=rows.reduce((s,r)=>s+r.M,0),net=sumIn-sumM,rate=net/7700;
+ const r0=rows[0],B=r0.B,got=rows.reduce((s,r)=>s+r.deficit,0);
+ let h='<section class="panel"><h2>Seven-day plan</h2><div class="grid">'
+  +'<div class="m"><small>Average intake</small><b>'+N0(sumIn/7)+' kcal/day</b><small>modelled maintenance '+N0(sumM/7)+'</small></div>'
+  +'<div class="m"><small>Planned weekly balance</small><b>'+SG(net)+' kcal</b><small>≈ '+SG(rate,2)+' kg/week (model estimate)</small></div>'
+  +'<div class="m"><small>Deficit target / achieved</small><b>'+N0(B)+' / '+N0(got)+' kcal</b><small>target '+N2(SET.rate)+' kg/week</small></div></div>';
+ if(SET.rate>0&&got<B*.9){
+  const lev=[];if(rows.some(r=>r.adds>0))lev.push('recovery/preparation carbohydrate additions');lev.push('the protein or fat floors','the per-day deficit caps in Settings');
+  h+='<p class="warn">The week can only fit a −'+N0(got)+' kcal deficit under your rules, short of the −'+N0(B)+' target. What limits it: deficit is only taken from fat above its floor (never from the carbohydrate a session needs), so rest and tempo days have little room once protein, fat floor and carbohydrate are met. Levers: '+lev.join(', ')+'.</p>';
  }
- root.innerHTML=`<h3>Daily drill-down</h3>${cards||'<p>No matching completed or nutrition dates yet.</p>'}<h3 style="margin-top:22px">Rolling comparison</h3><div class="scroll"><table><thead><tr><th>Date</th><th>Planned / actual cycling</th><th>Food target / revised</th><th>Carbs target / revised</th><th>MFP intake</th><th>Log status</th></tr></thead><tbody>${rows}</tbody></table></div><p class="note">Past scheduled sessions are removed from actual-work calculations when no completed activity exists; a missing recording is not proof of a skipped workout. Refresh Intervals before interpreting it as missed. The calendar may have been edited after training; historical prescribed values are reconstructed, not frozen snapshots. MFP exercise calorie rows are deliberately excluded. Apple Health dietary totals do not identify meals or on-bike fuel. Missing food or meals must not be interpreted as under-fuelling. Training energy and daily energy remain estimates.</p>`;
- const summary=document.createElement('div');summary.className='review-summary';summary.innerHTML=`<div class="grid"><div class="metric"><small>Days with food logs in reviewed window</small><b>${Object.keys(food).length}</b></div><div class="metric"><small>Days with complete-looking food logs</small><b>${considered}</b><small>Meal presence only; not proof of completeness</small></div>${considered?`<div class="metric"><small>Carbohydrates: logged vs revised targets</small><b>${Math.round(sumCarb)} / ${Math.round(sumTarget)} g</b></div><div class="metric"><small>Food: logged vs revised prescriptions</small><b>${number(sumKcal)} / ${number(sumRevised)} kcal</b></div>`:''}</div>`;
- const firstDay=root.querySelector('details.metric');
- if(firstDay)firstDay.insertAdjacentElement('afterend',summary);else root.prepend(summary);
+ h+='<div class="scroll"><table><thead><tr><th>Day</th><th>Training</th><th>Intake kcal</th><th>vs maintenance</th><th>Carbs</th><th>On bike</th><th>Protein</th><th>Fat</th><th>EA*</th></tr></thead><tbody>';
+ for(const r of rows){
+  const eaCls=r.ea<SET.eaFloor?'bad':r.ea<30?'warn':'';
+  h+='<tr><td>'+esc(dayLabel(r.date))+'</td><td>'+esc(r.c.label)+' '+tag(r.c.tier)+(r.notes.length?'<br><small>'+r.notes.map(esc).join(' · ')+'</small>':'')+'</td><td><b>'+N0(r.intake)+'</b><br><small>maint. '+N0(r.M)+'</small></td><td>'+(r.deficit>0?'−'+r.deficit:r.gap>25?'+'+N0(r.gap):'≈0')+'</td><td><b>'+N0(r.C)+' g</b><br><small>'+N2(r.carbKg)+' g/kg</small></td><td>'+(r.c.fuelG>0?N0(r.bike.gph)+' g/h<br><small>'+N0(r.c.fuelG)+' g</small>':'—')+'</td><td>'+N0(r.P)+' g</td><td>'+N0(r.fat)+' g</td><td class="'+eaCls+'">'+N0(r.ea)+'</td></tr>';
+ }
+ h+='</tbody></table></div><p class="note">*EA = energy availability, (intake − net exercise energy) ÷ fat-free mass, in kcal/kg FFM, using FFM ≈ '+N1(rows[0].ffm)+' kg from a smart-scale body-fat estimate (noisy). The 30 kcal/kg threshold comes mostly from studies in women; for men there is no established cut-off, so this is a watch-line, not a diagnosis. Amber below 30, red below your floor ('+SET.eaFloor+').</p>';
+ h+='<p class="note">Order of priorities in the engine: protein, fat floor, the carbohydrate your sessions call for, then the deficit. Deficit is taken from fat first, down to its floor, so session carbohydrate and protein stay intact; key and long days have their own, separate cap. Targets are in logged-kcal units once you apply the Trend-tab offset.</p></section>';
+ $('p-week').innerHTML=h;
 }
-['baseline','goalweight','proteinKg','fatKg','strengthKcal','weight','efficiency','rhrKcal','weightMode'].forEach(id=>el(id).addEventListener('input',()=>{renderReconciliation();renderCalibration()}));
 
- // V16 calibration is observational: no automatic changes to planning settings.
- const CAL_EXCLUDE_KEY='p280_calibration_excluded_v16';
- let calExcluded={};try{calExcluded=JSON.parse(localStorage.getItem(CAL_EXCLUDE_KEY)||'{}')||{}}catch(e){}
- const calDay=(key,offset)=>{const d=new Date(key+'T12:00:00');d.setDate(d.getDate()+offset);return dateKey(d)};
- const calMean=a=>a.length?a.reduce((n,x)=>n+x,0)/a.length:null;
- const calFmt=(x,d=0)=>x==null||!Number.isFinite(x)?'—':x.toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d});
- function renderCalibration(){
-  const root=el('calibrationContent');if(!root)return;
-  const today=dateKey(new Date()),yesterday=calDay(today,-1),weights={};
-  for(const w of WELLNESS){const k=String(w.id||w.date||'').slice(0,10),v=Number(w.weight);if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&Number.isFinite(v)&&v>=40&&v<=180)weights[k]=v;}
-  const food=MFP||{};
-  if(!Object.keys(weights).length||!Object.keys(food).length){root.innerHTML=`<p class="warn">${!Object.keys(weights).length?'No dated Wellness weights found in Intervals export. ':''}${!Object.keys(food).length?'No historical MFP or Apple Health dietary energy records loaded.':''}</p><p class="note">Intervals export must include a <code>wellness</code> array; nutrition exports should contain dated dietary totals.</p>`;return;}
-  // Use complete past days only. Today's food is usually still being logged.
-  const windowKeys=n=>Array.from({length:n},(_,i)=>calDay(yesterday,i-(n-1)));
-  const wk=windowKeys(42),k28=wk.slice(-28),k14=wk.slice(-14);
-  const suspicious=k=>{const f=food[k];if(!f)return false;const meals=(f.meals||[]).map(x=>String(x).toLowerCase());const missingMain=f.source==='history'&&(!meals.some(x=>x.includes('lunch'))||!meals.some(x=>x.includes('dinner')));return Number(f.kcal)<1200||Number(f.kcal)>6500||Number(f.rows)<2||missingMain;};
-  const validFood=k=>!!food[k]&&!calExcluded[k]&&!suspicious(k)&&Number.isFinite(Number(food[k].kcal));
-  const stats=ks=>{const logged=ks.filter(k=>!!food[k]),valid=ks.filter(validFood);return {logged:logged.length,valid:valid.length,avg:calMean(valid.map(k=>Number(food[k].kcal))),excluded:ks.filter(k=>calExcluded[k]).length,flagged:ks.filter(k=>!calExcluded[k]&&suspicious(k)).length}};
-  const f7=stats(wk.slice(-7)),f14=stats(k14),f28=stats(k28);
-  const wavg=(end,days=7)=>{const ks=Array.from({length:days},(_,i)=>calDay(end,i-(days-1))),vals=ks.filter(k=>weights[k]!=null).map(k=>weights[k]);return {avg:calMean(vals),count:vals.length}};
-  const wNow=wavg(yesterday),wPrevious=wavg(calDay(yesterday,-7)),w14=wavg(calDay(yesterday,-14)),w28=wavg(calDay(yesterday,-28));
-  const change7=wNow.count>=5&&wPrevious.count>=5?wNow.avg-wPrevious.avg:null;
-  const change14=wNow.avg!=null&&w14.avg!=null?wNow.avg-w14.avg:null;
-  const change28=wNow.avg!=null&&w28.avg!=null?wNow.avg-w28.avg:null;
-  const coverage28=f28.valid/28,weightGood=wNow.count>=5&&w28.count>=5;
-  const enough=f28.valid>=24&&weightGood;
-  // Rough 7700 kcal/kg energy equivalent; weight shifts can reflect glycogen/water.
-  const maintenance=enough?f28.avg-(change28*7700/28):null;
-  const efficiency=clamp((Number(el('efficiency').value)||23)/100,.22,.24),resting=clamp(Number(el('rhrKcal').value)||1650,1000,2500),strengthUnit=clamp(Number(el('strengthKcal').value)||125,0,500);
-  const completedBy=groupEvents(COMPLETED);
-  const exerciseByDay=k=>{const acts=completedBy[k]||[],rides=acts.filter(completedRide),hours=rides.reduce((s,a)=>s+(Number(a.moving_time)||0),0)/3600,gross=rides.reduce((s,a)=>s+(Number(a.icu_joules)||0)/4184/efficiency,0),cycling=Math.max(0,gross-resting*hours/24),strength=acts.filter(a=>isStrength(a)).length*strengthUnit;return {value:cycling+strength,rides:rides.length,missing:rides.some(a=>!(Number(a.icu_joules)>0))};};
-  const exercise=k28.map(exerciseByDay),missingPower=exercise.filter(x=>x.missing).length;
-  const avgExercise=calMean(exercise.map(x=>x.value));
-  const exercise14=k14.map(exerciseByDay),avgExercise14=calMean(exercise14.map(x=>x.value)),missingPower14=exercise14.filter(x=>x.missing).length;
-  const provisionalFood=f14.valid>=10;
-  const provisionalWeight=wNow.count>=5&&w14.count>=5;
-  const provisionalReady=provisionalFood&&provisionalWeight&&missingPower14===0;
-  const maintenance14=provisionalReady?f14.avg-change14*7700/14:null;
-  const baseline14=maintenance14==null?null:maintenance14-avgExercise14;
+/* ============ REVIEW ============ */
+function renderReview(){
+ const days=[];for(let i=1;i<=14;i++)days.push(addDays(TODAY,-i));
+ let rowsH='',nCmp=0,sK=0,sT=0,sC=0,sCT=0,protOk=0,protN=0,fuelN=0,fuelOk=0,fuelMiss=0,gphs=[];const TS={};
+ const fuelList=[];
+ for(const k of days){
+  const d=planDay(k),f=effLogged(k),flag=foodFlag(k),c=d.c,usable=flag==='ok';
+  const L=usable?f:null;
+  const lk=light(L&&L.kcal,d.intake,'cal'),lc=light(L&&L.carb,d.C,'carb'),lp=light(L&&L.protein,d.P,'protein'),lf=light(L&&L.fat,d.Fl,'fat');
+  if(usable){nCmp++;sK+=f.kcal;sT+=d.intake;sC+=f.carb;sCT+=d.C;protN++;if(f.protein>=1.8*d.w)protOk++;const tk=c.tier==='light'?'easy':c.tier;(TS[tk]=TS[tk]||[]).push({kcal:f.kcal,M:d.M,carb:f.carb,w:d.w,tk:d.carbKg,tgt:d.intake,pr:f.protein})}
+  const sn=SNAP[k];
+  for(const r of c.rides){if(r.done&&r.fuel.g>=30&&r.mins>=45){const rate=r.carbsIn!=null?r.carbsIn/(r.mins/60):null;if(rate!=null){fuelN++;if(rate>=r.fuel.g*.8)fuelOk++;gphs.push(rate)}else fuelMiss++;fuelList.push({k,r,rate})}}
+  rowsH+='<tr><td>'+esc(dayLabel(k))+'<br><small>'+(c.missed?'planned ride not recorded':c.rides.length?c.rides.map(r=>N0(r.mins)+' min '+r.int).join(', '):c.strs.length?'strength':'no ride')+(()=>{const pcR=plannedCore(k),pm=Math.round(pcR.hours*60),am=Math.round(c.hours*60);return pcR.rides.length&&c.rides.some(r=>r.done)&&Math.abs(pm-am)>=Math.max(10,.1*pm)?'<br>planned '+pm+' min':''})()+'</small></td>'
+   +'<td>'+esc(c.label)+'</td>'
+   +'<td>'+(L?'<span class="lt '+lk+'"></span>'+N0(L.kcal):'—')+'<br><small>target '+N0(d.intake)+'</small></td>'
+   +'<td>'+(L?'<span class="lt '+lc+'"></span>'+N0(L.carb)+' g':'—')+'<br><small>target '+N0(d.C)+'</small></td>'
+   +'<td>'+(L?'<span class="lt '+lp+'"></span>'+N0(L.protein)+' g':'—')+'<br><small>target '+N0(d.P)+'</small></td>'
+   +'<td>'+(L?'<span class="lt '+lf+'"></span>'+N0(L.fat)+' g':'—')+'<br><small>floor '+N0(d.Fl)+'</small></td>'
+   +'<td>'+(usable?'<small>ok</small>':'<small class="'+(flag==='missing'?'':'warn')+'">'+esc(FLAGTXT[flag]||flag)+'</small>')+(flag==='thin'?'<br><button class="btn" data-trust="'+k+'" style="padding:4px 8px;font-size:12px;width:auto">Mark day complete</button>':'')+(sn&&sn.at!==k?'<br><small>saved plan: '+N0(sn.kcal)+' kcal / '+N0(sn.carb)+' g</small>':'')+'</td></tr>';
+ }
+ let h='<section class="panel"><h2>Last 14 days · actual vs target</h2><div class="grid">'
+  +'<div class="m"><small>Days usable</small><b>'+nCmp+' / 14</b><small>others missing or flagged incomplete</small></div>'
+  +(nCmp?'<div class="m"><small>Logged vs target intake</small><b>'+N0(sK/nCmp)+' / '+N0(sT/nCmp)+'</b><small>kcal/day average ('+SG((sK-sT)/nCmp)+')</small></div><div class="m"><small>Carbs logged vs target</small><b>'+N0(sC/nCmp)+' / '+N0(sCT/nCmp)+' g</b><small>per day</small></div><div class="m"><small>Protein ≥ 1.8 g/kg</small><b>'+protOk+' / '+protN+' days</b></div>':'')
+  +'<div class="m"><small>Ride fuelling</small><b>'+(fuelN?fuelOk+' / '+fuelN:'—')+'</b><small>rides with a ≥30 g/h plan that reached ≥80% of it'+(gphs.length?' · mean '+N0(mean(gphs))+' g/h':'')+(fuelMiss?' · '+fuelMiss+' with no CHO In recorded, not counted':'')+'</small></div></div>';
+ h+='<p class="note">Targets are recalculated with what you actually did (completed ride kJ and zone time), using today\'s settings. A day only counts if its food log looks complete; incomplete or missing days are never read as under-eating. Colours: green on target, amber review, red well off.</p>';
+ const ORDER=[['rest','Rest'],['easy','Easy / light'],['moderate','Tempo'],['key','Key (threshold+)'],['long','Long (≥150 min)']];
+ const tr=ORDER.filter(o=>TS[o[0]]).map(([t,l])=>{const a=TS[t],n=a.length,kc=mean(a.map(x=>x.kcal)),tg=mean(a.map(x=>x.tgt)),ck=mean(a.map(x=>x.carb/x.w)),tk=mean(a.map(x=>x.tk)),pk=mean(a.map(x=>x.pr/x.w)),gk=kc-tg,gc=ck-tk;
+  return'<tr><td>'+l+(n<3?'<br><small class="muted">only '+n+' day'+(n>1?'s':'')+'</small>':'')+'</td><td>'+n+'</td><td>'+N0(kc)+'<br><small>target '+N0(tg)+'</small></td><td class="'+(Math.abs(gk)>150?'warn':'')+'"><b>'+SG(gk)+'</b></td><td>'+N1(ck)+' g/kg<br><small>target '+N1(tk)+'</small></td><td class="'+(gc<-0.5?'warn':'')+'"><b>'+(gc>=0?'+':'−')+N1(Math.abs(gc))+'</b></td><td class="'+(pk<1.8?'warn':'')+'">'+N1(pk)+'</td></tr>'}).join('');
+ const msgs=[],hardT=['key','long','moderate'].filter(t=>TS[t]);
+ if(hardT.length){const g=mean(hardT.flatMap(t=>TS[t].map(x=>x.carb/x.w-x.tk)));msgs.push(g<-0.5?'Harder days: carbohydrate averages '+N1(-g)+' g/kg below target. This is the first thing to fix.':'Harder days: carbohydrate is within '+N1(Math.abs(g))+' g/kg of target.')}
+ if(TS.rest){const g=mean(TS.rest.map(x=>x.kcal-x.tgt));if(g>150)msgs.push('Rest days: intake averages '+N0(g)+' kcal above target. Move that energy onto the harder days before cutting anything.')}
+ const allP=Object.values(TS).flat();if(allP.length&&mean(allP.map(x=>x.pr/x.w))<1.8)msgs.push('Protein averages '+N1(mean(allP.map(x=>x.pr/x.w)))+' g/kg, below the 1.8 g/kg line.');
+ h+='<h3>Scorecard by day type</h3><div class="scroll"><table style="min-width:0"><thead><tr><th>Day type</th><th>Days</th><th>Logged kcal</th><th>vs target</th><th>Carbs g/kg</th><th>vs target</th><th>Protein g/kg</th></tr></thead><tbody>'+tr+'</tbody></table></div>'+(msgs.length?'<p class="note"><b>Read-out:</b> '+msgs.map(esc).join(' ')+'</p>':'')+'<p class="note">Targets are recalculated with what you actually did. With only a few days per type this is a pattern to watch, not a result. Ride fuel that is not in your MFP log makes training days look lower than they were (Settings → ride fuel). Under-reporting in food logs averages about 19%, so compare day types with each other.</p>';
+ h+='<h3>Day by day</h3><div class="scroll"><table><thead><tr><th>Day</th><th>Session</th><th>Calories</th><th>Carbs</th><th>Protein</th><th>Fat</th><th>Log</th></tr></thead><tbody>'+rowsH+'</tbody></table></div>';
+ if(fuelList.length){
+  h+='<h3>Ride fuelling vs plan</h3><div class="scroll"><table><thead><tr><th>Ride</th><th>Plan</th><th>Actual CHO In</th><th>Result</th></tr></thead><tbody>'
+  +fuelList.map(x=>{const rate=x.rate;const st=rate==null?'not recorded':rate>=x.r.fuel.g*.8?'on plan':rate>=x.r.fuel.g*.5?'below plan':'well below plan';return'<tr><td>'+esc(dayLabel(x.k))+' · '+esc(x.r.name)+'</td><td>'+x.r.fuel.g+' g/h</td><td>'+(x.r.carbsIn!=null?N0(x.r.carbsIn)+' g · '+N0(rate)+' g/h':'—')+'</td><td class="'+(st==='on plan'?'good':st==='not recorded'?'':'warn')+'">'+st+'</td></tr>'}).join('')+'</tbody></table></div>';
+ }
+ h+='</section>';
+ $('p-review').innerHTML=h;
+ $('p-review').querySelectorAll('[data-trust]').forEach(b=>b.addEventListener('click',()=>{TRUST[b.dataset.trust]=true;try{localStorage.setItem('p280v24_trust',JSON.stringify(TRUST))}catch(e){}renderAll()}));
+}
 
-  const suggested=maintenance!=null?maintenance-avgExercise:null;
-  const baseline=Number(el('baseline').value)||1850;
-  const model14=baseline+avgExercise14;
-  const conf= !enough?'Insufficient data':missingPower?'Provisional · missing ride power':'Provisional · logging unverified';
-  const tile=(name,value,detail)=>`<div class="metric"><small>${name}</small><b>${value}</b><small>${detail}</small></div>`;
-  const weightDelta=(v)=>v==null?'—':(v>0?'+':'')+calFmt(v,2)+' kg';
-  const confidenceNote= !enough?'At least 24 plausible logged days out of 28 and at least five actual weigh-ins in each endpoint week are needed before estimating maintenance.': 'Calculated from the 28-day food average and the difference between two seven-day weight averages, 28 days apart. Not a measured metabolic rate.';
-  const rows=wk.slice().reverse().map(k=>{const f=food[k],w=weights[k],flag=suspicious(k),excluded=!!calExcluded[k],status=!f?'Missing':excluded?'Excluded':flag?'Review · unusual':'Unverified';return `<tr><td>${k}</td><td>${w==null?'—':calFmt(w,2)+' kg'}</td><td>${f?calFmt(Number(f.kcal))+' kcal':'—'}</td><td>${f?(f.source==='history'?'MFP history':'Apple Health'):'—'}</td><td>${f?Number(f.rows)||0:'—'}</td><td>${status}</td><td><input type="checkbox" data-exclude-date="${k}" aria-label="Exclude ${k} from calorie calibration" ${excluded?'checked':''} ${!f?'disabled':''} style="width:auto"/></td></tr>`}).join('');
-  root.innerHTML=`<p class="note">Window ends ${yesterday}; today is excluded until the food diary is finished. Weight data: ${Object.keys(weights).length} dated records. Food: ${Object.keys(food).length} unique dates (${Object.keys(HISTORICAL_FOOD).length} historical, ${Object.keys(CURRENT_FOOD).length} Apple Health). Overlapping dates use Apple Health.</p><div class="cal-grid">
-   ${tile('7-day food intake',f7.avg==null?'—':calFmt(f7.avg)+' kcal/day',`${f7.valid}/7 plausible logged days`)}
-   ${tile('7-day average weight',wNow.avg==null?'—':calFmt(wNow.avg,2)+' kg',`${wNow.count}/7 dated weights`)}
-   ${tile('7-day weight change',weightDelta(change7),`${wNow.count}/7 recent vs ${wPrevious.count}/7 preceding weights · need 5 each`)}
-   ${tile('14-day food intake',f14.avg==null?'—':calFmt(f14.avg)+' kcal/day',`${f14.valid}/14 plausible logged days`)}
-   ${tile('14-day weight change',weightDelta(change14),`7-day average vs 14 days earlier · ${w14.count}/7 earlier weights`)}
-   ${tile('28-day food intake',f28.avg==null?'—':calFmt(f28.avg)+' kcal/day',`${f28.valid}/28 plausible logged days`)}
-   ${tile('28-day weight change',weightDelta(change28),`7-day average vs 28 days earlier · ${w28.count}/7 earlier weights`)}
-   </div><p class="note">The 7-day weight change compares the latest seven completed days with the preceding seven days. It is a short-term trend only and does not affect energy calibration.</p><h3 style="margin:22px 0 10px">14-day provisional calibration</h3><p class="note">Early indication only. Needs at least 10 plausible food days, five weight records in each comparison week and complete recorded ride power. Weight comparison needs roughly 21 days of Wellness history.</p><div class="cal-grid">
-   ${tile('14-day food intake',f14.avg==null?'—':calFmt(f14.avg)+' kcal/day',`${f14.valid}/14 plausible logged days · need 10`)}
-   ${tile('14-day weight change',weightDelta(change14),`${wNow.count}/7 recent · ${w14.count}/7 earlier weights · need 5 each`)}
-   ${tile('14-day net exercise',calFmt(avgExercise14)+' kcal/day',`${missingPower14} day(s) with missing ride power`)}
-   ${tile('Model estimate · 14 days',calFmt(model14)+' kcal/day',`Existing baseline ${calFmt(baseline)} + net exercise; not independently calibrated`)}
-   ${tile('Provisional maintenance',maintenance14==null?'Not ready':calFmt(maintenance14)+' kcal/day',provisionalReady?'Food intake adjusted for measured weight trend':!provisionalFood?'Need '+Math.max(0,10-f14.valid)+' more plausible food day(s)':!provisionalWeight?'Waiting for measured weight in comparison weeks':'Missing ride power work')}
-   ${tile('Provisional non-exercise baseline',baseline14==null?'Not ready':calFmt(baseline14)+' kcal/day',baseline14==null?'No weight-adjusted estimate until minimum checks pass':`Difference vs current ${baseline14>=baseline?'+':''}${calFmt(baseline14-baseline)} kcal/day · do not auto-apply`)}
-   </div><h3 style="margin:22px 0 10px">28-day calibration · higher confidence</h3><div class="cal-grid">
-   ${tile('Estimated maintenance',maintenance==null?'Not ready':calFmt(maintenance)+' kcal/day',conf)}
-   ${tile('28-day net exercise',calFmt(avgExercise)+' kcal/day',`${missingPower} ride day(s) with missing power work`)}
-   ${tile('Suggested non-exercise baseline',suggested==null?'Not ready':calFmt(suggested)+' kcal/day',suggested==null?'Awaiting enough reliable data':`Current ${calFmt(baseline)} · difference ${suggested>=baseline?'+':''}${calFmt(suggested-baseline)} kcal/day`)}
-   </div><p class="${enough?'cal-caution':'cal-bad'}">${confidenceNote}</p>
-   <details class="metric" style="margin-top:14px"><summary><strong>Daily source checks and exclusions</strong> · ${f28.logged}/28 days logged · ${f28.flagged} unusual · ${f28.excluded} excluded</summary>
-   <p class="note">A recorded day is <strong>not proof of a complete food diary</strong>. Review missing meals and on-bike fuel in MyFitnessPal. Tick Exclude for days you know were incompletely logged. Historical days missing lunch or dinner, entries under 1,200 or over 6,500 kcal, or with fewer than two food entries, are automatically held for review. Holiday gaps are never filled with guessed calories. Changes are saved only in this browser.</p>
-   <div class="scroll"><table class="cal-table"><thead><tr><th>Date</th><th>Wellness weight</th><th>Food kcal</th><th>Source</th><th>Entries</th><th>Status</th><th>Exclude</th></tr></thead><tbody>${rows}</tbody></table></div></details>
-   <details class="metric" style="margin-top:12px"><summary>How the estimate works</summary><p class="note">The 14-day provisional estimate uses mean logged intake minus weight change × 7,700 ÷ 14, then subtracts 14-day net training expenditure for a suggested non-exercise baseline. This is only shown when the minimum food, weight and ride-power checks pass. The model estimate shown alongside it is baseline plus exercise, not an independent calibration. Estimated 28-day maintenance = mean 28-day food intake − (28-day weight change × 7,700 ÷ 28). Suggested baseline = estimated maintenance − mean net recorded training expenditure. The weight change compares two seven-day averages 28 days apart, requiring roughly 35 days of weight history. 7,700 kcal/kg is an approximation; hydration, glycogen and logging errors can dominate over short periods. Missing activities or missing power data can bias the baseline estimate. No changes are applied automatically.</p></details>`;
-  root.querySelectorAll('[data-exclude-date]').forEach(x=>x.addEventListener('change',()=>{if(x.checked)calExcluded[x.dataset.excludeDate]=true;else delete calExcluded[x.dataset.excludeDate];try{localStorage.setItem(CAL_EXCLUDE_KEY,JSON.stringify(calExcluded))}catch(e){}renderCalibration()}));
- }
+/* ============ TREND ============ */
+function weightChart(){
+ const NDAYS=56,start=addDays(TODAY,-(NDAYS-1)),days=[];for(let i=0;i<NDAYS;i++)days.push(addDays(start,i));
+ const pts=[],tr=[];days.forEach((k,i)=>{if(W[k]!=null)pts.push([i,W[k]]);const t=trendAt(k);if(t!=null)tr.push([i,t])});
+ if(pts.length<2)return'<p class="note">Not enough weights to chart.</p>';
+ const ys=pts.map(p=>p[1]).concat(tr.map(p=>p[1]));let lo=Math.floor((Math.min(...ys)-.2)*2)/2,hi=Math.ceil((Math.max(...ys)+.2)*2)/2;
+ const w=640,h=220,L=42,R=10,T=10,B=24,X=i=>L+i/(NDAYS-1)*(w-L-R),Y=v=>T+(1-(v-lo)/(hi-lo))*(h-T-B);
+ let s='<svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="Weight and trend">';
+ for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4;s+='<line x1="'+L+'" x2="'+(w-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="#2a4054"/><text x="'+(L-6)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+v.toFixed(1)+'</text>'}
+ for(let i=0;i<NDAYS;i+=14)s+='<text x="'+X(i)+'" y="'+(h-6)+'" text-anchor="middle">'+days[i].slice(5)+'</text>';
+ s+='<polyline fill="none" stroke="#40b8a0" stroke-width="2.5" points="'+tr.map(p=>X(p[0])+','+Y(p[1])).join(' ')+'"/>';
+ s+=pts.map(p=>WOUT[days[p[0]]]?'<circle cx="'+X(p[0])+'" cy="'+Y(p[1])+'" r="3.5" fill="none" stroke="#8595a5" stroke-width="1.5"/>':'<circle cx="'+X(p[0])+'" cy="'+Y(p[1])+'" r="3" fill="#6fb3ff" opacity=".85"/>').join('');
+ return s+'</svg><p class="note">Blue dots are daily weigh-ins; the teal line is a smoothed trend. Day-to-day swings of 0.5–1 kg are normal when carbohydrate intake moves between rest and long-ride days (glycogen binds water), so judge the line, not the dots. A hollow grey ring is a reading more than 1 kg away from the median of the surrounding two weeks; the trend and slope ignore it.</p>';
+}
+function intakeChart(){
+ const NDAYS=28,start=addDays(TODAY,-NDAYS),days=[];for(let i=0;i<NDAYS;i++)days.push(addDays(start,i));
+ const vals=days.map(k=>FOOD[k]?FOOD[k].kcal:null),model=days.map(k=>SET.baseline+SET.offset+core(k).exercise);
+ const mx=Math.max(3500,...vals.filter(v=>v!=null),...model)*1.05;
+ const w=640,h=220,L=42,R=10,T=10,B=24,bw=(w-L-R)/NDAYS,Y=v=>T+(1-v/mx)*(h-T-B);
+ let s='<svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="Logged intake and modelled maintenance">';
+ for(let i=0;i<=4;i++){const v=mx*i/4;s+='<line x1="'+L+'" x2="'+(w-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="#2a4054"/><text x="'+(L-6)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+N0(v)+'</text>'}
+ days.forEach((k,i)=>{if(vals[i]==null)return;const f=foodFlag(k)==='ok';s+='<rect x="'+(L+i*bw+1)+'" y="'+Y(vals[i])+'" width="'+(bw-2)+'" height="'+(Y(0)-Y(vals[i]))+'" fill="'+(f?'#40b8a0':'none')+'" stroke="'+(f?'none':'#8595a5')+'" opacity="'+(f?.8:1)+'"/>'});
+ s+='<polyline fill="none" stroke="#f3c36d" stroke-width="2" points="'+model.map((v,i)=>(L+i*bw+bw/2)+','+Y(v)).join(' ')+'"/>';
+ for(let i=0;i<NDAYS;i+=7)s+='<text x="'+(L+i*bw+bw/2)+'" y="'+(h-6)+'" text-anchor="middle">'+days[i].slice(5)+'</text>';
+ return s+'</svg><p class="note">Teal bars: logged days that look complete. Outlined grey: logged but flagged. Amber line: modelled maintenance from your baseline, offset and recorded rides.</p>';
+}
+function renderTrend(){
+ const cal=calib();
+ const wk=cal.slope!=null?cal.slope*7:null;
+ let h='<section class="panel"><h2>Weight trend</h2>'+weightChart()+'<div class="grid"><div class="m"><small>Current trend weight</small><b>'+N1(weightKg())+' kg</b><small>used for g/kg targets</small></div>'
+  +'<div class="m"><small>28-day slope</small><b>'+(wk!=null?SG(wk,2)+' kg/wk':'—')+'</b><small>'+(cal.se!=null?'± '+N2(cal.se*7*2)+' (95%)':'needs ≥8 weigh-ins over ≥14 days')+' · '+cal.pts+' weigh-ins</small></div>'
+  +'<div class="m"><small>Body-fat (smart scale)</small><b>'+N1(bodyFat())+'%</b><small>noisy; fat-free mass ≈ '+N1(ffmKg())+' kg</small></div></div></section>';
+ h+='<section class="panel"><h2>Energy calibration</h2><p class="note">Window: 28 days to yesterday. Maintenance in <b>logged kcal</b> = average logged intake − (weight slope × 7,700 kcal/kg). Using logged units means consistent under-reporting cancels out; athletes under-report by about 19% on average against doubly labelled water, so absolute figures from a food diary are not trustworthy on their own.</p>'
+  +'<div class="grid"><div class="m"><small>Valid logged days</small><b>'+cal.valid+' / 28</b><small>need 10</small></div>'
+  +'<div class="m"><small>Average logged intake</small><b>'+N0(cal.avgIn)+' kcal</b></div>'
+  +'<div class="m"><small>Maintenance (logged kcal)</small><b>'+(cal.ready?N0(cal.maint):'Not ready')+'</b><small>'+(cal.ready?'± '+N0(cal.seK*2)+' (95%) · confidence '+cal.conf:cal.valid<10?'need '+(10-cal.valid)+' more valid food day(s)':'need more weigh-ins')+'</small></div>'
+  +'<div class="m"><small>Model average (baseline + exercise, logged days only)</small><b>'+N0(cal.modelAvg)+' kcal</b><small>excl. offset · all 28 days: '+N0(cal.modelAvgAll)+'</small></div>'
+  +'<div class="m"><small>Suggested offset</small><b>'+(cal.ready?SG(cal.suggest):'—')+' kcal</b><small>current offset '+SG(SET.offset)+'</small></div></div>';
+ if(cal.ready)h+='<p class="'+(cal.conf==='low'?'warn':'good')+'">'+(cal.conf==='low'?'Low confidence: the weight line is too noisy for the offset to be trusted yet. ':'')+'If you apply it, targets move by '+SG(cal.suggest-SET.offset)+' kcal/day.</p><button class="btn" id="applyOff" style="max-width:280px">Apply suggested offset</button>';
+ h+='<p class="note">Caveats: the 7,700 kcal/kg conversion is an approximation; a 1 kg swing from glycogen and water is 7,700 kcal on paper but is not fat. A short window with few weigh-ins can be badly wrong, which is why this refuses to show a result until the minimums are met.</p></section>';
+ h+='<section class="panel"><h2>Logged intake vs modelled maintenance</h2>'+intakeChart()+'</section>';
+ const ks=[];for(let i=1;i<=28;i++)ks.push(addDays(TODAY,-i));
+ h+='<section class="panel"><details><summary><b>Food-log quality</b> · tick to exclude a day you know was incomplete</summary><div class="scroll"><table><thead><tr><th>Date</th><th>Weight</th><th>Logged kcal</th><th>Source</th><th>Status</th><th>Exclude</th></tr></thead><tbody>'
+  +ks.map(k=>{const f=FOOD[k],fl=foodFlag(k);return'<tr><td>'+k+'</td><td>'+(W[k]!=null?N1(W[k])+' kg':'—')+'</td><td>'+(f?N0(f.kcal):'—')+'</td><td>'+(f?f.src:'—')+'</td><td>'+(fl==='ok'?'ok':esc(FLAGTXT[fl]||fl))+'</td><td><input type="checkbox" data-ex="'+k+'" '+(EXCL[k]?'checked':'')+' '+(f?'':'disabled')+' style="width:auto"></td></tr>'}).join('')
+  +'</tbody></table></div></details></section>';
+ $('p-trend').innerHTML=h;
+ const b=$('applyOff');if(b)b.addEventListener('click',()=>{setSetting('offset',clamp(Math.round(cal.suggest/5)*5,-500,800));renderAll()});
+ $('p-trend').querySelectorAll('[data-ex]').forEach(x=>x.addEventListener('change',()=>{if(x.checked)EXCL[x.dataset.ex]=true;else delete EXCL[x.dataset.ex];try{localStorage.setItem(EKEY,JSON.stringify(EXCL))}catch(e){}renderAll()}));
+}
 
-// V22 experimental comparison; no changes to V21 prescription engine.
-function experimentalIntensity(e){
- const doc=e.workout_doc||{};
- // Intervals.icu workout_doc.zoneTimes contains objects {zone:1..7,secs}.
- // Zone 8 is overlapping Sweet Spot and MUST NOT be added to total time.
- let zones=null,source='';
- if(Array.isArray(doc.zoneTimes)&&doc.zoneTimes.some(z=>z&&typeof z==='object'&&Number(z.secs)>=0)){
-  const a=Array(7).fill(0);
-  for(const z of doc.zoneTimes){const i=Number(z.zone);if(i>=1&&i<=7&&Number.isFinite(Number(z.secs)))a[i-1]+=Number(z.secs);}
-  if(a.some(v=>v>0)){zones=a;source='Intervals zoneTimes';}
- }
- if(!zones){
-  const candidates=[doc.zone_times,doc.power_zone_times,doc.zones,doc.zoneTimes];
-  for(const c of candidates){
-   if(Array.isArray(c)&&c.length>=5&&c.every(v=>Number.isFinite(Number(v)))){zones=c.slice(0,7).map(Number);source='zone array';break;}
-   if(c&&typeof c==='object'&&!Array.isArray(c)){
-    const a=[1,2,3,4,5,6,7].map(i=>Number(c['Z'+i]??c['z'+i]??c[i]??0));
-    if(a.some(x=>x>0)){zones=a;source='zone map';break;}
-   }
-  }
- }
- if(!zones){
-  const a=[1,2,3,4,5,6,7].map(i=>Number(e['icu_zone'+i+'_time']??e['zone'+i+'_time']??0));
-  if(a.some(x=>x>0)){zones=a;source='event zone times';}
- }
- if(zones){
-  const total=zones.reduce((a,b)=>a+b,0),hard=zones.slice(3).reduce((a,b)=>a+b,0);
-  const secondsUnits=total>1000;
-  return {hardFraction:total?hard/total:0,hardMinutes:secondsUnits?hard/60:hard,source,known:true,zoneMinutes:zones.map(v=>secondsUnits?v/60:v)};
- }
- return {hardFraction:null,hardMinutes:null,source:'workout name only',known:false,zoneMinutes:null};
+/* ============ SETTINGS ============ */
+function renderSettings(){
+ let h='<section class="panel"><h2>Settings</h2><p class="note">Changing a value recalculates everything immediately. Where these are saved is explained at the bottom of this page.</p><div class="grid">';
+ for(const [k,label,min,max,step,help] of CFG)h+='<div><label for="s_'+k+'">'+esc(label)+'</label><input id="s_'+k+'" type="number" data-k="'+k+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+SET[k]+'">'+(help?'<small class="muted" style="font-size:11px">'+esc(help)+'</small>':'')+(Object.prototype.hasOwnProperty.call(LOCAL,k)?'<small class="warn" style="font-size:11px;display:block">changed on this device</small>':'')+'</div>';
+ h+='<div><label for="s_logRide">Is ride fuel in your MFP log?</label><select id="s_logRide" data-k="logRide"><option value="1"'+(SET.logRide?' selected':'')+'>Yes, I log gels/drink mix</option><option value="0"'+(SET.logRide?'':' selected')+'>No, add Intervals CHO In</option></select><small class="muted" style="font-size:11px">If No, carbohydrate recorded in Intervals (CHO In) is added to that day\'s logged food.</small></div>';
+ h+='<div><label for="s_smooth">Carbohydrate bands</label><select id="s_smooth" data-k="smooth"><option value="1"'+(SET.smooth?' selected':'')+'>Smooth: changes gradually with ride length</option><option value="0"'+(SET.smooth?'':' selected')+'>Fixed bands (V24 behaviour)</option></select><small class="muted" style="font-size:11px">Smooth joins the table points with straight lines, so a 20-minute shorter or longer ride moves the target a little instead of jumping at 60 and 150 minutes.</small></div>';
+ h+='</div><div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn alt" id="resetSet" style="max-width:220px">Discard changes on this device</button><button class="btn" id="refresh" style="max-width:220px">Refresh data</button></div></section>';
+ h+='<section class="panel"><h2>Saving and sharing settings</h2><p class="note">Changes save automatically in <b>this browser</b>. Phone and laptop each keep their own. To make them all use the same values, copy the JSON below into a file called <code>data/fuel-settings.json</code> in your repo (next to intervals.json). Every device then loads it on refresh; a change made on one device still overrides the shared file until you discard it.</p><p class="note" id="setNote"></p><textarea id="setJson" readonly rows="8" style="width:100%;background:#0d1b29;color:#cfe0ee;border:1px solid #567086;border-radius:9px;padding:9px;font:12px ui-monospace,Menlo,monospace"></textarea><div style="margin-top:10px"><button class="btn" id="copySet" style="max-width:260px">Copy settings JSON</button></div><p class="note" id="copyMsg"></p></section>';
+ h+='<section class="panel"><h2>Manual load</h2><p class="note">For opening this file straight from disk, or testing. Pick the same three files your GitHub feed publishes.</p><label for="f_int">Intervals JSON</label><input id="f_int" type="file" accept=".json,.txt"><label for="f_nut">Apple Health nutrition JSON</label><input id="f_nut" type="file" accept=".json,.txt"><label for="f_his">MFP history JSON</label><input id="f_his" type="file" accept=".json,.txt"></section>';
+ h+='<section class="panel"><h2>Method notes</h2><ul class="note"><li>Carbohydrate is matched to the session: g/kg by intensity (from zone time, not workout names) and duration. These bands are conventional practice ranges, not trial-derived doses.</li><li>Recovery and preparation additions are small, capped at +1 g/kg, and only on easy or rest days. With 24 h or more between sessions, total daily intake matters more than timing.</li><li>On-bike carbohydrate: 30–60 g/h for roughly 1–2.5 h, 60–90 g/h beyond ~2.5–3 h.</li><li>Deficit: protein, fat floor and session carbohydrate are met first; the deficit comes out of fat above its floor, within per-day caps and your energy-availability floor. Hard and long days have their own cap (default 300 kcal, fat only).</li><li>Exercise energy: power-meter kJ ÷ 4.184 ÷ efficiency, minus resting energy for the ride time. MFP exercise calories are ignored.</li></ul></section>';
+ $('p-settings').innerHTML=h;
+ $('p-settings').querySelectorAll('[data-k]').forEach(x=>x.addEventListener('change',()=>{const k=x.dataset.k;const v=Number(x.value);if(isFinite(v)){setSetting(k,(k==='logRide'||k==='smooth')?(v?1:0):v);renderAll(true);renderSettingsNote()}}));
+ $('resetSet').addEventListener('click',()=>{LOCAL={};applySettings();saveLocal();renderAll()});
+ $('copySet').addEventListener('click',async()=>{const t=$('setJson');t.select();try{await navigator.clipboard.writeText(t.value);$('copyMsg').textContent='Copied. Paste it into data/fuel-settings.json in your repo.'}catch(e){document.execCommand&&document.execCommand('copy');$('copyMsg').textContent='Select the text and copy it (clipboard blocked).'}});
+ $('refresh').addEventListener('click',refresh);
+ const man=(id,fn)=>$(id).addEventListener('change',async()=>{const f=$(id).files[0];if(!f)return;try{fn(JSON.parse(await f.text()));rebuild();renderAll();$('status').textContent='Manual load OK: '+f.name}catch(e){$('err').textContent='Manual load failed: '+e.message}});
+ man('f_int',ingestIntervals);man('f_nut',ingestHealth);man('f_his',ingestHistory);
 }
-const baseNutritionFor=nutritionFor;
-function experimentalPlan(key,by){
- const old=baseNutritionFor(key,by),events=by[key]||[],rides=events.filter(isRide);
- const profiles=rides.map(experimentalIntensity),hasZones=profiles.some(p=>p.known);
- const totalMinutes=old.mins,highMinutes=profiles.filter(p=>p.known).reduce((a,p)=>a+(p.hardMinutes||0),0);
- const hard=rides.some(isHard),meaningfulHard=hasZones?highMinutes>=10||profiles.some(p=>p.hardFraction>=.15):hard;
- const moderate=hasZones&&profiles.some(p=>(p.zoneMinutes?.[2]||0)>=15);
- let target=old.targetCarb,bike=old.bikeTarget,hi=old.maxCarbs;
- let rationale='No adjustment indicated by measured workout demand.';
- if(rides.length&&old.known){
-  const kg=weight(),workKj=rides.reduce((a,e)=>a+planDetails(e).joules/1000,0);
-  let desired=old.targetCarb;
-  if(meaningfulHard&&totalMinutes>=60){
-   desired=Math.max(desired,Math.round(kg*(totalMinutes>=150?5.5:5.0)));
-   bike=Math.max(bike,totalMinutes>=90?60:45);
-   rationale='Sustained Z4+ work ('+Math.round(highMinutes)+' min): prioritise carbohydrate availability.';
-  }else if(moderate&&totalMinutes>=60){
-   desired=Math.max(desired,Math.round(kg*4.3));
-   bike=Math.max(bike,totalMinutes>=90?45:35);
-   rationale='Sustained Z3 tempo: moderate carbohydrate demand.';
-  }else if(hasZones&&totalMinutes>=60&&totalMinutes<120){
-   bike=Math.max(bike,totalMinutes>=90?35:20);
-   rationale='Mostly lower-zone work: modest on-bike carbohydrate recommended.';
-  }
-  if(totalMinutes>=150){bike=Math.max(bike,60);rationale+=' Extended duration supports steady fuelling.';}
-  if(totalMinutes>=180){desired=Math.max(desired,Math.round(kg*(totalMinutes>=240?6:5.5)));bike=Math.max(bike,75);rationale+=' Long-ride fuelling supports fatigue resistance.';}
-  if(workKj>=1400&&totalMinutes>=120)bike=Math.max(bike,65);
-  if(old.recovery||old.prep)desired=Math.max(desired,old.targetCarb);
-  target=round5(Math.max(old.minCarbs,desired));
-  hi=Math.max(old.maxCarbs,target);
- }
- const protein=old.protein,fatFloor=old.fatFloor,energy=old.energyMid;
- const fat=Math.max(fatFloor,(energy-4*(protein+target))/9);
- const macroEnergy=4*(protein+target)+9*fat;
- return {old,target,hi,bike,macroEnergy,delta:target-old.targetCarb,energyGap:macroEnergy-energy,hasZones,highMinutes,rationale,profiles};
+
+function renderSettingsNote(){
+ const n=$('setNote'),j=$('setJson');if(!n||!j)return;
+ const ks=Object.keys(LOCAL);
+ n.textContent='Shared file: '+SHARED_STATE+'. Changed on this device: '+(ks.length?ks.map(k=>CFG.find(c=>c[0]===k)?CFG.find(c=>c[0]===k)[1]:k).join(', '):'nothing')+'.';
+ j.value=JSON.stringify(Object.assign({},SET,{excluded:Object.assign({},SH_EX,EXCL),complete:Object.assign({},SH_TR,TRUST)}),null,2);
 }
-function experimentActualCalendar(plannedBy){
- const by={...plannedBy},done=groupEvents(COMPLETED),today=dateKey(new Date());
- for(const key of Object.keys(done)){
-  if(key>today)continue;
-  const acts=done[key]||[],rides=acts.filter(completedRide);
-  if(!rides.length)continue;
-  // Actual rides replace planned rides, while genuinely recorded strength is retained.
-  // No power means no invented energy estimate; the warning is displayed separately.
-  const recordedStrength=acts.filter(isStrength).map(a=>({type:'WeightTraining',name:a.name||'Completed strength',start_date_local:key,moving_time:Number(a.moving_time)||0,actual:true}));
-  by[key]=[...rides.map(activityPseudo),...recordedStrength];
- }
- return by;
+/* ============ boot ============ */
+function renderAll(keepSettings){
+ CACHE.clear();$('err').textContent='';
+ try{renderToday();renderWeek();renderReview();renderTrend();if(!keepSettings)renderSettings();renderSettingsNote()}catch(e){console.error(e);$('err').textContent='Render error: '+e.message}
 }
-function experimentActualRecommendation(key,plannedBy,actualBy){
- const planned=experimentalPlan(key,plannedBy),actual=experimentalPlan(key,actualBy);
- const plannedRides=(plannedBy[key]||[]).filter(isRide),completedRides=(groupEvents(COMPLETED)[key]||[]).filter(completedRide);
- if(!completedRides.length)return null;
- const plannedKj=plannedRides.reduce((n,e)=>n+planDetails(e).joules/1000,0);
- const actualKj=completedRides.reduce((n,e)=>n+(Number(e.icu_joules)||0)/1000,0);
- const plannedMin=plannedRides.reduce((n,e)=>n+planDetails(e).seconds/60,0);
- const actualMin=completedRides.reduce((n,e)=>n+(Number(e.moving_time)||0)/60,0);
- const hasPower=completedRides.every(e=>Number(e.icu_joules)>0);
- const actualLoad=completedRides.reduce((n,e)=>n+(Number(e.icu_training_load)||0),0);
- // Actual day carbohydrate is recomputed from completed duration and power.
- // A workload adjustment is modest, because kJ does not equal glycogen expenditure.
- // The original daily prescription remains visible and the result is capped to avoid
- // a spurious jump from a noisy power file or a very short ride.
- let revisedCarb=actual.target,reason='Recalculated using completed ride duration and workload.';
- if(hasPower&&plannedKj>0&&actualKj>0){
-  const change=actualKj-plannedKj;
-  const workAdjustment=Math.round(Math.max(-.5,Math.min(.5,change/1000)) * weight() * .5);
-  // Retain the session-based prescription and permit a modest workload correction.
-  revisedCarb=round5(Math.max(actual.old.minCarbs,actual.target+workAdjustment));
-  reason+=(change>=0?' Work increased':' Work decreased')+' by '+Math.abs(Math.round(change))+' kJ.';
- }
- const protein=actual.old.protein,fatFloor=actual.old.fatFloor;
- const budget=actual.old.energyMid;
- const impliedFat=Math.max(fatFloor,(budget-4*(protein+revisedCarb))/9);
- const impliedEnergy=4*(protein+revisedCarb)+9*impliedFat;
- return {planned,actual,plannedKj,actualKj,plannedMin,actualMin,actualLoad,hasPower,revisedCarb,budget,impliedEnergy,reason,carbDelta:revisedCarb-planned.target,energyDelta:budget-planned.old.energyMid};
+async function getJSON(path){const u=new URL(path,location.href);u.searchParams.set('_r',Date.now());const r=await fetch(u.toString(),{cache:'no-store'});if(!r.ok)throw Error(path+': HTTP '+r.status);return r.json()}
+let busy=false;
+async function refresh(){
+ if(busy)return;busy=true;$('status').textContent='Refreshing from GitHub files…';
+ const res=await Promise.allSettled([getJSON('data/intervals.json'),getJSON('data/nutrition.json'),getJSON('data/mfp-history.json'),getJSON('data/fuel-settings.json')]);
+ const errs=[];
+ [['Intervals',ingestIntervals],['Nutrition',ingestHealth],['History',ingestHistory]].forEach(([n,fn],i)=>{
+  if(res[i].status==='fulfilled'){try{fn(res[i].value)}catch(e){errs.push(n+': '+e.message)}}else errs.push(n+': '+res[i].reason.message)});
+ if(res[3].status==='fulfilled'){SHARED=numOnly(res[3].value);SHARED_STATE='loaded ('+Object.keys(SHARED).length+' values)'}else{SHARED={};SHARED_STATE='not found, using built-in defaults'}
+ {const v=(res[3].status==='fulfilled'&&res[3].value)||{};const ob=o=>o&&typeof o==='object'&&!Array.isArray(o)?o:{};SH_EX=ob(v.excluded);SH_TR=ob(v.complete)}
+ applySettings();
+ rebuild();renderAll();renderSettingsNote();
+ const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+ $('status').textContent=(errs.length?'Loaded with issue(s): '+errs.join(' · ')+' · ':'Refreshed '+t+' · ')+RAW.planned.length+' planned, '+RAW.completed.length+' completed, '+Object.keys(W).length+' weights, '+Object.keys(FOOD).length+' food days ('+Object.keys(IFOOD).length+' from Intervals).';
+ busy=false;
 }
-function renderExperiment(){
- const root=el('experimentContent');if(!root)return;
- if(!PLANNED.length){root.innerHTML='<p class="warn">Waiting for Intervals planned calendar. Refresh Data after uploading your latest export.</p>';return;}
- const by=groupEvents(PLANNED),actualBy=experimentActualCalendar(by),today=new Date(),rows=[];
- for(let i=0;i<7;i++){
-  const d=new Date(today.getFullYear(),today.getMonth(),today.getDate()+i),key=dateKey(d),x=experimentalPlan(key,by),old=x.old;
-  const actual=experimentActualRecommendation(key,by,actualBy);
-  const profile=x.hasZones?'Intervals power zones':'Name-based fallback';
-  const actualHtml=actual?`<div style="margin-top:12px;padding:13px;border:1px solid #68bcb4;border-radius:10px"><strong>Completed ride · revised recovery target</strong><div class="grid" style="margin-top:9px"><div><small>Duration: planned → actual</small><b>${Math.round(actual.plannedMin)} → ${Math.round(actual.actualMin)} min</b></div><div><small>Work: planned → actual</small><b>${Math.round(actual.plannedKj)} → ${Math.round(actual.actualKj)} kJ</b></div><div><small>Daily energy: planned → revised expenditure</small><b>${number(actual.planned.old.energyMid)} → ${number(actual.budget)} kcal</b><small>${actual.energyDelta>=0?'+':''}${number(actual.energyDelta)} kcal</small></div><div><small>Carbs: V22 planned → revised</small><b>${actual.planned.target} → ${actual.revisedCarb} g</b><small>${actual.carbDelta>=0?'+':''}${actual.carbDelta} g</small></div><div><small>Macro-implied food target</small><b>${number(actual.impliedEnergy)} kcal</b><small>Shown separately from estimated expenditure</small></div><div><small>Completed training load</small><b>${Math.round(actual.actualLoad)}</b></div></div><p class="note">${escapeHTML(actual.reason)} ${actual.actualMin<actual.plannedMin?'Shorter than planned.':actual.actualMin>actual.plannedMin?'Longer than planned.':'Duration matched plan.'} Actual intensity zones are not available from the summary ride fields; work and duration are used without inventing zone time. On-bike recommendations above are pre-ride targets, not retrospective instructions.${!actual.hasPower?' <span class="warn">Missing actual power work: energy adjustment is unreliable.</span>':''}</p>${actual.impliedEnergy-actual.budget>25?`<p class="warn">Macro minimums exceed estimated expenditure by ${number(actual.impliedEnergy-actual.budget)} kcal; do not treat the higher figure as measured energy burn.</p>`:''}</div>`:'';
-  rows.push(`<div class="metric" style="margin:12px 0;border:1px solid #425a70"><strong>${escapeHTML(d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'}))} · ${escapeHTML(old.label)}</strong><div class="grid" style="margin-top:12px"><div><small>V21 · carbohydrates</small><b>${old.targetCarb} g</b></div><div><small>V22 planned · carbohydrates</small><b>${x.target} g</b><small>${x.delta>0?'+':''}${x.delta} g vs V21</small></div><div><small>V21 · macro food target</small><b>${number(old.macroEnergy)} kcal</b></div><div><small>V22 planned · macro food target</small><b>${number(x.macroEnergy)} kcal</b></div><div><small>V21 → V22 planned on-bike</small><b style="font-size:18px">${old.hours?old.bikeTarget+' → '+x.bike+' g/h':'No ride'}</b></div><div><small>Planned mechanical work</small><b style="font-size:18px">${Math.round((by[key]||[]).filter(isRide).reduce((a,e)=>a+planDetails(e).joules,0)/1000)} kJ</b></div></div><p class="note">${escapeHTML(x.rationale)} · ${profile}${x.hasZones?' · '+Math.round(x.highMinutes)+' min Z4+':''}.</p>${actualHtml}</div>`);
- }
- root.innerHTML='<p class="note"><strong>Experiment:</strong> V21 and V22 planned recommendations are preserved. After a completed ride syncs, a separate revised result uses actual duration and power work. Daily energy expenditure is kept separate from the calorie total implied by macro minimums. The experimental carbohydrate correction is intentionally modest and provisional; completed ride summary data cannot reliably identify time in each intensity zone. The original on-bike target is retained for review.</p>'+rows.join('')+'<p class="note">Check the new targets against ride quality, recovery, hunger and complete food logs over several days. Live targets on the other pages now use the adaptive calculation.</p>';
-}
-// V23b LIVE: same-day completed activities now replace planned activities; completed power-meter work replaces planned energy and carbohydrate targets.
-// Keep the original pre-ride plan available on the Experiment tab for audit.
-// Completed activity summaries do not include reliable time-in-zone information; actual
-// average mechanical power and training load are supporting intensity indicators only.
-nutritionFor=function(key,by){
- const events=by[key]||[];
- const recorded=events.some(e=>e.actual&&isRide(e));
- const base=baseNutritionFor(key,by);
- if(!PLANNED.length)return base;
- const plannedBy=groupEvents(PLANNED);
- if(recorded){
-  const actualBy=experimentActualCalendar(plannedBy);
-  const rec=experimentActualRecommendation(key,plannedBy,actualBy);
-  if(!rec||!rec.hasPower)return {...base,notes:[...base.notes,'Completed power data missing: energy adjustment cannot be verified']};
-  const carb=rec.revisedCarb,energy=rec.budget;
-  const fat=Math.max(base.fatFloor,(energy-4*(base.protein+carb))/9);
-  const macroEnergy=4*(base.protein+carb)+9*fat;
-  const actualAvgWatts=rec.actualMin>0?rec.actualKj*1000/(rec.actualMin*60):0;
-  const plannedAvgWatts=rec.plannedMin>0?rec.plannedKj*1000/(rec.plannedMin*60):0;
-  const effortNote='Actual ride: '+Math.round(rec.plannedMin)+' → '+Math.round(rec.actualMin)+' min; '+Math.round(rec.plannedKj)+' → '+Math.round(rec.actualKj)+' kJ; average power '+Math.round(plannedAvgWatts)+' → '+Math.round(actualAvgWatts)+' W; load '+Math.round(rec.actualLoad)+'.';
-  return {...base,targetCarb:carb,minCarbs:Math.min(base.minCarbs,carb),maxCarbs:Math.max(base.maxCarbs,carb),energyMid:energy,energyLow:base.energyLow,energyHigh:base.energyHigh,fat,macroEnergy,macroGap:macroEnergy-energy,conflict:macroEnergy-energy>250,notes:[...base.notes,effortNote,'LIVE adjustment: '+(rec.energyDelta>=0?'+':'')+Math.round(rec.energyDelta)+' kcal and '+(rec.carbDelta>=0?'+':'')+Math.round(rec.carbDelta)+' g carbs versus planned. Actual energy uses recorded power work and duration; carbohydrate adjustment is provisional.','Actual intensity-zone distribution unavailable; do not interpret average power as time at threshold.']};
- }
- // For future scheduled rides use the experimental intensity-aware prescription.
- const exp=experimentalPlan(key,by);
- const carb=exp.target,energy=base.energyMid;
- const fat=Math.max(base.fatFloor,(energy-4*(base.protein+carb))/9);
- const macroEnergy=4*(base.protein+carb)+9*fat;
- return {...base,targetCarb:carb,maxCarbs:Math.max(base.maxCarbs,carb),fat,macroEnergy,macroGap:macroEnergy-energy,conflict:macroEnergy-energy>250,bikeTarget:exp.bike,notes:[...base.notes,'LIVE planned fuelling: '+exp.rationale+(exp.hasZones?' Workout zone data used.':' Workout name used as fallback.') ]};
-};
-const v21RenderNutrition=renderNutrition;
-renderNutrition=function(){v21RenderNutrition();renderExperiment();};
-renderExperiment();
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{const p=b.dataset.p;document.querySelectorAll('.page').forEach(x=>x.hidden=x.id!=='p-'+p);document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',String(x===b)));try{history.replaceState(null,'','#'+p)}catch(e){}window.scrollTo(0,0)}));
+{const h=location.hash.slice(1);const t=document.querySelector('.tab[data-p="'+h+'"]');if(t)t.click()}
+renderSettings();renderSettingsNote();
+if(location.protocol==='http:'||location.protocol==='https:')refresh();else{$('status').textContent='Opened from disk: use Settings → Manual load.';renderAll()}
+window.__V25=window.__V24={core,plannedCore,planRange,calib,FOODref:()=>FOOD,SETref:()=>SET,weightKg,ingestIntervals,ingestHealth,ingestHistory,rebuild,renderAll};
 </script></body></html>
